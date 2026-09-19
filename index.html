@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#ff6b9d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cheki Timer">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์ - Multi Queue</title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#ff6b9d;
+  --pink-light:#fff0f5;
+  --pink-dark:#ff4081;
+  --purple:#a78bfa;
+  --yellow:#ffd166;
+  --mint:#a7f3d0;
+  --bg:#fff8fb;
+  --card:#ffffff;
+  --text:#4a3340;
+  --muted:#9a8490;
+  --border:#ffe0ec;
+  --shadow:0 8px 32px rgba(255,107,157,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Mali','Noto Sans JP',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  background-image:
+    radial-gradient(circle at 10% 10%, #ffe4ee 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, #e9d5ff 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, #fef3c7 0%, transparent 50%);
+  background-attachment:fixed;
+}
+header{
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--border);
+  position:sticky; top:0; z-index:20;
+  padding:14px 16px;
+}
+.header-inner{
+  max-width:1080px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  font-weight:700; font-size:1.35rem;
+}
+.logo-badge{
+  width:42px; height:42px; border-radius:14px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  display:grid; place-items:center;
+  color:white; font-size:22px;
+  box-shadow:0 6px 16px rgba(255,107,157,0.35);
+}
+.logo small{ display:block; font-size:0.72rem; color:var(--muted); font-weight:500; margin-top:-2px}
+.nav-tabs{
+  display:flex; gap:8px; background:var(--pink-light); padding:6px; border-radius:999px;
+}
+.nav-tab{
+  padding:8px 18px; border-radius:999px; border:none; cursor:pointer;
+  font-family:inherit; font-weight:600; font-size:0.92rem;
+  background:transparent; color:var(--muted); transition:.2s;
+}
+.nav-tab.active{ background:white; color:var(--pink-dark); box-shadow:0 4px 12px rgba(255,107,157,0.15)}
+.container{ max-width:1080px; margin:22px auto; padding:0 16px 40px}
+.view{ display:none } .view.active{ display:block; animation:fade .25s ease}
+@keyframes fade{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+/* Idol Grid */
+.section-title{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;
+}
+.section-title h2{ font-size:1.25rem; display:flex; align-items:center; gap:8px}
+.btn{
+  border:none; cursor:pointer; font-family:inherit; font-weight:600;
+  padding:10px 18px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px;
+}
+.btn-primary{ background:linear-gradient(135deg,var(--pink),var(--pink-dark)); color:white; box-shadow:0 6px 18px rgba(255,64,129,0.3)}
+.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 22px rgba(255,64,129,0.35)}
+.btn-ghost{ background:white; border:2px solid var(--border); color:var(--pink-dark)}
+.btn-small{ padding:7px 14px; font-size:0.85rem}
+.btn:disabled{ opacity:0.45; cursor:not-allowed; transform:none !important}
+.idol-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px}
+.idol-card{
+  background:var(--card); border:2px solid var(--border); border-radius:22px; padding:18px;
+  box-shadow:var(--shadow); transition:.2s; position:relative; overflow:hidden;
+}
+.idol-card:hover{ transform:translateY(-2px)}
+.idol-card::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:6px;
+  background:var(--card-color, linear-gradient(90deg,var(--pink),var(--purple)));
+}
+.idol-head{ display:flex; gap:12px; align-items:center; margin-bottom:12px}
+.idol-avatar{
+  width:54px; height:54px; border-radius:16px; display:grid; place-items:center;
+  font-size:26px; color:white; flex-shrink:0;
+}
+.idol-name{ font-weight:700; font-size:1.05rem}
+.idol-meta{ font-size:0.82rem; color:var(--muted)}
+.idol-stats{ display:flex; gap:8px; margin:12px 0 14px}
+.stat{
+  flex:1; background:var(--pink-light); border-radius:14px; padding:10px; text-align:center;
+}
+.stat b{ display:block; font-size:1.15rem; color:var(--pink-dark)}
+.stat span{ font-size:0.75rem; color:var(--muted)}
+.idol-actions{ display:flex; gap:8px}
+.idol-actions button{ flex:1}
+
+/* Timer View - Multi */
+.creator-card{
+  background:white; border:2px solid var(--border); border-radius:24px; padding:22px;
+  box-shadow:var(--shadow); margin-bottom:18px;
+}
+.creator-top{ display:grid; grid-template-columns:1fr 360px; gap:18px}
+@media(max-width:900px){ .creator-top{ grid-template-columns:1fr } }
+.timer-idol-select{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 14px}
+.idol-chip{
+  padding:8px 14px; border-radius:999px; border:2px solid var(--border); background:white;
+  cursor:pointer; font-family:inherit; font-weight:600; font-size:0.88rem; transition:.2s;
+  display:flex; align-items:center; gap:6px;
+}
+.idol-chip.active{ color:white; border-color:transparent; }
+.ticket-display-big{ text-align:center; padding:8px 0}
+.ticket-number{ font-size:3.8rem; font-weight:700; line-height:1; color:var(--pink-dark)}
+.ticket-label{ color:var(--muted); font-weight:600; margin-top:4px}
+.time-total{
+  text-align:center; font-size:1.35rem; font-weight:700; color:var(--text);
+  background:var(--pink-light); padding:12px; border-radius:16px; margin:12px 0;
+}
+.time-total small{ font-size:0.85rem; color:var(--muted); font-weight:500}
+.ticket-buttons{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:12px 0}
+.t-btn{
+  padding:13px 6px; border-radius:16px; border:2px solid var(--border); background:white;
+  cursor:pointer; font-family:inherit; font-weight:700; font-size:1rem; transition:.15s;
+}
+.t-btn:active{ transform:scale(0.96)}
+.t-btn.add{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; border-color:transparent; font-size:1.2rem}
+.t-btn.minus{ color:var(--pink-dark)}
+.queue-btn{
+  width:100%; padding:16px; border-radius:16px; border:none; cursor:pointer;
+  font-family:inherit; font-weight:700; font-size:1.05rem;
+  background:linear-gradient(135deg,var(--pink),var(--purple)); color:white;
+  box-shadow:0 8px 20px rgba(255,107,157,0.3); transition:.2s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.queue-btn:hover{ transform:translateY(-1px)}
+.queue-btn:disabled{ opacity:0.45; transform:none}
+.preset-row{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.preset{
+  padding:6px 12px; border-radius:999px; background:white; border:2px dashed var(--border);
+  font-size:0.82rem; font-weight:600; color:var(--muted)
+}
+
+/* Active timers grid */
+.active-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin:18px 0 12px;
+}
+.active-header h3{ font-size:1.15rem; display:flex; align-items:center; gap:8px}
+.badge-count{
+  background:var(--pink); color:white; padding:4px 12px; border-radius:999px; font-size:0.85rem; font-weight:700;
+}
+.timers-grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px;
+}
+.timer-queue-card{
+  background:white; border:2px solid var(--border); border-radius:22px; padding:16px;
+  box-shadow:var(--shadow); position:relative; overflow:hidden;
+  transition:.2s; display:flex; flex-direction:column; gap:12px;
+}
+.timer-queue-card.running{ border-color:var(--pink); box-shadow:0 8px 28px rgba(255,107,157,0.18)}
+.timer-queue-card.finished{ border-color:#22c55e; background:#f0fdf4}
+.timer-queue-card::before{
+  content:""; position:absolute; inset:0 0 auto 0; height:5px; background:var(--queue-color,#ff6b9d);
+}
+.queue-head{ display:flex; align-items:center; justify-content:space-between; gap:8px}
+.queue-idol{ display:flex; gap:10px; align-items:center}
+.queue-avatar{ width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:white; font-size:18px}
+.queue-info b{ display:block; font-size:0.98rem}
+.queue-info span{ font-size:0.78rem; color:var(--muted)}
+.queue-tickets{ background:var(--pink-light); padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.88rem; color:var(--pink-dark)}
+.queue-time-row{ display:flex; gap:8px; text-align:center}
+.queue-time-box{
+  flex:1; background:var(--pink-light); border-radius:14px; padding:10px 6px;
+}
+.queue-time-box b{ display:block; font-size:1.05rem}
+.queue-time-box span{ font-size:0.72rem; color:var(--muted)}
+.queue-time-box.remaining{ background:var(--text); color:white}
+.queue-time-box.remaining span{ color:#fbcfe8}
+.queue-circle-wrap{ display:grid; place-items:center; padding:4px 0}
+.queue-circle{
+  width:150px; height:150px; border-radius:50%;
+  display:grid; place-items:center; padding:8px;
+  box-shadow:inset 0 0 0 6px white, 0 6px 18px rgba(255,107,157,0.12);
+}
+.queue-inner{
+  width:100%; height:100%; background:white; border-radius:50%;
+  display:grid; place-items:center; text-align:center;
+}
+.queue-time{ font-size:1.9rem; font-weight:700; line-height:1}
+.queue-status{ font-size:0.78rem; color:var(--muted); font-weight:600; margin-top:2px}
+.queue-controls{ display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.queue-controls button{ padding:10px 8px; border-radius:12px; font-size:0.88rem}
+.btn-run{ background:linear-gradient(135deg,#22c55e,#16a34a); color:white}
+.btn-pauseQ{ background:#f59e0b; color:white}
+.btn-resetQ{ background:white; border:2px solid var(--border); color:var(--muted)}
+.btn-saveQ{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; grid-column:1/-1}
+.btn-delQ{ background:white; border:2px solid #fecaca; color:#ef4444}
+.btn-addtime{ background:white; border:2px dashed var(--border); color:var(--pink-dark); font-size:0.8rem; padding:8px}
+
+/* History */
+.history-filters{
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; align-items:center;
+  background:white; padding:14px; border-radius:18px; border:2px solid var(--border);
+}
+.select, .input{
+  padding:9px 12px; border-radius:12px; border:2px solid var(--border); font-family:inherit;
+  font-weight:500; background:white; color:var(--text); outline:none;
+}
+.select:focus, .input:focus{ border-color:var(--pink)}
+.summary-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px}
+@media(max-width:600px){ .summary-row{ grid-template-columns:1fr } }
+.summary-card{
+  background:white; border:2px solid var(--border); border-radius:18px; padding:16px; text-align:center;
+}
+.summary-card b{ font-size:1.5rem; color:var(--pink-dark); display:block}
+.summary-card span{ font-size:0.82rem; color:var(--muted)}
+.history-list{ display:flex; flex-direction:column; gap:10px}
+.day-group{ background:white; border:2px solid var(--border); border-radius:18px; overflow:hidden}
+.day-header{
+  background:var(--pink-light); padding:12px 16px; display:flex; justify-content:space-between; align-items:center;
+  font-weight:700; border-bottom:2px solid var(--border);
+}
+.day-header small{ color:var(--pink-dark); background:white; padding:4px 10px; border-radius:999px; font-size:0.8rem}
+.log-item{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 16px; border-bottom:1px solid #fff0f5;
+}
+.log-item:last-child{ border-bottom:none}
+.log-left{ display:flex; gap:12px; align-items:center}
+.log-dot{ width:10px; height:10px; border-radius:50%; flex-shrink:0}
+.log-time{ font-size:0.82rem; color:var(--muted)}
+.log-count{ font-weight:700; color:var(--pink-dark); background:var(--pink-light); padding:6px 12px; border-radius:999px}
+
+/* Modal */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(74,51,64,0.45); backdrop-filter:blur(6px);
+  display:none; place-items:center; z-index:50; padding:16px;
+}
+.modal-backdrop.open{ display:grid }
+.modal{
+  background:white; border-radius:24px; padding:22px; width:100%; max-width:420px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:pop .25s ease;
+}
+@keyframes pop{ from{transform:scale(0.95); opacity:0} to{transform:scale(1); opacity:1}}
+.modal h3{ font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:8px}
+.form-group{ margin-bottom:14px}
+.form-group label{ display:block; font-weight:600; font-size:0.88rem; margin-bottom:6px; color:var(--text)}
+.form-group input, .form-group select{
+  width:100%; padding:11px 14px; border-radius:12px; border:2px solid var(--border);
+  font-family:inherit; font-size:0.95rem; outline:none;
+}
+.form-group input:focus{ border-color:var(--pink)}
+.color-pick{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.color-opt{
+  width:36px; height:36px; border-radius:10px; cursor:pointer; border:3px solid transparent;
+  transition:.15s;
+}
+.color-opt.selected{ border-color:var(--text); transform:scale(1.08)}
+.modal-actions{ display:flex; gap:10px; margin-top:18px}
+.modal-actions button{ flex:1; justify-content:center; padding:12px}
+
+/* empty */
+.empty{
+  text-align:center; padding:40px 20px; color:var(--muted);
+  background:white; border:2px dashed var(--border); border-radius:18px;
+}
+.empty p{ margin-top:8px; font-size:0.9rem}
+
+/* ========== RESPONSIVE - MOBILE OPTIMIZED ========== */
+@media(max-width: 768px){
+  .container{ padding:0 12px 28px; margin:14px auto }
+  .creator-card{ padding:16px; border-radius:18px }
+  .timers-grid{ grid-template-columns:1fr; gap:12px }
+  .history-filters{ padding:12px; gap:8px }
+  .summary-row{ gap:8px }
+}
+@media(max-width: 640px){
+  header{ padding:10px 12px }
+  .header-inner{
+    flex-direction:column; align-items:stretch; gap:10px;
+  }
+  .logo{ font-size:1.15rem; justify-content:center }
+  .logo-badge{ width:36px; height:36px; font-size:18px; border-radius:12px }
+  .logo small{ font-size:0.68rem }
+  .nav-tabs{
+    width:100%; justify-content:space-between; padding:4px; gap:4px;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .nav-tabs::-webkit-scrollbar{ display:none }
+  .nav-tab{
+    flex:1; padding:10px 8px; font-size:0.85rem; white-space:nowrap; text-align:center;
+    min-height:42px; display:grid; place-items:center;
+  }
+  .section-title{ flex-direction:column; align-items:stretch }
+  .section-title .btn{ width:100%; justify-content:center; padding:12px }
+  .idol-grid{ grid-template-columns:1fr; gap:12px }
+  .idol-card{ padding:14px; border-radius:18px }
+  .creator-top{ gap:14px }
+  .timer-idol-select{ gap:6px }
+  .idol-chip{ padding:7px 11px; font-size:0.82rem }
+  .ticket-number{ font-size:3rem }
+  .time-total{ font-size:1.15rem; padding:10px }
+  .t-btn{ padding:14px 4px; font-size:0.95rem; min-height:48px; border-radius:14px }
+  .t-btn.add{ font-size:1.1rem }
+  .queue-btn{ padding:14px; font-size:0.98rem; min-height:48px }
+  .active-header{
+    flex-direction:column; align-items:stretch; gap:10px;
+  }
+  .active-header h3{ justify-content:space-between; font-size:1.05rem }
+  .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:8px }
+  .active-header > div .btn{ justify-content:center }
+  .timer-queue-card{ padding:14px; border-radius:18px }
+  .queue-circle{ width:130px; height:130px }
+  .queue-time{ font-size:1.6rem }
+  .queue-time-row{ gap:6px }
+  .queue-time-box{ padding:8px 4px; border-radius:12px }
+  .queue-time-box b{ font-size:0.92rem }
+  .queue-controls{ gap:6px }
+  .queue-controls button{ min-height:44px }
+  .btn-addtime{ min-height:40px; font-size:0.78rem; padding:8px 4px }
+  .history-filters{
+    flex-direction:column; align-items:stretch;
+  }
+  .history-filters .select, .history-filters .input{ width:100% }
+  .history-filters .btn{ width:100%; justify-content:center }
+  .summary-card{ padding:12px }
+  .summary-card b{ font-size:1.3rem }
+  .day-header{ flex-direction:column; align-items:flex-start; gap:6px; padding:10px 12px }
+  .day-header small{ align-self:stretch; text-align:center }
+  .log-item{ flex-direction:column; align-items:stretch; gap:10px }
+  .log-item .btn{ width:100%; justify-content:center }
+  .modal{ padding:18px; border-radius:20px; margin:12px; max-width:none; width:calc(100% - 24px) }
+  .form-group input{ font-size:16px; /* prevent iOS zoom */ padding:12px 14px }
+  /* bigger touch targets */
+  .btn, .t-btn, .idol-chip{ -webkit-tap-highlight-color:transparent; touch-action:manipulation }
+}
+@media(max-width: 380px){
+  .ticket-number{ font-size:2.6rem }
+  .ticket-buttons{ gap:6px }
+  .t-btn{ padding:12px 2px; font-size:0.88rem }
+  .queue-circle{ width:118px; height:118px }
+  .queue-head{ align-items:flex-start }
+  .queue-idol{ gap:8px }
+  .queue-avatar{ width:36px; height:36px; font-size:16px; border-radius:10px }
+}
+/* Landscape small height */
+@media(max-height: 500px) and (max-width: 900px){
+  .queue-circle{ width:110px; height:110px }
+  .ticket-display-big{ padding:4px 0 }
+  .ticket-number{ font-size:2.4rem }
+}
+/* iOS safe area */
+@supports(padding: max(0px)){
+  body{ padding-bottom: max(0px, env(safe-area-inset-bottom)) }
+  header{ padding-top: max(10px, env(safe-area-inset-top)) }
+}
+/* Prevent horizontal scroll */
+html,body{ overflow-x:hidden; max-width:100vw }
+.container, .creator-card, .timer-queue-card, .history-filters{ min-width:0 }
+
+/* Alarm overlay */
+.alarm-overlay{
+  position:fixed; inset:0; background:rgba(255,64,129,0.96); z-index:100;
+  display:none; place-items:center; padding:20px; text-align:center; color:white;
+  animation:alarmFlash 0.5s infinite alternate;
+}
+.alarm-overlay.show{ display:grid }
+@keyframes alarmFlash{ from{ background:rgba(255,64,129,0.96)} to{ background:rgba(167,139,250,0.96)} }
+.alarm-box{
+  background:white; color:var(--text); border-radius:26px; padding:28px 22px; max-width:420px; width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3); animation:pop .25s ease;
+}
+.alarm-box h2{ font-size:1.6rem; color:var(--pink-dark); margin-bottom:6px}
+.alarm-box p{ color:var(--muted); font-size:0.92rem; margin-bottom:16px}
+.alarm-actions{ display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.alarm-actions .btn{ justify-content:center; padding:14px; font-size:1rem}
+.btn-alarm-stop{ background:var(--text); color:white; grid-column:1/-1; font-size:1.1rem}
+.btn-alarm-save{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-badge">♡</div>
+      <div>
+        Cheki Timer
+        <small>เชกิไทม์เมอร์ • Multi Queue ♡</small>
+      </div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-view="timer">⏱ จับเวลา</button>
+      <button class="nav-tab" data-view="idols">👧 ไอดอล</button>
+      <button class="nav-tab" data-view="history">📊 ประวัติ</button>
+    </nav>
+  </div>
+</header>
+
+<div style="max-width:1080px; margin:0 auto; padding:8px 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center">
+  <button id="btnNotify" class="btn btn-ghost btn-small" onclick="requestNotify()" style="font-size:0.82rem">🔔 เปิดแจ้งเตือนปลุก</button>
+  <button id="btnWake" class="btn btn-ghost btn-small" onclick="toggleWakeLock()" style="font-size:0.82rem">💡 กันจอดับ: ปิด</button>
+  <span style="font-size:0.75rem; color:var(--muted)">💡 iPhone ต้องปิดปุ่ม Silent (สวิตช์ข้างเครื่อง) เสียงถึงจะดัง</span>
+</div>
+<div class="container">
+  <!-- TIMER VIEW - MULTI -->
+  <div id="view-timer" class="view active">
+    <div class="creator-card" id="creatorCard">
+      <div class="creator-top">
+        <div>
+          <h3 style="display:flex; align-items:center; gap:8px">🎀 สร้างคิวเชกิใหม่</h3>
+          <p style="font-size:0.85rem; color:var(--muted); margin-top:4px">เลือกไอดอล → กดจำนวนใบ → กดเพิ่มคิว จะจับเวลาพร้อมกันกี่คนก็ได้!</p>
+          <div id="timerIdolChips" class="timer-idol-select"></div>
+          <div id="noIdolWarn" class="empty" style="padding:18px; display:none">ยังไม่มีไอดอลเลย ไปเพิ่มที่แท็บ <b>ไอดอล</b> ก่อนนะ ♡</div>
+          <div id="creatorMain">
+            <div id="selectedPreview" style="background:var(--pink-light); padding:12px 14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+              <div style="display:flex; gap:10px; align-items:center">
+                <div id="selectedAvatar" class="idol-avatar" style="width:42px; height:42px; border-radius:12px; font-size:20px"></div>
+                <div>
+                  <div id="selectedName" style="font-weight:700"></div>
+                  <div id="selectedPer" style="font-size:0.82rem; color:var(--muted)"></div>
+                </div>
+              </div>
+              <div id="selectedColorDot" style="width:12px; height:12px; border-radius:50%"></div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(1)">＋1 ใบ</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(2)">＋2 ใบ</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(5)">＋5 ใบ</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(10)">＋10 ใบ</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:var(--pink-light); border-radius:18px; padding:16px; border:2px dashed var(--border)">
+          <div class="ticket-display-big">
+            <div id="prepCount" class="ticket-number">0</div>
+            <div class="ticket-label">จำนวนเชกิ (ใบ) ♡</div>
+          </div>
+          <div id="prepTotal" class="time-total" style="background:white">00:00 <small>/ เวลารวม</small></div>
+          <div class="ticket-buttons">
+            <button class="t-btn minus" onclick="changePrep(-1)">−1</button>
+            <button class="t-btn add" onclick="changePrep(1)">+1 ♡</button>
+            <button class="t-btn" style="background:var(--yellow); border-color:transparent" onclick="changePrep(5)">+5</button>
+            <button class="t-btn" style="background:var(--mint); border-color:transparent" onclick="changePrep(10)">+10</button>
+          </div>
+          <div style="display:flex; gap:8px; margin-bottom:12px">
+            <button class="btn btn-ghost btn-small" style="flex:1" onclick="changePrep(-5)">−5</button>
+            <button class="btn btn-ghost btn-small" style="flex:1" onclick="resetPrep()">รีเซ็ต</button>
+          </div>
+          <button id="btnAddQueue" class="queue-btn" onclick="addQueue()" disabled>＋ เพิ่มคิวและเริ่มเลย ▶</button>
+          <button id="btnAddQueuePause" class="btn btn-ghost" style="width:100%; margin-top:8px; justify-content:center" onclick="addQueue(false)" disabled>＋ เพิ่มคิวแบบยังไม่เริ่ม</button>
+          <p style="text-align:center; font-size:0.75rem; color:var(--muted); margin-top:8px">เพิ่มได้ไม่จำกัด จับเวลาพร้อมกันหลายไอดอลได้เลย</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-header">
+      <h3>⏳ คิวที่กำลังจับเวลา <span id="activeCount" class="badge-count">0 คิว</span></h3>
+      <div style="display:flex; gap:8px">
+        <button class="btn btn-ghost btn-small" onclick="pauseAll()">⏸ หยุดทั้งหมด</button>
+        <button class="btn btn-ghost btn-small" onclick="clearFinished()">🗑 ลบคิวที่เสร็จแล้ว</button>
+      </div>
+    </div>
+    <div id="timersGrid" class="timers-grid"></div>
+    <div id="emptyTimers" class="empty">ยังไม่มีคิวเลย ♡<p>เลือกไอดอลและเพิ่มจำนวนใบด้านบน แล้วกด <b>เพิ่มคิว</b> ได้เลย<br>สร้างหลายคิวพร้อมกันได้ เช่น น้องมิโกะ 3 ใบ, น้องยูริ 5 ใบ วิ่งพร้อมกัน!</p></div>
+  </div>
+
+  <!-- IDOLS VIEW -->
+  <div id="view-idols" class="view">
+    <div class="section-title">
+      <h2>👧 รายชื่อไอดอล</h2>
+      <button class="btn btn-primary" onclick="openIdolModal()">＋ เพิ่มไอดอล</button>
+    </div>
+    <div id="idolGrid" class="idol-grid"></div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div id="view-history" class="view">
+    <div class="section-title">
+      <h2>📊 ประวัติเชกิ</h2>
+      <button class="btn btn-ghost btn-small" onclick="clearHistory()">🗑 ล้างประวัติ</button>
+    </div>
+
+    <div class="history-filters">
+      <select id="filterIdol" class="select" onchange="renderHistory()"><option value="">ทุกคน</option></select>
+      <input id="filterDate" class="input" type="date" onchange="renderHistory()">
+      <button class="btn btn-ghost btn-small" onclick="clearFilters()">ล้างฟิลเตอร์</button>
+      <button class="btn btn-primary btn-small" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-card"><span>เชกิรวมทั้งหมด</span><b id="sumTotal">0 ใบ</b></div>
+      <div class="summary-card"><span>เวลาถ่ายรวม</span><b id="sumTime">00:00:00</b></div>
+      <div class="summary-card"><span>จำนวนครั้ง</span><b id="sumSessions">0 ครั้ง</b></div>
+    </div>
+
+    <div id="historyList" class="history-list"></div>
+  </div>
+</div>
+
+<!-- Alarm Overlay -->
+<div id="alarmOverlay" class="alarm-overlay" onclick="if(event.target===this)stopAlarm()">
+  <div class="alarm-box">
+    <div style="font-size:48px">⏰💖</div>
+    <h2 id="alarmTitle">หมดเวลาแล้ว!</h2>
+    <p id="alarmDesc">เชกิครบแล้ว กดหยุดปลุกหรือบันทึกเลย</p>
+    <div style="background:var(--pink-light); padding:10px; border-radius:12px; margin-bottom:14px; font-weight:700" id="alarmInfo">—</div>
+    <div class="alarm-actions">
+      <button class="btn btn-alarm-save" onclick="alarmSave()">✓ บันทึก & หยุด</button>
+      <button class="btn btn-ghost" onclick="alarmSnooze()">＋30วิ</button>
+      <button class="btn btn-alarm-stop" onclick="stopAlarm()">🔇 หยุดปลุก</button>
+    </div>
+    <p style="font-size:0.75rem; color:var(--muted); margin-top:10px">เสียงจะดังวนจนกว่าจะกดหยุด • สั่น • แจ้งเตือน</p>
+  </div>
+</div>
+
+<!-- Idol Modal -->
+<div id="idolModal" class="modal-backdrop" onclick="if(event.target===this)closeIdolModal()">
+  <div class="modal">
+    <h3 id="modalTitle">♡ เพิ่มไอดอล</h3>
+    <div class="form-group">
+      <label>ชื่อไอดอล *</label>
+      <input id="inputName" placeholder="เช่น น้องมิโกะ / Miko-chan">
+    </div>
+    <div class="form-group">
+      <label>เวลาต่อเชกิ 1 ใบ (วินาที) *</label>
+      <input id="inputSeconds" type="number" min="5" max="600" placeholder="เช่น 30">
+      <div style="font-size:0.8rem; color:var(--muted); margin-top:6px">เช่น 30 วิ = 5 ใบ = 2:30 นาที</div>
+    </div>
+    <div class="form-group">
+      <label>สีประจำตัว</label>
+      <div id="colorPick" class="color-pick"></div>
+    </div>
+    <div class="form-group">
+      <label>อีโมจิประจำตัว</label>
+      <input id="inputEmoji" maxlength="2" placeholder="เช่น 🌸 🎀 🐰">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeIdolModal()">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveIdol()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = ['#ff6b9d','#a78bfa','#f59e0b','#22c55e','#06b6d4','#ec4899','#8b5cf6','#f97316'];
+let idols = JSON.parse(localStorage.getItem('cheki_idols')||'[]');
+let logs = JSON.parse(localStorage.getItem('cheki_logs')||'[]');
+let selectedIdolId = localStorage.getItem('cheki_selected') || null;
+let editingIdolId = null;
+let selectedColor = COLORS[0];
+
+// Multi-queue state
+let prepTickets = 0;
+let activeTimers = []; // {id, idolId, idolName, idolColor, idolEmoji, perSeconds, tickets, totalSeconds, remaining, isRunning, finished}
+let timerIntervals = {}; // id -> interval
+
+const $ = s=>document.querySelector(s);
+
+function save(){
+  localStorage.setItem('cheki_idols', JSON.stringify(idols));
+  localStorage.setItem('cheki_logs', JSON.stringify(logs));
+  if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
+}
+function formatTime(sec){
+  sec = Math.max(0, Math.ceil(sec));
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+function formatHMS(sec){
+  const h=Math.floor(sec/3600), m=Math.floor((sec%3600)/60), s=sec%60;
+  return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+function formatDateThai(iso){
+  const d=new Date(iso);
+  return d.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+// Navigation
+document.querySelectorAll('.nav-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const v=btn.dataset.view;
+    document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+    document.getElementById('view-'+v).classList.add('active');
+    if(v==='history') renderHistory();
+    if(v==='idols') renderIdols();
+    if(v==='timer') { renderCreator(); renderTimers(); }
+  });
+});
+
+// Idol CRUD
+function renderIdols(){
+  const grid=$('#idolGrid');
+  if(idols.length===0){
+    grid.innerHTML=`<div class="empty" style="grid-column:1/-1">ยังไม่มีไอดอลเลย กด <b>＋ เพิ่มไอดอล</b> เพื่อเริ่มต้น ♡</div>`;
+    return;
+  }
+  grid.innerHTML=idols.map(idol=>{
+    const totalForIdol = logs.filter(l=>l.idolId===idol.id).reduce((a,b)=>a+b.count,0);
+    const todayForIdol = logs.filter(l=>l.idolId===idol.id && new Date(l.timestamp).toDateString()===new Date().toDateString()).reduce((a,b)=>a+b.count,0);
+    const activeCount = activeTimers.filter(t=>t.idolId===idol.id).length;
+    return `<div class="idol-card" style="--card-color:${idol.color}">
+      <div class="idol-head">
+        <div class="idol-avatar" style="background:${idol.color}">${idol.emoji||'🌸'}</div>
+        <div>
+          <div class="idol-name">${idol.name} ${activeCount?`<span style="background:${idol.color}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
+          <div class="idol-meta">⏱ ${idol.secondsPerCheki} วินาที / ใบ • <span style="color:${idol.color}">● ${idol.color}</span></div>
+        </div>
+      </div>
+      <div class="idol-stats">
+        <div class="stat"><b>${totalForIdol}</b><span>ใบรวม</span></div>
+        <div class="stat"><b>${todayForIdol}</b><span>วันนี้</span></div>
+        <div class="stat"><b>${formatTime(idol.secondsPerCheki)}</b><span>ต่อใบ</span></div>
+      </div>
+      <div class="idol-actions">
+        <button class="btn btn-ghost btn-small" onclick="editIdol('${idol.id}')">✏ แก้ไข</button>
+        <button class="btn btn-ghost btn-small" style="color:#ef4444; border-color:#fecaca" onclick="deleteIdol('${idol.id}')">🗑 ลบ</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openIdolModal(id=null){
+  editingIdolId=id;
+  const modal=$('#idolModal');
+  modal.classList.add('open');
+  if(id){
+    const idol=idols.find(x=>x.id===id);
+    $('#modalTitle').textContent='✏ แก้ไขไอดอล';
+    $('#inputName').value=idol.name;
+    $('#inputSeconds').value=idol.secondsPerCheki;
+    selectedColor=idol.color;
+    $('#inputEmoji').value=idol.emoji;
+  } else {
+    $('#modalTitle').textContent='♡ เพิ่มไอดอล';
+    $('#inputName').value='';
+    $('#inputSeconds').value='30';
+    selectedColor=COLORS[0];
+    $('#inputEmoji').value='🌸';
+  }
+  renderColorPick();
+}
+function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; }
+function renderColorPick(){
+  $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
+}
+function pickColor(c){ selectedColor=c; renderColorPick(); }
+function saveIdol(){
+  const name=$('#inputName').value.trim();
+  const sec=parseInt($('#inputSeconds').value);
+  const emoji=$('#inputEmoji').value.trim()||'🌸';
+  if(!name){ alert('กรุณาใส่ชื่อไอดอล'); return; }
+  if(!sec || sec<5){ alert('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); return; }
+  if(editingIdolId){
+    const idx=idols.findIndex(x=>x.id===editingIdolId);
+    idols[idx]={...idols[idx], name, secondsPerCheki:sec, color:selectedColor, emoji};
+  } else {
+    const id=Date.now().toString(36);
+    idols.push({id, name, secondsPerCheki:sec, color:selectedColor, emoji});
+    if(!selectedIdolId) selectedIdolId=id;
+  }
+  save(); closeIdolModal(); renderIdols(); renderCreator(); renderHistoryFilters();
+}
+function editIdol(id){ openIdolModal(id); }
+function deleteIdol(id){
+  if(!confirm('ลบไอดอลคนนี้? ประวัติจะยังคงอยู่')) return;
+  idols=idols.filter(x=>x.id!==id);
+  if(selectedIdolId===id) selectedIdolId=idols[0]?.id||null;
+  save(); renderIdols(); renderCreator(); renderHistoryFilters();
+}
+
+// Creator (prep) logic
+function renderCreator(){
+  const wrap=$('#timerIdolChips');
+  const warn=$('#noIdolWarn');
+  const main=$('#creatorMain');
+  const totalBox=$('#prepTotal');
+  if(idols.length===0){
+    wrap.innerHTML='';
+    warn.style.display='block';
+    main.style.display='none';
+    $('#prepCount').textContent='0';
+    totalBox.innerHTML='00:00 <small>/ เวลารวม</small>';
+    $('#btnAddQueue').disabled=true;
+    $('#btnAddQueuePause').disabled=true;
+    return;
+  }
+  warn.style.display='none';
+  main.style.display='block';
+  if(!selectedIdolId) selectedIdolId=idols[0].id;
+  wrap.innerHTML=idols.map(idol=>`<button class="idol-chip ${idol.id===selectedIdolId?'active':''}" onclick="selectCreatorIdol('${idol.id}')" style="${idol.id===selectedIdolId?`background:${idol.color};border-color:${idol.color}`:''}"><span>${idol.emoji}</span> ${idol.name} <small style="opacity:.85">(${idol.secondsPerCheki}s)</small></button>`).join('');
+  const sel=idols.find(x=>x.id===selectedIdolId);
+  if(sel){
+    $('#selectedAvatar').style.background=sel.color;
+    $('#selectedAvatar').textContent=sel.emoji;
+    $('#selectedName').textContent=sel.name;
+    $('#selectedPer').textContent=`${sel.secondsPerCheki} วินาที / ใบ • แตะ +1 เพื่อเพิ่มใบ`;
+    $('#selectedColorDot').style.background=sel.color;
+  }
+  updatePrepUI();
+}
+function selectCreatorIdol(id){
+  selectedIdolId=id;
+  save();
+  updatePrepUI();
+  renderCreator();
+}
+function changePrep(delta){
+  prepTickets=Math.max(0, prepTickets+delta);
+  updatePrepUI();
+}
+function resetPrep(){ prepTickets=0; updatePrepUI(); }
+function quickCreate(n){ prepTickets=n; updatePrepUI(); }
+function updatePrepUI(){
+  const sel=idols.find(x=>x.id===selectedIdolId);
+  const total = sel ? prepTickets * sel.secondsPerCheki : 0;
+  $('#prepCount').textContent=prepTickets;
+  $('#prepTotal').innerHTML=`${formatTime(total)} <small>/ เวลารวม • ${prepTickets} ใบ</small>`;
+  const disabled = prepTickets===0 || !sel;
+  $('#btnAddQueue').disabled=disabled;
+  $('#btnAddQueuePause').disabled=disabled;
+}
+
+function addQueue(autoStart=true){
+  const sel=idols.find(x=>x.id===selectedIdolId);
+  if(!sel || prepTickets===0) return;
+  const total = prepTickets * sel.secondsPerCheki;
+  const id = Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const timer = {
+    id, idolId:sel.id, idolName:sel.name, idolColor:sel.color, idolEmoji:sel.emoji,
+    perSeconds:sel.secondsPerCheki, tickets:prepTickets, totalSeconds:total, remaining:total,
+    isRunning:false, finished:false
+  };
+  activeTimers.unshift(timer);
+  prepTickets=0;
+  updatePrepUI();
+  renderTimers();
+  if(autoStart) startQueue(id);
+  showToast(`เพิ่มคิว ${sel.emoji} ${sel.name} • ${timer.tickets} ใบ ♡`);
+}
+
+// Queue timers logic
+function renderTimers(){
+  const grid=$('#timersGrid');
+  const empty=$('#emptyTimers');
+  const count=$('#activeCount');
+  count.textContent=activeTimers.length+' คิว';
+  if(activeTimers.length===0){
+    grid.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  grid.innerHTML=activeTimers.map(t=>{
+    const pct = t.totalSeconds>0 ? ((t.totalSeconds - t.remaining)/t.totalSeconds)*100 : 0;
+    const circleBg = `conic-gradient(${t.idolColor} ${pct}%, var(--pink-light) 0)`;
+    const isFinished = t.remaining<=0;
+    const status = isFinished ? 'หมดเวลาแล้ว! ♪' : t.isRunning ? 'กำลังจับเวลา... ⏳' : 'หยุดชั่วคราว ⏸';
+    return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
+      <div class="queue-head">
+        <div class="queue-idol">
+          <div class="queue-avatar" style="background:${t.idolColor}">${t.idolEmoji}</div>
+          <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
+        </div>
+        <div class="queue-tickets">${t.tickets} ใบ</div>
+      </div>
+
+      <div class="queue-time-row">
+        <div class="queue-time-box"><span>ทั้งหมด</span><b>${formatTime(t.totalSeconds)}</b></div>
+        <div class="queue-time-box remaining"><span>เหลือ</span><b>${formatTime(t.remaining)}</b></div>
+        <div class="queue-time-box"><span>ผ่านไป</span><b>${formatTime(t.totalSeconds - t.remaining)}</b></div>
+      </div>
+
+      <div class="queue-circle-wrap">
+        <div class="queue-circle" style="background:${circleBg}">
+          <div class="queue-inner">
+            <div>
+              <div class="queue-time">${formatTime(t.remaining)}</div>
+              <div class="queue-status">${status}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:6px">
+        <button class="btn btn-addtime" style="flex:1" onclick="addTime('${t.id}',30)">+30วิ</button>
+        <button class="btn btn-addtime" style="flex:1" onclick="addTime('${t.id}',60)">+1นาที</button>
+        <button class="btn btn-addtime" style="flex:1" onclick="addTickets('${t.id}',1)">+1ใบ</button>
+      </div>
+
+      <div class="queue-controls">
+        ${!t.isRunning && !isFinished ? `<button class="btn btn-run" onclick="startQueue('${t.id}')">▶ เริ่ม</button>` : ``}
+        ${t.isRunning ? `<button class="btn btn-pauseQ" onclick="pauseQueue('${t.id}')">⏸ หยุด</button>` : ``}
+        ${isFinished ? `<button class="btn btn-run" style="background:#22c55e" onclick="startQueue('${t.id}')">↺ เริ่มใหม่</button>` : `<button class="btn btn-resetQ" onclick="resetQueue('${t.id}')">↺ รีเซ็ต</button>`}
+        <button class="btn btn-saveQ" onclick="finishQueue('${t.id}')">✓ บันทึกเชกิ</button>
+        <button class="btn btn-delQ" style="grid-column:${t.isRunning||isFinished?'auto':'1/-1'}" onclick="deleteQueue('${t.id}')">✕ ลบคิว</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function startQueue(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  if(t.remaining<=0) t.remaining=t.totalSeconds;
+  if(t.remaining<=0) return;
+  if(t.isRunning) return;
+  t.isRunning=true;
+  t.finished=false;
+  // ensure audio unlocked on user gesture
+  unlockAudio();
+  requestWakeLock();
+  renderTimers();
+  // interval 100ms for smooth
+  timerIntervals[id]=setInterval(()=>{
+    t.remaining-=0.1;
+    if(t.remaining<=0){
+      t.remaining=0;
+      t.isRunning=false;
+      t.finished=true;
+      clearInterval(timerIntervals[id]);
+      delete timerIntervals[id];
+      renderTimers();
+      triggerAlarm(id);
+    }
+    // throttle render every 200ms
+    if(Math.floor(t.remaining*10)%2===0){
+      renderTimers();
+    }
+  },100);
+  renderTimers();
+}
+function pauseQueue(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t || !t.isRunning) return;
+  clearInterval(timerIntervals[id]);
+  delete timerIntervals[id];
+  t.isRunning=false;
+  renderTimers();
+}
+function resetQueue(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  if(t.isRunning){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; t.isRunning=false; }
+  t.remaining=t.totalSeconds;
+  t.finished=false;
+  renderTimers();
+}
+function deleteQueue(id){
+  if(!confirm('ลบคิวนี้? (ไม่บันทึก)')) return;
+  if(timerIntervals[id]){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; }
+  activeTimers=activeTimers.filter(x=>x.id!==id);
+  renderTimers(); renderIdols();
+}
+function addTime(id, sec){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  t.totalSeconds+=sec;
+  t.remaining+=sec;
+  renderTimers();
+  showToast(`+${sec}วินาที ให้ ${t.idolName} ♡`);
+}
+function addTickets(id, n){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  t.tickets+=n;
+  const addSec=n*t.perSeconds;
+  t.totalSeconds+=addSec;
+  t.remaining+=addSec;
+  renderTimers();
+  showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
+}
+function finishQueue(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  if(timerIntervals[id]){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; }
+  const now=new Date();
+  logs.unshift({
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    idolId:t.idolId,
+    idolName:t.idolName,
+    idolColor:t.idolColor,
+    idolEmoji:t.idolEmoji,
+    count:t.tickets,
+    totalSeconds:t.totalSeconds,
+    perSeconds:t.perSeconds,
+    timestamp:now.toISOString(),
+    date:now.toISOString().slice(0,10),
+    time:now.toTimeString().slice(0,5)
+  });
+  save();
+  // remove from active
+  activeTimers=activeTimers.filter(x=>x.id!==id);
+  renderTimers(); renderHistory(); renderIdols();
+  showToast(`บันทึก ${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ สำเร็จ ♡`);
+}
+function pauseAll(){
+  activeTimers.forEach(t=>{
+    if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; }
+  });
+  renderTimers();
+}
+function clearFinished(){
+  const finished = activeTimers.filter(t=>t.remaining<=0);
+  if(finished.length===0){ alert('ไม่มีคิวที่เสร็จแล้ว'); return; }
+  if(!confirm(`ลบคิวที่เสร็จแล้ว ${finished.length} คิว?`)) return;
+  finished.forEach(t=>{
+    if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+  });
+  activeTimers=activeTimers.filter(t=>t.remaining>0);
+  renderTimers();
+}
+
+// ===== ALARM SYSTEM - ดังแบบนาฬิกาปลุก =====
+let activeAlarmId=null;
+let alarmAudioCtx=null;
+let alarmInterval=null;
+let alarmVibeInterval=null;
+let wakeLock=null;
+let alarmQueue=[];
+
+function unlockAudio(){
+  try{
+    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(alarmAudioCtx.state==='suspended') alarmAudioCtx.resume();
+    // play silent to unlock
+    const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
+    g.gain.value=0; o.connect(g).connect(alarmAudioCtx.destination); o.start(); o.stop(alarmAudioCtx.currentTime+0.01);
+  }catch(e){}
+}
+function playBeepOnce(){
+  try{
+    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(alarmAudioCtx.state==='suspended') alarmAudioCtx.resume();
+    [880,1100,1320,880].forEach((freq,i)=>{
+      const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
+      o.type='sine'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0, alarmAudioCtx.currentTime+i*0.14);
+      g.gain.linearRampToValueAtTime(0.6, alarmAudioCtx.currentTime+i*0.14+0.02);
+      g.gain.exponentialRampToValueAtTime(0.01, alarmAudioCtx.currentTime+i*0.14+0.25);
+      o.connect(g).connect(alarmAudioCtx.destination);
+      o.start(alarmAudioCtx.currentTime+i*0.14);
+      o.stop(alarmAudioCtx.currentTime+i*0.14+0.27);
+    });
+  }catch(e){}
+}
+function triggerAlarm(timerId){
+  const t=activeTimers.find(x=>x.id===timerId);
+  if(!t) return;
+  alarmQueue.push(timerId);
+  if(activeAlarmId) return; // already alarming, queue it
+  showAlarm(timerId);
+}
+function showAlarm(timerId){
+  const t=activeTimers.find(x=>x.id===timerId);
+  if(!t) { nextAlarm(); return; }
+  activeAlarmId=timerId;
+  $('#alarmTitle').textContent=`หมดเวลา! ${t.idolEmoji} ${t.idolName}`;
+  $('#alarmDesc').textContent=`เชกิ ${t.tickets} ใบ • ${formatTime(t.totalSeconds)} ครบแล้ว!`;
+  $('#alarmInfo').textContent=`${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ • ${t.perSeconds}s/ใบ`;
+  $('#alarmInfo').style.background=t.idolColor;
+  $('#alarmInfo').style.color='white';
+  $('#alarmOverlay').classList.add('show');
+  // Notification
+  try{
+    if(Notification && Notification.permission==='granted'){
+      new Notification(`⏰ หมดเวลา! ${t.idolName}`,{body:`เชกิ ${t.tickets} ใบครบแล้ว กดเพื่อบันทึก`, icon:'', requireInteraction:true, vibrate:[300,100,300,100,600]});
+    }
+  }catch(e){}
+  // loop sound + vibe
+  playBeepOnce();
+  clearInterval(alarmInterval);
+  clearInterval(alarmVibeInterval);
+  alarmInterval=setInterval(()=>{ playBeepOnce(); }, 1200);
+  // vibrate loop for Android
+  if(navigator.vibrate){
+    const vibe=()=>navigator.vibrate([400,150,400,150,800]);
+    vibe();
+    alarmVibeInterval=setInterval(vibe, 1800);
+  }
+  // flash title
+  document.title=`⏰ หมดเวลา! ${t.idolName} ⏰`;
+}
+function stopAlarm(){
+  clearInterval(alarmInterval); alarmInterval=null;
+  clearInterval(alarmVibeInterval); alarmVibeInterval=null;
+  if(navigator.vibrate) navigator.vibrate(0);
+  $('#alarmOverlay').classList.remove('show');
+  document.title='Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์ - Multi Queue';
+  activeAlarmId=null;
+  releaseWakeLock();
+  nextAlarm();
+}
+function nextAlarm(){
+  if(alarmQueue.length===0) return;
+  // remove current from queue if still there
+  alarmQueue=alarmQueue.filter(id=>id!==activeAlarmId);
+  // find next not yet shown
+  const next=alarmQueue.find(id=> activeTimers.some(t=>t.id===id));
+  if(next){
+    alarmQueue=alarmQueue.filter(id=>id!==next);
+    setTimeout(()=>showAlarm(next),400);
+  } else {
+    alarmQueue=[];
+  }
+}
+function alarmSave(){
+  const id=activeAlarmId;
+  stopAlarm();
+  if(id) finishQueue(id);
+}
+function alarmSnooze(){
+  const t=activeTimers.find(x=>x.id===activeAlarmId);
+  if(t){
+    const id=activeAlarmId;
+    stopAlarm();
+    addTime(id,30);
+    startQueue(id);
+    showToast(`ต่อเวลา +30วิ ให้ ${t.idolName} ♡`);
+  } else stopAlarm();
+}
+// Wake Lock
+async function requestWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock=await navigator.wakeLock.request('screen');
+      $('#btnWake').textContent='💡 กันจอดับ: เปิด';
+      $('#btnWake').style.background='var(--mint)';
+      wakeLock.addEventListener('release',()=>{ $('#btnWake').textContent='💡 กันจอดับ: ปิด'; $('#btnWake').style.background='white'; });
+    }
+  }catch(e){}
+}
+async function releaseWakeLock(){
+  try{ if(wakeLock){ await wakeLock.release(); wakeLock=null; } }catch(e){}
+  $('#btnWake').textContent='💡 กันจอดับ: ปิด';
+  $('#btnWake').style.background='white';
+}
+async function toggleWakeLock(){
+  if(wakeLock) await releaseWakeLock();
+  else { unlockAudio(); await requestWakeLock(); showToast(wakeLock?'เปิดกันจอดับแล้ว ♡':'เบราว์เซอร์ไม่รองรับกันจอดับ'); }
+}
+function requestNotify(){
+  unlockAudio();
+  if(!('Notification' in window)){ alert('เบราว์เซอร์นี้ไม่รองรับแจ้งเตือน'); return; }
+  Notification.requestPermission().then(p=>{
+    if(p==='granted'){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; showToast('เปิดแจ้งเตือนแล้ว ♡ จะเด้งแม้สลับแอพ'); try{ new Notification('Cheki Timer ♡',{body:'แจ้งเตือนปลุกพร้อมแล้ว! หมดเวลาจะเด้งและมีเสียงดังวน', requireInteraction:false}); }catch(e){} }
+    else if(p==='denied') alert('แจ้งเตือนถูกบล็อก ไปเปิดที่ ตั้งค่า > Safari > การแจ้งเตือน');
+    else showToast('ยังไม่ได้เปิดแจ้งเตือน');
+  });
+}
+// update notify button on load
+setTimeout(()=>{
+  if('Notification' in window && Notification.permission==='granted'){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; }
+},400);
+// re-acquire wakeLock on visibility
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && activeAlarmId) playBeepOnce();
+  if(wakeLock!==null && document.visibilityState==='visible') requestWakeLock();
+});
+
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){
+    t=document.createElement('div');
+    t.id='toast';
+    t.style.cssText='position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:#4a3340; color:white; padding:12px 20px; border-radius:999px; font-weight:600; z-index:99; box-shadow:0 8px 24px rgba(0,0,0,0.2); transition:.3s';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; },2200);
+}
+
+// History
+function renderHistoryFilters(){
+  const sel=$('#filterIdol');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">ทุกคน</option>'+idols.map(i=>`<option value="${i.id}">${i.emoji} ${i.name}</option>`).join('');
+  sel.value=cur;
+}
+function renderHistory(){
+  renderHistoryFilters();
+  let filtered=[...logs];
+  const fIdol=$('#filterIdol').value;
+  const fDate=$('#filterDate').value;
+  if(fIdol) filtered=filtered.filter(l=>l.idolId===fIdol);
+  if(fDate) filtered=filtered.filter(l=>l.date===fDate);
+  const sumCount=filtered.reduce((a,b)=>a+b.count,0);
+  const sumSec=filtered.reduce((a,b)=>a+b.totalSeconds,0);
+  $('#sumTotal').textContent=sumCount+' ใบ';
+  $('#sumTime').textContent=formatHMS(sumSec);
+  $('#sumSessions').textContent=filtered.length+' ครั้ง';
+  const list=$('#historyList');
+  if(filtered.length===0){
+    list.innerHTML=`<div class="empty">ยังไม่มีประวัติ${fIdol||fDate?'ตามเงื่อนไขนี้':''} ♡<p>เริ่มจับเวลาแล้วกดบันทึก ประวัติจะมาอยู่ตรงนี้</p></div>`;
+    return;
+  }
+  const groups={};
+  filtered.forEach(l=>{
+    if(!groups[l.date]) groups[l.date]=[];
+    groups[l.date].push(l);
+  });
+  const dates=Object.keys(groups).sort().reverse();
+  list.innerHTML=dates.map(date=>{
+    const items=groups[date];
+    const dayCount=items.reduce((a,b)=>a+b.count,0);
+    const daySec=items.reduce((a,b)=>a+b.totalSeconds,0);
+    return `<div class="day-group">
+      <div class="day-header">
+        <span>📅 ${formatDateThai(items[0].timestamp)} • ${date}</span>
+        <small>${dayCount} ใบ • ${formatHMS(daySec)}</small>
+      </div>
+      ${items.map(l=>`
+        <div class="log-item">
+          <div class="log-left">
+            <div class="log-dot" style="background:${l.idolColor||'#ff6b9d'}"></div>
+            <div>
+              <div style="font-weight:700">${l.idolEmoji||'🌸'} ${l.idolName} <span class="log-count" style="margin-left:6px">${l.count} ใบ</span></div>
+              <div class="log-time">${l.time} น. • ${l.perSeconds}s/ใบ • รวม ${formatTime(l.totalSeconds)}</div>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-small" style="padding:6px 10px" onclick="deleteLog('${l.id}')">ลบ</button>
+        </div>
+      `).join('')}
+    </div>`;
+  }).join('');
+}
+function deleteLog(id){
+  if(!confirm('ลบรายการนี้?')) return;
+  logs=logs.filter(l=>l.id!==id);
+  save(); renderHistory(); renderIdols();
+}
+function clearHistory(){
+  if(!confirm('ล้างประวัติทั้งหมด? จะไม่สามารถกู้คืนได้')) return;
+  logs=[]; save(); renderHistory(); renderIdols();
+}
+function clearFilters(){
+  $('#filterIdol').value=''; $('#filterDate').value=''; renderHistory();
+}
+function exportCSV(){
+  if(logs.length===0){ alert('ยังไม่มีประวัติให้ export'); return; }
+  let filtered=[...logs];
+  const fIdol=$('#filterIdol').value;
+  const fDate=$('#filterDate').value;
+  if(fIdol) filtered=filtered.filter(l=>l.idolId===fIdol);
+  if(fDate) filtered=filtered.filter(l=>l.date===fDate);
+  const header=['วันที่','เวลา','ไอดอล','จำนวน(ใบ)','วินาทีต่อใบ','เวลารวม(วินาที)','เวลารวม(นาที:วินาที)'];
+  const rows=filtered.map(l=>[l.date,l.time,l.idolName,l.count,l.perSeconds,l.totalSeconds,formatTime(l.totalSeconds)]);
+  const csv=[header,...rows].map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`cheki-history-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// PWA register
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=> navigator.serviceWorker.register('./sw.js').then(()=>console.log('SW registered')).catch(()=>{}));
+}
+// init
+renderIdols();
+renderCreator();
+renderTimers();
+renderHistory();
+</script>
+</body>
+</html>
