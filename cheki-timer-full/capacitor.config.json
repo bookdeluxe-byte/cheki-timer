@@ -1,0 +1,9 @@
+{
+  "appId": "com.chekitimer.app",
+  "appName": "Cheki Timer",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
