@@ -19,8 +19,7 @@ jobs:
           java-version: 21
       - name: Install deps
         run: |
-          npm install
-          npm install @capacitor/core @capacitor/cli @capacitor/android
+          npm install @capacitor/core@6.1.0 @capacitor/cli@6.1.0 @capacitor/android@6.1.0 --save
       - name: Prepare web assets
         run: |
           mkdir -p www
@@ -30,16 +29,14 @@ jobs:
         run: |
           npx cap add android || true
           npx cap sync
-          ls -la android/
-          cat android/capacitor.settings.gradle || echo "settings missing - will fix"
-          cat android/settings.gradle || true
       - name: Sync web assets
         run: npx cap copy
       - name: Build APK (debug)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew clean
+          ./gradlew assembleDebug --info
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
