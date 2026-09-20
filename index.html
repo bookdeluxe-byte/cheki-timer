@@ -1104,19 +1104,28 @@ function renderMemberTimers(){
     const timeDisplay = hasTimer ? formatTime(t.remaining) : formatTime(pending*idol.secondsPerCheki);
     const ticketsDisplay = hasTimer ? t.tickets : pending;
     return `<div class="timer-queue-card ${t&&t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${idol.color}" data-member="${idol.id}">
-      <div class="queue-head">
-        <div class="queue-idol">
-          <div class="queue-avatar" style="background:${idol.color}">${idol.emoji}</div>
-          <div class="queue-info"><b>${idol.name}</b><span>${idol.secondsPerCheki}s/ใบ • ${sicon} ${SOUND_LABELS[sid]||sid}</span></div>
-        </div>
-        <div style="display:flex; align-items:center; gap:6px"><span title="เสียง ${SOUND_LABELS[sid]||sid}" style="font-size:0.7rem; background:var(--pink-light); padding:3px 6px; border-radius:999px; border:1px solid var(--border)">${sicon}</span><div class="queue-tickets">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:5px 7px; border-radius:999px; font-size:0.7rem; line-height:1">✏️</button></div>
+      <!-- Top: tickets & edit -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px">
+        <span title="เสียง ${SOUND_LABELS[sid]||sid}" style="font-size:0.62rem; background:var(--pink-light); padding:2px 6px; border-radius:999px; border:1px solid var(--border); color:var(--muted)">${sicon} ${SOUND_LABELS[sid]||sid}</span>
+        <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
-      <div class="queue-circle-wrap">
-        <div class="queue-circle" style="background:${circleBg}">
-          <div class="queue-inner">
-            <div>
-              <div class="queue-time">${timeDisplay}</div>
-              <div class="queue-status">${status}</div>
+      <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
+      <div style="display:flex; gap:8px; align-items:center; margin:4px 0">
+        <div style="flex:1; min-width:0; display:flex; gap:8px; align-items:center; background:var(--pink-light); padding:6px 8px; border-radius:10px; border:1px solid var(--border)">
+          <div class="queue-avatar" style="background:${idol.color}; width:32px; height:32px; font-size:15px; border-radius:8px; flex-shrink:0">${idol.emoji}</div>
+          <div style="min-width:0; flex:1">
+            <div style="font-size:0.95rem; font-weight:800; line-height:1.1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${idol.name}</div>
+            <div style="font-size:0.62rem; color:var(--muted); line-height:1.2; margin-top:1px">${idol.secondsPerCheki}s/ใบ • ${sicon} ${SOUND_LABELS[sid]||sid}</div>
+            ${sid==='custom' ? `<div style="font-size:0.58rem; color:var(--muted); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${sicon} ${idol.customSoundName||'ไฟล์ของฉัน'}</div>` : ''}
+          </div>
+        </div>
+        <div class="queue-circle-wrap" style="flex-shrink:0; margin:0">
+          <div class="queue-circle" style="background:${circleBg}; width:56px; height:56px">
+            <div class="queue-inner">
+              <div>
+                <div class="queue-time" style="font-size:0.85rem">${timeDisplay}</div>
+                <div class="queue-status" style="font-size:0.55rem">${status}</div>
+              </div>
             </div>
           </div>
         </div>
