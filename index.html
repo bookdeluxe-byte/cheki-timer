@@ -27,6 +27,72 @@
   --border:#ffe0ec;
   --shadow:0 8px 32px rgba(255,107,157,0.12);
 }
+/* ===== DARK MODE (โทนเข้มอ่านง่าย) ===== */
+[data-theme="dark"]{
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f1f5f9;
+  --muted:#cbd5e1;
+  --border:#475569;
+  --pink-light:#243449;
+  --shadow:0 8px 32px rgba(0,0,0,0.55);
+}
+[data-theme="dark"] body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(circle at 10% 10%, #1e293b 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, #1e1b4b 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, #0f172a 0%, transparent 50%);
+}
+[data-theme="dark"] header{
+  background:rgba(15,23,42,0.88);
+  border-color:var(--border);
+}
+[data-theme="dark"] .nav-tabs{ background:#1e293b; }
+[data-theme="dark"] .nav-tab.active{ background:var(--card); color:#f472b6; border:1px solid var(--border); box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+[data-theme="dark"] .nav-tab{ color:var(--muted); }
+[data-theme="dark"] .creator-card,
+[data-theme="dark"] .timer-queue-card,
+[data-theme="dark"] .idol-card,
+[data-theme="dark"] .history-filters,
+[data-theme="dark"] .summary-card,
+[data-theme="dark"] .day-group,
+[data-theme="dark"] .modal,
+[data-theme="dark"] .empty,
+[data-theme="dark"] #soundCard{ background:var(--card); border-color:var(--border); }
+[data-theme="dark"] .btn-ghost{ background:var(--card); border-color:var(--border); color:var(--text); }
+[data-theme="dark"] .t-btn{ background:var(--card); border-color:var(--border); color:var(--text); }
+[data-theme="dark"] .t-btn.minus{ color:#f472b6; }
+[data-theme="dark"] .select, [data-theme="dark"] .input,
+[data-theme="dark"] .form-group input, [data-theme="dark"] .form-group select{ background:#0f172a; border-color:var(--border); color:var(--text); }
+[data-theme="dark"] .idol-chip{ background:var(--card); border-color:var(--border); color:var(--text); }
+[data-theme="dark"] .stat{ background:#0f172a; border:1px solid var(--border); }
+[data-theme="dark"] .stat b{ color:#f472b6; }
+[data-theme="dark"] .stat span{ color:var(--muted); }
+[data-theme="dark"] .queue-time-box{ background:#0f172a; border:1px solid var(--border); color:var(--text); }
+[data-theme="dark"] .queue-time-box.remaining{ background:#020617; color:#f1f5f9; border-color:#334155; }
+[data-theme="dark"] .queue-time-box.remaining span{ color:#94a3b8; }
+[data-theme="dark"] .queue-time-box span{ color:var(--muted); }
+[data-theme="dark"] .queue-circle{ box-shadow:inset 0 0 0 6px var(--card), 0 6px 18px rgba(0,0,0,0.3); }
+[data-theme="dark"] .queue-inner{ background:var(--card); }
+[data-theme="dark"] .timer-queue-card.finished{ background:#052e16; border-color:#166534; }
+[data-theme="dark"] .log-item{ border-color:#1e293b; }
+[data-theme="dark"] .day-header{ background:#0f172a; border-color:var(--border); }
+[data-theme="dark"] .preset{ background:var(--card); border-color:var(--border); color:var(--muted); }
+[data-theme="dark"] .btn-resetQ{ background:var(--card); border-color:var(--border); color:var(--muted); }
+[data-theme="dark"] .btn-delQ{ background:var(--card); border-color:#7f1d1d; color:#fca5a5; }
+[data-theme="dark"] .btn-addtime{ background:var(--card); border-color:var(--border); color:#f472b6; }
+[data-theme="dark"] .alarm-box{ background:var(--card); color:var(--text); }
+[data-theme="dark"] .day-header small{ background:#0f172a; color:#f472b6; border:1px solid var(--border); }
+[data-theme="dark"] .summary-card{ border-color:var(--border); }
+[data-theme="dark"] .log-count{ background:#0f172a; color:#f472b6; border:1px solid var(--border); }
+#themeToggle{ background:var(--card); border:1px solid var(--border); border-radius:999px; transition:.2s}
+[data-theme="dark"] #themeToggle{ background:#1e293b; border-color:#334155; }
+/* settings appearance card responsive */
+@media(max-width:640px){
+  #view-settings .creator-card div[style*="display:flex; gap:10px"]{ flex-direction:column; align-items:stretch; }
+  #themeToggle{ width:100%; justify-content:center; padding:12px; }
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:'Mali','Noto Sans JP',system-ui,sans-serif;
@@ -89,9 +155,9 @@ header{
 .btn-ghost{ background:white; border:2px solid var(--border); color:var(--pink-dark)}
 .btn-small{ padding:7px 14px; font-size:0.85rem}
 .btn:disabled{ opacity:0.45; cursor:not-allowed; transform:none !important}
-.idol-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px}
+.idol-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px}
 .idol-card{
-  background:var(--card); border:2px solid var(--border); border-radius:22px; padding:18px;
+  background:var(--card); border:2px solid var(--border); border-radius:16px; padding:13px;
   box-shadow:var(--shadow); transition:.2s; position:relative; overflow:hidden;
 }
 .idol-card:hover{ transform:translateY(-2px)}
@@ -115,42 +181,42 @@ header{
 .idol-actions{ display:flex; gap:8px}
 .idol-actions button{ flex:1}
 
-/* Timer View - Multi */
+/* Timer View - Multi - COMPACT สร้างคิวเล็กลงเยอะ */
 .creator-card{
-  background:white; border:2px solid var(--border); border-radius:24px; padding:22px;
-  box-shadow:var(--shadow); margin-bottom:18px;
+  background:var(--card); border:2px solid var(--border); border-radius:16px; padding:12px;
+  box-shadow:var(--shadow); margin-bottom:12px;
 }
-.creator-top{ display:grid; grid-template-columns:1fr 360px; gap:18px}
+.creator-top{ display:grid; grid-template-columns:1fr 260px; gap:10px}
 @media(max-width:900px){ .creator-top{ grid-template-columns:1fr } }
-.timer-idol-select{ display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 14px}
+.timer-idol-select{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 8px}
 .idol-chip{
-  padding:8px 14px; border-radius:999px; border:2px solid var(--border); background:white;
-  cursor:pointer; font-family:inherit; font-weight:600; font-size:0.88rem; transition:.2s;
-  display:flex; align-items:center; gap:6px;
+  padding:5px 10px; border-radius:999px; border:2px solid var(--border); background:var(--card);
+  cursor:pointer; font-family:inherit; font-weight:600; font-size:0.82rem; transition:.2s;
+  display:flex; align-items:center; gap:5px;
 }
 .idol-chip.active{ color:white; border-color:transparent; }
-.ticket-display-big{ text-align:center; padding:8px 0}
-.ticket-number{ font-size:3.8rem; font-weight:700; line-height:1; color:var(--pink-dark)}
-.ticket-label{ color:var(--muted); font-weight:600; margin-top:4px}
+.ticket-display-big{ text-align:center; padding:2px 0}
+.ticket-number{ font-size:2.15rem; font-weight:700; line-height:1; color:var(--pink-dark)}
+.ticket-label{ color:var(--muted); font-weight:600; margin-top:2px; font-size:0.8rem}
 .time-total{
-  text-align:center; font-size:1.35rem; font-weight:700; color:var(--text);
-  background:var(--pink-light); padding:12px; border-radius:16px; margin:12px 0;
+  text-align:center; font-size:1.0rem; font-weight:700; color:var(--text);
+  background:var(--pink-light); padding:7px 8px; border-radius:10px; margin:6px 0;
 }
-.time-total small{ font-size:0.85rem; color:var(--muted); font-weight:500}
-.ticket-buttons{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:12px 0}
+.time-total small{ font-size:0.78rem; color:var(--muted); font-weight:500}
+.ticket-buttons{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:6px 0}
 .t-btn{
-  padding:13px 6px; border-radius:16px; border:2px solid var(--border); background:white;
-  cursor:pointer; font-family:inherit; font-weight:700; font-size:1rem; transition:.15s;
+  padding:8px 4px; border-radius:10px; border:2px solid var(--border); background:var(--card);
+  cursor:pointer; font-family:inherit; font-weight:700; font-size:0.88rem; transition:.15s;
 }
 .t-btn:active{ transform:scale(0.96)}
-.t-btn.add{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; border-color:transparent; font-size:1.2rem}
+.t-btn.add{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; border-color:transparent; font-size:1.0rem}
 .t-btn.minus{ color:var(--pink-dark)}
 .queue-btn{
-  width:100%; padding:16px; border-radius:16px; border:none; cursor:pointer;
-  font-family:inherit; font-weight:700; font-size:1.05rem;
+  width:100%; padding:10px 12px; border-radius:12px; border:none; cursor:pointer;
+  font-family:inherit; font-weight:700; font-size:0.9rem;
   background:linear-gradient(135deg,var(--pink),var(--purple)); color:white;
-  box-shadow:0 8px 20px rgba(255,107,157,0.3); transition:.2s;
-  display:flex; align-items:center; justify-content:center; gap:8px;
+  box-shadow:0 6px 16px rgba(255,107,157,0.3); transition:.2s;
+  display:flex; align-items:center; justify-content:center; gap:6px;
 }
 .queue-btn:hover{ transform:translateY(-1px)}
 .queue-btn:disabled{ opacity:0.45; transform:none}
@@ -169,12 +235,12 @@ header{
   background:var(--pink); color:white; padding:4px 12px; border-radius:999px; font-size:0.85rem; font-weight:700;
 }
 .timers-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;
 }
 .timer-queue-card{
-  background:white; border:2px solid var(--border); border-radius:22px; padding:16px;
+  background:var(--card); border:2px solid var(--border); border-radius:16px; padding:12px;
   box-shadow:var(--shadow); position:relative; overflow:hidden;
-  transition:.2s; display:flex; flex-direction:column; gap:12px;
+  transition:.2s; display:flex; flex-direction:column; gap:8px;
 }
 .timer-queue-card.running{ border-color:var(--pink); box-shadow:0 8px 28px rgba(255,107,157,0.18)}
 .timer-queue-card.finished{ border-color:#22c55e; background:#f0fdf4}
@@ -183,30 +249,30 @@ header{
 }
 .queue-head{ display:flex; align-items:center; justify-content:space-between; gap:8px}
 .queue-idol{ display:flex; gap:10px; align-items:center}
-.queue-avatar{ width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:white; font-size:18px}
-.queue-info b{ display:block; font-size:0.98rem}
-.queue-info span{ font-size:0.78rem; color:var(--muted)}
-.queue-tickets{ background:var(--pink-light); padding:6px 10px; border-radius:999px; font-weight:700; font-size:0.88rem; color:var(--pink-dark)}
-.queue-time-row{ display:flex; gap:8px; text-align:center}
+.queue-avatar{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:white; font-size:16px}
+.queue-info b{ display:block; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.queue-info span{ font-size:0.72rem; color:var(--muted)}
+.queue-tickets{ background:var(--pink-light); padding:5px 9px; border-radius:999px; font-weight:700; font-size:0.82rem; color:var(--pink-dark)}
+.queue-time-row{ display:flex; gap:6px; text-align:center}
 .queue-time-box{
-  flex:1; background:var(--pink-light); border-radius:14px; padding:10px 6px;
+  flex:1; background:var(--pink-light); border-radius:10px; padding:7px 4px;
 }
-.queue-time-box b{ display:block; font-size:1.05rem}
-.queue-time-box span{ font-size:0.72rem; color:var(--muted)}
+.queue-time-box b{ display:block; font-size:0.92rem}
+.queue-time-box span{ font-size:0.68rem; color:var(--muted)}
 .queue-time-box.remaining{ background:var(--text); color:white}
 .queue-time-box.remaining span{ color:#fbcfe8}
-.queue-circle-wrap{ display:grid; place-items:center; padding:4px 0}
+.queue-circle-wrap{ display:grid; place-items:center; padding:2px 0}
 .queue-circle{
-  width:150px; height:150px; border-radius:50%;
-  display:grid; place-items:center; padding:8px;
-  box-shadow:inset 0 0 0 6px white, 0 6px 18px rgba(255,107,157,0.12);
+  width:110px; height:110px; border-radius:50%;
+  display:grid; place-items:center; padding:6px;
+  box-shadow:inset 0 0 0 5px var(--card), 0 6px 18px rgba(255,107,157,0.12);
 }
 .queue-inner{
-  width:100%; height:100%; background:white; border-radius:50%;
+  width:100%; height:100%; background:var(--card); border-radius:50%;
   display:grid; place-items:center; text-align:center;
 }
-.queue-time{ font-size:1.9rem; font-weight:700; line-height:1}
-.queue-status{ font-size:0.78rem; color:var(--muted); font-weight:600; margin-top:2px}
+.queue-time{ font-size:1.35rem; font-weight:700; line-height:1}
+.queue-status{ font-size:0.7rem; color:var(--muted); font-weight:600; margin-top:2px}
 .queue-controls{ display:grid; grid-template-columns:1fr 1fr; gap:8px}
 .queue-controls button{ padding:10px 8px; border-radius:12px; font-size:0.88rem}
 .btn-run{ background:linear-gradient(135deg,#22c55e,#16a34a); color:white}
@@ -219,13 +285,24 @@ header{
 /* History */
 .history-filters{
   display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; align-items:center;
-  background:white; padding:14px; border-radius:18px; border:2px solid var(--border);
+  background:var(--card); padding:14px; border-radius:18px; border:2px solid var(--border);
 }
 .select, .input{
   padding:9px 12px; border-radius:12px; border:2px solid var(--border); font-family:inherit;
-  font-weight:500; background:white; color:var(--text); outline:none;
+  font-weight:500; background:var(--pink-light); color:var(--text); outline:none;
 }
 .select:focus, .input:focus{ border-color:var(--pink)}
+/* fix date input overlapping & icon visibility */
+.input[type="date"], .select{ color-scheme:light; }
+.input[type="date"]{ position:relative; }
+.input[type="date"]::-webkit-calendar-picker-indicator{
+  background-color:white; border-radius:6px; padding:4px; cursor:pointer; opacity:0.8;
+}
+[data-theme="dark"] .input[type="date"], [data-theme="dark"] .select{ color-scheme:dark; }
+[data-theme="dark"] .input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:invert(1); background-color:transparent; opacity:0.9;
+}
+[data-theme="dark"] .history-filters{ background:var(--card); }
 .summary-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px}
 @media(max-width:600px){ .summary-row{ grid-template-columns:1fr } }
 .summary-card{
@@ -254,12 +331,22 @@ header{
 .modal-backdrop{
   position:fixed; inset:0; background:rgba(74,51,64,0.45); backdrop-filter:blur(6px);
   display:none; place-items:center; z-index:50; padding:16px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
 }
 .modal-backdrop.open{ display:grid }
 .modal{
-  background:white; border-radius:24px; padding:22px; width:100%; max-width:420px;
+  background:var(--card, white); border-radius:24px; padding:22px; width:100%; max-width:420px;
   box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:pop .25s ease;
+  max-height:calc(100vh - 32px);
+  max-height:calc(100dvh - 32px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
 }
+.modal::-webkit-scrollbar{ width:6px }
+.modal::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px }
 @keyframes pop{ from{transform:scale(0.95); opacity:0} to{transform:scale(1); opacity:1}}
 .modal h3{ font-size:1.15rem; margin-bottom:14px; display:flex; align-items:center; gap:8px}
 .form-group{ margin-bottom:14px}
@@ -275,7 +362,7 @@ header{
   transition:.15s;
 }
 .color-opt.selected{ border-color:var(--text); transform:scale(1.08)}
-.modal-actions{ display:flex; gap:10px; margin-top:18px}
+.modal-actions{ display:flex; gap:10px; margin-top:18px; position:sticky; bottom:0; background:var(--card); padding:12px 0 4px; margin-bottom:-4px; z-index:1}
 .modal-actions button{ flex:1; justify-content:center; padding:12px}
 
 /* empty */
@@ -288,56 +375,69 @@ header{
 /* ========== RESPONSIVE - MOBILE OPTIMIZED ========== */
 @media(max-width: 768px){
   .container{ padding:0 12px 28px; margin:14px auto }
-  .creator-card{ padding:16px; border-radius:18px }
-  .timers-grid{ grid-template-columns:1fr; gap:12px }
+  .creator-card{ padding:10px; border-radius:14px }
+  .timers-grid{ grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px }
   .history-filters{ padding:12px; gap:8px }
   .summary-row{ gap:8px }
 }
 @media(max-width: 640px){
-  header{ padding:10px 12px }
+  /* ===== MOBILE ULTRA-COMPACT - เน้นมือถือเล็กสุด ===== */
+  header{ padding:6px 10px }
   .header-inner{
-    flex-direction:column; align-items:stretch; gap:10px;
+    flex-direction:column; align-items:stretch; gap:6px;
   }
-  .logo{ font-size:1.15rem; justify-content:center }
-  .logo-badge{ width:36px; height:36px; font-size:18px; border-radius:12px }
-  .logo small{ font-size:0.68rem }
+  .logo{ font-size:1.0rem; justify-content:center }
+  .logo-badge{ width:30px; height:30px; font-size:16px; border-radius:10px }
+  .logo small{ font-size:0.64rem }
   .nav-tabs{
-    width:100%; justify-content:space-between; padding:4px; gap:4px;
+    width:100%; justify-content:space-between; padding:3px; gap:3px;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
   }
   .nav-tabs::-webkit-scrollbar{ display:none }
   .nav-tab{
-    flex:1; padding:10px 8px; font-size:0.85rem; white-space:nowrap; text-align:center;
-    min-height:42px; display:grid; place-items:center;
+    flex:1; padding:6px 4px; font-size:0.72rem; white-space:nowrap; text-align:center;
+    min-height:34px; display:grid; place-items:center;
   }
+  #soundCard{ padding:8px 10px; gap:6px }
+  #soundCard .select{ font-size:0.82rem; padding:6px 8px }
   .section-title{ flex-direction:column; align-items:stretch }
-  .section-title .btn{ width:100%; justify-content:center; padding:12px }
-  .idol-grid{ grid-template-columns:1fr; gap:12px }
-  .idol-card{ padding:14px; border-radius:18px }
-  .creator-top{ gap:14px }
-  .timer-idol-select{ gap:6px }
-  .idol-chip{ padding:7px 11px; font-size:0.82rem }
-  .ticket-number{ font-size:3rem }
-  .time-total{ font-size:1.15rem; padding:10px }
-  .t-btn{ padding:14px 4px; font-size:0.95rem; min-height:48px; border-radius:14px }
-  .t-btn.add{ font-size:1.1rem }
-  .queue-btn{ padding:14px; font-size:0.98rem; min-height:48px }
+  .section-title .btn{ width:100%; justify-content:center; padding:10px }
+  .idol-grid{ grid-template-columns:repeat(2,1fr); gap:6px }
+  .idol-card{ padding:8px; border-radius:12px }
+  .idol-avatar{ width:34px; height:34px; font-size:18px; border-radius:9px}
+  .idol-name{ font-size:0.9rem}
+  .idol-meta{ font-size:0.72rem}
+  .creator-top{ gap:8px }
+  .timer-idol-select{ gap:4px; margin:4px 0 6px}
+  .idol-chip{ padding:5px 8px; font-size:0.75rem }
+  .ticket-number{ font-size:1.85rem }
+  .time-total{ font-size:0.95rem; padding:6px }
+  .t-btn{ padding:7px 2px; font-size:0.82rem; min-height:36px; border-radius:10px }
+  .t-btn.add{ font-size:0.95rem }
+  .queue-btn{ padding:9px; font-size:0.86rem; min-height:38px }
   .active-header{
-    flex-direction:column; align-items:stretch; gap:10px;
+    flex-direction:column; align-items:stretch; gap:8px;
   }
-  .active-header h3{ justify-content:space-between; font-size:1.05rem }
-  .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:8px }
-  .active-header > div .btn{ justify-content:center }
-  .timer-queue-card{ padding:14px; border-radius:18px }
-  .queue-circle{ width:130px; height:130px }
-  .queue-time{ font-size:1.6rem }
-  .queue-time-row{ gap:6px }
-  .queue-time-box{ padding:8px 4px; border-radius:12px }
-  .queue-time-box b{ font-size:0.92rem }
-  .queue-controls{ gap:6px }
-  .queue-controls button{ min-height:44px }
-  .btn-addtime{ min-height:40px; font-size:0.78rem; padding:8px 4px }
+  .active-header h3{ justify-content:space-between; font-size:0.95rem }
+  .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:6px }
+  .active-header > div .btn{ justify-content:center; padding:7px 8px; font-size:0.8rem}
+  .timer-queue-card{ padding:8px; border-radius:12px; gap:6px }
+  .queue-circle{ width:80px; height:80px }
+  .queue-time{ font-size:1.05rem }
+  .queue-time-row{ gap:4px }
+  .queue-time-box{ padding:5px 3px; border-radius:9px }
+  .queue-time-box b{ font-size:0.82rem }
+  .queue-time-box span{ font-size:0.64rem }
+  .queue-controls{ gap:5px }
+  .queue-controls button{ min-height:36px; font-size:0.8rem; padding:7px 6px}
+  .btn-addtime{ min-height:32px; font-size:0.72rem; padding:6px 3px }
+  /* creator ultra-compact on mobile */
+  #selectedPreview{ padding:5px 7px !important; border-radius:8px !important; margin-bottom:4px !important}
+  #selectedPreview #selectedAvatar{ width:26px !important; height:26px !important; font-size:13px !important; border-radius:7px !important}
+  #selectedName{ font-size:0.82rem !important}
+  #selectedPer{ font-size:0.68rem !important}
+  #creatorMain div[style*="display:flex; gap:6px"]{ gap:4px !important}
   .history-filters{
     flex-direction:column; align-items:stretch;
   }
@@ -349,19 +449,25 @@ header{
   .day-header small{ align-self:stretch; text-align:center }
   .log-item{ flex-direction:column; align-items:stretch; gap:10px }
   .log-item .btn{ width:100%; justify-content:center }
-  .modal{ padding:18px; border-radius:20px; margin:12px; max-width:none; width:calc(100% - 24px) }
-  .form-group input{ font-size:16px; /* prevent iOS zoom */ padding:12px 14px }
+  .modal{ padding:16px; border-radius:20px; margin:12px; max-width:none; width:calc(100% - 24px); max-height:calc(100dvh - 24px); max-height:calc(100vh - 24px); }
+  .modal h3{ margin-bottom:10px; font-size:1.05rem}
+  .form-group{ margin-bottom:10px}
+  .form-group label{ font-size:0.82rem; margin-bottom:4px}
+  .form-group input{ font-size:16px; /* prevent iOS zoom */ padding:10px 12px }
   /* bigger touch targets */
   .btn, .t-btn, .idol-chip{ -webkit-tap-highlight-color:transparent; touch-action:manipulation }
 }
 @media(max-width: 380px){
-  .ticket-number{ font-size:2.6rem }
-  .ticket-buttons{ gap:6px }
-  .t-btn{ padding:12px 2px; font-size:0.88rem }
-  .queue-circle{ width:118px; height:118px }
+  .ticket-number{ font-size:1.65rem }
+  .ticket-buttons{ gap:4px }
+  .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
+  .queue-circle{ width:72px; height:72px }
+  .queue-time{ font-size:0.95rem}
   .queue-head{ align-items:flex-start }
-  .queue-idol{ gap:8px }
-  .queue-avatar{ width:36px; height:36px; font-size:16px; border-radius:10px }
+  .queue-idol{ gap:6px }
+  .queue-avatar{ width:28px; height:28px; font-size:14px; border-radius:8px }
+  .idol-grid{ grid-template-columns:1fr 1fr; gap:6px }
+  .idol-card{ padding:7px}
 }
 /* Landscape small height */
 @media(max-height: 500px) and (max-width: 900px){
@@ -412,64 +518,59 @@ html,body{ overflow-x:hidden; max-width:100vw }
       <button class="nav-tab active" data-view="timer">⏱ จับเวลา</button>
       <button class="nav-tab" data-view="idols">👧 ไอดอล</button>
       <button class="nav-tab" data-view="history">📊 ประวัติ</button>
+      <button class="nav-tab" data-view="settings">⚙️ ตั้งค่า</button>
     </nav>
   </div>
 </header>
 
-<div style="max-width:1080px; margin:0 auto; padding:8px 16px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center">
-  <button id="btnNotify" class="btn btn-ghost btn-small" onclick="requestNotify()" style="font-size:0.82rem">🔔 เปิดแจ้งเตือนปลุก</button>
-  <button id="btnWake" class="btn btn-ghost btn-small" onclick="toggleWakeLock()" style="font-size:0.82rem">💡 กันจอดับ: ปิด</button>
-  <span style="font-size:0.75rem; color:var(--muted)">💡 iPhone ต้องปิดปุ่ม Silent (สวิตช์ข้างเครื่อง) เสียงถึงจะดัง</span>
-</div>
 <div class="container">
   <!-- TIMER VIEW - MULTI -->
   <div id="view-timer" class="view active">
     <div class="creator-card" id="creatorCard">
       <div class="creator-top">
         <div>
-          <h3 style="display:flex; align-items:center; gap:8px">🎀 สร้างคิวเชกิใหม่</h3>
-          <p style="font-size:0.85rem; color:var(--muted); margin-top:4px">เลือกไอดอล → กดจำนวนใบ → กดเพิ่มคิว จะจับเวลาพร้อมกันกี่คนก็ได้!</p>
+          <h3 style="display:flex; align-items:center; gap:6px; font-size:1.0rem; margin:0">🎀 สร้างคิวเชกิใหม่</h3>
+          <p style="font-size:0.78rem; color:var(--muted); margin-top:2px">เลือกไอดอล → กดจำนวนใบ → กดเพิ่มคิว พร้อมกันได้หลายคน!</p>
           <div id="timerIdolChips" class="timer-idol-select"></div>
-          <div id="noIdolWarn" class="empty" style="padding:18px; display:none">ยังไม่มีไอดอลเลย ไปเพิ่มที่แท็บ <b>ไอดอล</b> ก่อนนะ ♡</div>
+          <div id="noIdolWarn" class="empty" style="padding:12px; display:none">ยังไม่มีไอดอลเลย ไปเพิ่มที่แท็บ <b>ไอดอล</b> ก่อนนะ ♡</div>
           <div id="creatorMain">
-            <div id="selectedPreview" style="background:var(--pink-light); padding:12px 14px; border-radius:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-              <div style="display:flex; gap:10px; align-items:center">
-                <div id="selectedAvatar" class="idol-avatar" style="width:42px; height:42px; border-radius:12px; font-size:20px"></div>
+            <div id="selectedPreview" style="background:var(--pink-light); padding:7px 10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+              <div style="display:flex; gap:8px; align-items:center">
+                <div id="selectedAvatar" class="idol-avatar" style="width:32px; height:32px; border-radius:9px; font-size:16px"></div>
                 <div>
-                  <div id="selectedName" style="font-weight:700"></div>
-                  <div id="selectedPer" style="font-size:0.82rem; color:var(--muted)"></div>
+                  <div id="selectedName" style="font-weight:700; font-size:0.92rem"></div>
+                  <div id="selectedPer" style="font-size:0.74rem; color:var(--muted)"></div>
                 </div>
               </div>
-              <div id="selectedColorDot" style="width:12px; height:12px; border-radius:50%"></div>
+              <div id="selectedColorDot" style="width:10px; height:10px; border-radius:50%"></div>
             </div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px">
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(1)">＋1 ใบ</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(2)">＋2 ใบ</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(5)">＋5 ใบ</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(10)">＋10 ใบ</button>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px">
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(1)" style="padding:6px 10px; font-size:0.8rem">＋1</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(2)" style="padding:6px 10px; font-size:0.8rem">＋2</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(5)" style="padding:6px 10px; font-size:0.8rem">＋5</button>
+              <button class="btn btn-ghost btn-small" onclick="quickCreate(10)" style="padding:6px 10px; font-size:0.8rem">＋10</button>
             </div>
           </div>
         </div>
 
-        <div style="background:var(--pink-light); border-radius:18px; padding:16px; border:2px dashed var(--border)">
-          <div class="ticket-display-big">
-            <div id="prepCount" class="ticket-number">0</div>
-            <div class="ticket-label">จำนวนเชกิ (ใบ) ♡</div>
+        <!-- จำนวน - แบบมือเดียว: กดง่าย นิ้วโป้งถึง -->
+        <div style="background:var(--pink-light); border-radius:12px; padding:8px; border:2px dashed var(--border); display:flex; flex-direction:column; gap:6px">
+          <div style="display:flex; align-items:center; gap:6px">
+            <button class="t-btn minus" onclick="changePrep(-1)" aria-label="ลด 1" style="width:48px; height:48px; flex-shrink:0; border-radius:12px; font-size:1.25rem; padding:0; display:grid; place-items:center">−</button>
+            <div style="flex:1; text-align:center; background:var(--card); border-radius:10px; padding:6px 4px; border:1px solid var(--border)">
+              <div id="prepCount" class="ticket-number" style="font-size:1.9rem; line-height:1">0</div>
+              <div style="font-size:0.68rem; color:var(--muted); font-weight:600; margin-top:1px">ใบ ♡ <span id="prepTotal" class="time-total" style="background:transparent; padding:0; margin:0; font-size:0.78rem; display:inline; border:none">00:00</span></div>
+            </div>
+            <button class="t-btn add" onclick="changePrep(1)" aria-label="เพิ่ม 1" style="width:48px; height:48px; flex-shrink:0; border-radius:12px; font-size:1.25rem; padding:0; display:grid; place-items:center">＋</button>
           </div>
-          <div id="prepTotal" class="time-total" style="background:white">00:00 <small>/ เวลารวม</small></div>
-          <div class="ticket-buttons">
-            <button class="t-btn minus" onclick="changePrep(-1)">−1</button>
-            <button class="t-btn add" onclick="changePrep(1)">+1 ♡</button>
-            <button class="t-btn" style="background:var(--yellow); border-color:transparent" onclick="changePrep(5)">+5</button>
-            <button class="t-btn" style="background:var(--mint); border-color:transparent" onclick="changePrep(10)">+10</button>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px">
+            <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:7px 2px; font-size:0.8rem; border-radius:8px; min-height:36px" onclick="changePrep(5)">+5</button>
+            <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:7px 2px; font-size:0.8rem; border-radius:8px; min-height:36px" onclick="changePrep(10)">+10</button>
+            <button class="btn btn-ghost btn-small" style="padding:7px 2px; font-size:0.78rem; border-radius:8px; min-height:36px" onclick="changePrep(-5)">−5</button>
+            <button class="btn btn-ghost btn-small" style="padding:7px 2px; font-size:0.78rem; border-radius:8px; min-height:36px" onclick="resetPrep()">รีเซ็ต</button>
           </div>
-          <div style="display:flex; gap:8px; margin-bottom:12px">
-            <button class="btn btn-ghost btn-small" style="flex:1" onclick="changePrep(-5)">−5</button>
-            <button class="btn btn-ghost btn-small" style="flex:1" onclick="resetPrep()">รีเซ็ต</button>
-          </div>
-          <button id="btnAddQueue" class="queue-btn" onclick="addQueue()" disabled>＋ เพิ่มคิวและเริ่มเลย ▶</button>
-          <button id="btnAddQueuePause" class="btn btn-ghost" style="width:100%; margin-top:8px; justify-content:center" onclick="addQueue(false)" disabled>＋ เพิ่มคิวแบบยังไม่เริ่ม</button>
-          <p style="text-align:center; font-size:0.75rem; color:var(--muted); margin-top:8px">เพิ่มได้ไม่จำกัด จับเวลาพร้อมกันหลายไอดอลได้เลย</p>
+          <button id="btnAddQueue" class="queue-btn" onclick="addQueue()" disabled style="padding:11px; font-size:0.92rem; border-radius:12px; min-height:46px">＋ เพิ่มคิว ▶ เริ่มเลย</button>
+          <button id="btnAddQueuePause" class="btn btn-ghost" style="width:100%; justify-content:center; padding:6px; font-size:0.78rem; border-radius:999px" onclick="addQueue(false)" disabled>＋ แบบยังไม่เริ่ม</button>
         </div>
       </div>
     </div>
@@ -516,16 +617,90 @@ html,body{ overflow-x:hidden; max-width:100vw }
 
     <div id="historyList" class="history-list"></div>
   </div>
+
+  <!-- SETTINGS VIEW -->
+  <div id="view-settings" class="view">
+    <div class="section-title">
+      <h2>⚙️ ตั้งค่า</h2>
+      <span style="font-size:0.8rem; color:var(--muted)">ปรับแต่งแอพตามการใช้งาน</span>
+    </div>
+
+    <!-- Appearance -->
+    <div class="creator-card" style="padding:14px">
+      <h3 style="font-size:1.0rem; margin-bottom:10px; display:flex; align-items:center; gap:8px">🎨 หน้าตา</h3>
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+        <div style="flex:1; min-width:160px">
+          <div style="font-weight:600; font-size:0.9rem">โหมดสี</div>
+          <div style="font-size:0.78rem; color:var(--muted)">มืดเหมาะกับผู้ชาย / สว่างน่ารัก</div>
+        </div>
+        <button id="themeToggle" class="btn btn-ghost" onclick="toggleTheme()" style="padding:10px 18px; border-radius:999px; font-weight:700"><span id="themeToggleLabel">🌙 โหมดมืด</span></button>
+      </div>
+    </div>
+
+    <!-- Sound -->
+    <div id="soundCard" class="creator-card" style="padding:12px">
+      <h3 style="font-size:1.0rem; margin-bottom:4px; display:flex; align-items:center; gap:8px">🔊 เสียงปลุก (ค่าเริ่มต้น)</h3>
+      <p style="font-size:0.72rem; color:var(--muted); margin:0 0 8px">ใช้สำหรับเมมเบอร์ที่ตั้งว่า “ใช้ค่าเริ่มต้น” • ตั้งแยกต่อคนได้ที่ ไอดอล → แก้ไข</p>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px">
+        <select id="alarmSoundSelect" class="select" style="flex:1; min-width:150px; padding:8px 10px" onchange="setAlarmSound(this.value)">
+          <option value="classic">Beep คลาสสิค ♪</option>
+          <option value="chime">Chime กระดิ่งใส 🔔</option>
+          <option value="kawaii">Kawaii ป๊อปน่ารัก ♡</option>
+          <option value="siren">Siren เตือนดัง 🚨</option>
+          <option value="soft">Soft นุ่มนวล ☁️</option>
+          <option value="custom">🎵 ไฟล์ของฉัน...</option>
+        </select>
+        <button class="btn btn-ghost btn-small" onclick="previewAlarmSound()" style="padding:8px 12px">▶ ทดลองฟัง</button>
+      </div>
+      <label style="display:flex; align-items:center; gap:8px; font-size:0.85rem; background:var(--pink-light); padding:8px 12px; border-radius:999px; width:fit-content">
+        🔈 <input id="alarmVolume" type="range" min="0" max="1" step="0.05" style="width:110px; accent-color:var(--pink)" oninput="setAlarmVolume(this.value)"> <span id="alarmVolumeVal">60%</span>
+      </label>
+      <div id="customSoundWrap" style="display:none; gap:8px; align-items:center; flex-wrap:wrap; background:var(--pink-light); padding:10px 12px; border-radius:12px; margin-top:8px">
+        <input id="customSoundFile" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg" onchange="handleCustomSoundFile(event)" style="font-size:0.82rem; max-width:200px">
+        <span id="customSoundName" style="font-size:0.8rem; color:var(--muted); flex:1"></span>
+        <button class="btn btn-ghost btn-small" onclick="clearCustomSound()" style="color:#ef4444; border-color:#fecaca">ล้างไฟล์</button>
+        <span style="font-size:0.72rem; color:var(--muted)">รองรับ MP3/WAV/M4A/OGG ≤1MB แนะนำ &lt;800KB</span>
+        <audio id="customAudio" preload="auto" style="display:none"></audio>
+      </div>
+    </div>
+
+    <!-- Notifications & Wake -->
+    <div class="creator-card" style="padding:14px">
+      <h3 style="font-size:1.0rem; margin-bottom:10px; display:flex; align-items:center; gap:8px">🔔 การแจ้งเตือน & หน้าจอ</h3>
+      <div style="display:grid; gap:10px">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--pink-light); padding:12px 14px; border-radius:12px">
+          <div>
+            <div style="font-weight:700; font-size:0.92rem">แจ้งเตือนปลุก</div>
+            <div style="font-size:0.76rem; color:var(--muted)">เด้ง + เสียงวน + สั่น แม้สลับแอพ</div>
+          </div>
+          <button id="btnNotify" class="btn btn-ghost btn-small" onclick="requestNotify()" style="white-space:nowrap">🔔 เปิดแจ้งเตือน</button>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--pink-light); padding:12px 14px; border-radius:12px">
+          <div>
+            <div style="font-weight:700; font-size:0.92rem">กันจอดับ</div>
+            <div style="font-size:0.76rem; color:var(--muted)">เปิดไว้ขณะจับเวลา หน้าจอจะไม่ดับ</div>
+          </div>
+          <button id="btnWake" class="btn btn-ghost btn-small" onclick="toggleWakeLock()" style="white-space:nowrap">💡 กันจอดับ: ปิด</button>
+        </div>
+        <p style="font-size:0.72rem; color:var(--muted); text-align:center; margin:4px 0 0">💡 iPhone ต้องปิดปุ่ม Silent (สวิตช์ข้างเครื่อง) เสียงถึงจะดัง</p>
+      </div>
+    </div>
+
+    <div style="text-align:center; padding:16px; color:var(--muted); font-size:0.78rem">
+      Cheki Timer ♡ v2 • ตั้งค่าจะบันทึกอัตโนมัติ
+    </div>
+  </div>
 </div>
 
-<!-- Alarm Overlay -->
+<!-- Alarm Overlay - รองรับหลายคนพร้อมกัน -->
 <div id="alarmOverlay" class="alarm-overlay" onclick="if(event.target===this)stopAlarm()">
-  <div class="alarm-box">
+  <div class="alarm-box" style="max-height:90vh; overflow-y:auto">
     <div style="font-size:48px">⏰💖</div>
     <h2 id="alarmTitle">หมดเวลาแล้ว!</h2>
     <p id="alarmDesc">เชกิครบแล้ว กดหยุดปลุกหรือบันทึกเลย</p>
+    <div id="alarmBatchList" style="display:none; max-height:220px; overflow-y:auto; margin-bottom:12px; text-align:left"></div>
     <div style="background:var(--pink-light); padding:10px; border-radius:12px; margin-bottom:14px; font-weight:700" id="alarmInfo">—</div>
-    <div class="alarm-actions">
+    <div class="alarm-actions" id="alarmActions">
       <button class="btn btn-alarm-save" onclick="alarmSave()">✓ บันทึก & หยุด</button>
       <button class="btn btn-ghost" onclick="alarmSnooze()">＋30วิ</button>
       <button class="btn btn-alarm-stop" onclick="stopAlarm()">🔇 หยุดปลุก</button>
@@ -555,9 +730,27 @@ html,body{ overflow-x:hidden; max-width:100vw }
       <label>อีโมจิประจำตัว</label>
       <input id="inputEmoji" maxlength="2" placeholder="เช่น 🌸 🎀 🐰">
     </div>
+    <div class="form-group">
+      <label>เสียงปลุกประจำตัว</label>
+      <select id="inputAlarmSound" onchange="onIdolSoundChange(this.value)">
+        <option value="default">ใช้ค่าเริ่มต้น (ตามตั้งค่า ⚙️)</option>
+        <option value="classic">Beep คลาสสิค ♪</option>
+        <option value="chime">Chime กระดิ่งใส 🔔</option>
+        <option value="kawaii">Kawaii ป๊อปน่ารัก ♡</option>
+        <option value="siren">Siren เตือนดัง 🚨</option>
+        <option value="soft">Soft นุ่มนวล ☁️</option>
+        <option value="custom">🎵 ไฟล์ของฉัน...</option>
+      </select>
+      <div id="idolCustomWrap" style="display:none; margin-top:8px; gap:6px; align-items:center; flex-wrap:wrap; background:var(--pink-light); padding:8px 10px; border-radius:10px">
+        <input id="inputIdolCustomFile" type="file" accept="audio/*,.mp3,.wav,.m4a,.ogg" onchange="handleIdolCustomFile(event)" style="font-size:0.82rem; max-width:180px">
+        <span id="idolCustomName" style="font-size:0.78rem; color:var(--muted); flex:1"></span>
+        <button type="button" class="btn btn-ghost btn-small" onclick="previewIdolSound()" style="padding:6px 10px">▶ ลองฟัง</button>
+      </div>
+      <div style="font-size:0.72rem; color:var(--muted); margin-top:4px">แต่ละคนตั้งเสียงแยกได้ • ไฟล์ ≤1MB แนะนำสั้นๆ &lt;800KB</div>
+    </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeIdolModal()">ยกเลิก</button>
-      <button class="btn btn-primary" onclick="saveIdol()">บันทึก</button>
+      <button id="saveIdolBtn" class="btn btn-primary" onclick="saveIdol()">บันทึก</button>
     </div>
   </div>
 </div>
@@ -569,6 +762,12 @@ let logs = JSON.parse(localStorage.getItem('cheki_logs')||'[]');
 let selectedIdolId = localStorage.getItem('cheki_selected') || null;
 let editingIdolId = null;
 let selectedColor = COLORS[0];
+let pendingIdolCustomData = null;
+let pendingIdolCustomName = '';
+let idolCustomLoading = false;
+
+// migrate old idols to have alarmSound field
+idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; });
 
 // Multi-queue state
 let prepTickets = 0;
@@ -578,9 +777,20 @@ let timerIntervals = {}; // id -> interval
 const $ = s=>document.querySelector(s);
 
 function save(){
-  localStorage.setItem('cheki_idols', JSON.stringify(idols));
-  localStorage.setItem('cheki_logs', JSON.stringify(logs));
-  if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
+  try{
+    localStorage.setItem('cheki_idols', JSON.stringify(idols));
+    localStorage.setItem('cheki_logs', JSON.stringify(logs));
+    if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
+  }catch(e){
+    console.error('save failed', e);
+    // QuotaExceededError - try without custom sounds then alert
+    if(e && (e.name==='QuotaExceededError' || e.code===22)){
+      alert('พื้นที่เก็บข้อมูลเต็ม ♡ ลองลบไฟล์เสียงแบบกำหนดเองที่ใหญ่เกิน หรือล้างประวัติเก่า แล้วลองใหม่');
+    } else {
+      alert('บันทึกไม่สำเร็จ: '+(e.message||e));
+    }
+    throw e;
+  }
 }
 function formatTime(sec){
   sec = Math.max(0, Math.ceil(sec));
@@ -608,10 +818,13 @@ document.querySelectorAll('.nav-tab').forEach(btn=>{
     if(v==='history') renderHistory();
     if(v==='idols') renderIdols();
     if(v==='timer') { renderCreator(); renderTimers(); }
+    if(v==='settings') { updateSoundUI(); }
   });
 });
 
 // Idol CRUD
+const SOUND_LABELS={default:'ตามตั้งค่า',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
+const SOUND_ICONS={default:'⚙️',classic:'♪',chime:'🔔',kawaii:'♡',siren:'🚨',soft:'☁️',custom:'🎵'};
 function renderIdols(){
   const grid=$('#idolGrid');
   if(idols.length===0){
@@ -622,12 +835,16 @@ function renderIdols(){
     const totalForIdol = logs.filter(l=>l.idolId===idol.id).reduce((a,b)=>a+b.count,0);
     const todayForIdol = logs.filter(l=>l.idolId===idol.id && new Date(l.timestamp).toDateString()===new Date().toDateString()).reduce((a,b)=>a+b.count,0);
     const activeCount = activeTimers.filter(t=>t.idolId===idol.id).length;
+    const soundKey=idol.alarmSound||'default';
+    const soundLabel=SOUND_LABELS[soundKey]||soundKey;
+    const soundIcon=SOUND_ICONS[soundKey]||'🔊';
     return `<div class="idol-card" style="--card-color:${idol.color}">
       <div class="idol-head">
         <div class="idol-avatar" style="background:${idol.color}">${idol.emoji||'🌸'}</div>
-        <div>
-          <div class="idol-name">${idol.name} ${activeCount?`<span style="background:${idol.color}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
+        <div style="min-width:0; flex:1">
+          <div class="idol-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${idol.name} ${activeCount?`<span style="background:${idol.color}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
           <div class="idol-meta">⏱ ${idol.secondsPerCheki} วินาที / ใบ • <span style="color:${idol.color}">● ${idol.color}</span></div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${soundIcon} ${soundLabel}${soundKey==='custom' && idol.customSoundName ? ' • '+idol.customSoundName : ''}</div>
         </div>
       </div>
       <div class="idol-stats">
@@ -653,14 +870,106 @@ function openIdolModal(id=null){
     $('#inputSeconds').value=idol.secondsPerCheki;
     selectedColor=idol.color;
     $('#inputEmoji').value=idol.emoji;
+    $('#inputAlarmSound').value=idol.alarmSound||'default';
+    pendingIdolCustomData=idol.customSoundData||null;
+    pendingIdolCustomName=idol.customSoundName||'';
   } else {
     $('#modalTitle').textContent='♡ เพิ่มไอดอล';
     $('#inputName').value='';
     $('#inputSeconds').value='30';
     selectedColor=COLORS[0];
     $('#inputEmoji').value='🌸';
+    $('#inputAlarmSound').value='default';
+    pendingIdolCustomData=null;
+    pendingIdolCustomName='';
   }
   renderColorPick();
+  onIdolSoundChange($('#inputAlarmSound').value);
+  if(pendingIdolCustomData){
+    $('#idolCustomName').textContent='✓ '+(pendingIdolCustomName||'ไฟล์กำหนดเอง');
+  } else {
+    $('#idolCustomName').textContent='';
+  }
+  $('#inputIdolCustomFile').value='';
+}
+function onIdolSoundChange(val){
+  const wrap=$('#idolCustomWrap');
+  if(wrap) wrap.style.display = val==='custom' ? 'flex' : 'none';
+  const saveBtn=document.getElementById('saveIdolBtn');
+  if(val==='custom'){
+    const hasData = pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
+    if(!hasData && saveBtn){ saveBtn.disabled=true; saveBtn.style.opacity='0.5'; $('#idolCustomName').textContent='กรุณาเลือกไฟล์ก่อน ♡'; }
+    else if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; if(!pendingIdolCustomData) $('#idolCustomName').textContent='✓ '+(idols.find(x=>x.id===editingIdolId)?.customSoundName||'ไฟล์เดิม'); }
+  } else {
+    if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; }
+  }
+}
+function handleIdolCustomFile(event){
+  const input=event.target;
+  const file=input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 1*1024*1024){ showToast('ไฟล์ใหญ่เกิน 1MB เลือกไฟล์สั้นๆ นะ ♡'); input.value=''; return; }
+  const saveBtn=document.getElementById('saveIdolBtn');
+  idolCustomLoading=true;
+  if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ กำลังโหลด...'; }
+  $('#idolCustomName').textContent='⏳ กำลังโหลด '+file.name+'...';
+  const reader=new FileReader();
+  reader.onload=()=>{
+    pendingIdolCustomData=reader.result;
+    pendingIdolCustomName=file.name;
+    idolCustomLoading=false;
+    if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; }
+    $('#idolCustomName').textContent='✓ '+file.name+' ('+Math.round(reader.result.length/1024)+'KB)';
+    showToast('โหลดไฟล์ "'+file.name+'" แล้ว ♡ กดบันทึกได้เลย');
+    // clear input to allow re-selecting same file again
+    try{ input.value=''; }catch(e){}
+  };
+  reader.onerror=()=>{
+    idolCustomLoading=false;
+    if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; }
+    $('#idolCustomName').textContent='❌ โหลดไม่สำเร็จ ลองใหม่';
+    showToast('โหลดไฟล์ไม่สำเร็จ ลองไฟล์อื่นนะ');
+    try{ input.value=''; }catch(e){}
+  };
+  reader.readAsDataURL(file);
+}
+function previewIdolSound(){
+  const sel=$('#inputAlarmSound').value;
+  let soundId=sel;
+  if(soundId==='default') soundId=selectedSound;
+  // temporarily set pending data for preview if custom
+  const prevData=customSoundData, prevName=customSoundNameStored;
+  let tmpRestore=null;
+  if(soundId==='custom'){
+    if(pendingIdolCustomData){
+      // use pending idol custom for preview via global audio element
+      const ca=document.getElementById('customAudio');
+      if(ca){
+        ca.src=pendingIdolCustomData;
+        ca.volume=alarmVolume;
+        ca.currentTime=0;
+        ca.play().catch(()=>{});
+        showToast('▶ ลองฟังไฟล์ของ '+($('#inputName').value||'ไอดอล')+' ♡');
+        return;
+      }
+    } else if(customSoundData){
+      // fallback global
+    } else { showToast('ยังไม่ได้เลือกไฟล์'); return; }
+  }
+  // for presets, temporarily override selectedSound
+  const orig=selectedSound;
+  const origCustom=customSoundData;
+  if(soundId!=='custom'){
+    selectedSound=soundId;
+    unlockAudio(); playSelectedSound();
+    selectedSound=orig;
+  } else {
+    // custom fallback
+    if(pendingIdolCustomData){ /* already handled */ }
+    else { unlockAudio(); playSelectedSound(); }
+  }
+  const labels={default:'ค่าเริ่มต้น',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
+  showToast('▶ '+(labels[sel]||sel)+' ♡');
 }
 function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; }
 function renderColorPick(){
@@ -671,17 +980,47 @@ function saveIdol(){
   const name=$('#inputName').value.trim();
   const sec=parseInt($('#inputSeconds').value);
   const emoji=$('#inputEmoji').value.trim()||'🌸';
-  if(!name){ alert('กรุณาใส่ชื่อไอดอล'); return; }
-  if(!sec || sec<5){ alert('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); return; }
+  const alarmSound=$('#inputAlarmSound').value||'default';
+  if(idolCustomLoading){ showToast('⏳ กำลังโหลดไฟล์เสียง รอสักครู่แล้วกดบันทึกอีกครั้ง'); return; }
+  if(!name){ showToast('กรุณาใส่ชื่อไอดอล'); alert('กรุณาใส่ชื่อไอดอล'); return; }
+  if(!sec || sec<5){ showToast('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); alert('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); return; }
+  let customDataToSave=null, customNameToSave='';
+  if(alarmSound==='custom'){
+    if(pendingIdolCustomData){
+      customDataToSave=pendingIdolCustomData;
+      customNameToSave=pendingIdolCustomName;
+    } else if(editingIdolId){
+      const ex=idols.find(x=>x.id===editingIdolId);
+      if(ex && ex.customSoundData){ customDataToSave=ex.customSoundData; customNameToSave=ex.customSoundName||''; }
+      else { showToast('กรุณาเลือกไฟล์เสียงก่อน ♡'); alert('กรุณาเลือกไฟล์เสียงสำหรับโหมดไฟล์ของฉัน'); const inp=document.getElementById('inputIdolCustomFile'); if(inp) inp.focus(); return; }
+    } else { showToast('กรุณาเลือกไฟล์เสียงก่อน ♡'); alert('กรุณาเลือกไฟล์เสียงสำหรับโหมดไฟล์ของฉัน'); const inp=document.getElementById('inputIdolCustomFile'); if(inp) inp.focus(); return; }
+  }
+  // prepare new idol object / update
+  let prevIdolsBackup=null;
+  try{ prevIdolsBackup=JSON.stringify(idols); }catch(e){}
   if(editingIdolId){
     const idx=idols.findIndex(x=>x.id===editingIdolId);
-    idols[idx]={...idols[idx], name, secondsPerCheki:sec, color:selectedColor, emoji};
+    if(idx===-1){ alert('ไม่พบไอดอล'); return; }
+    idols[idx]={...idols[idx], name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound, customSoundData: customDataToSave, customSoundName: customNameToSave};
+    if(alarmSound!=='custom'){ delete idols[idx].customSoundData; delete idols[idx].customSoundName; }
   } else {
     const id=Date.now().toString(36);
-    idols.push({id, name, secondsPerCheki:sec, color:selectedColor, emoji});
+    const newIdol={id, name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound};
+    if(alarmSound==='custom'){ newIdol.customSoundData=customDataToSave; newIdol.customSoundName=customNameToSave; }
+    idols.push(newIdol);
     if(!selectedIdolId) selectedIdolId=id;
   }
-  save(); closeIdolModal(); renderIdols(); renderCreator(); renderHistoryFilters();
+  try{
+    save();
+  }catch(e){
+    // restore on quota error
+    try{ if(prevIdolsBackup) idols=JSON.parse(prevIdolsBackup); }catch(_e){}
+    // keep modal open, don't clear pending so user can retry with smaller file or different sound
+    return;
+  }
+  // clear pending only after successful save
+  pendingIdolCustomData=null; pendingIdolCustomName='';
+  closeIdolModal(); renderIdols(); renderCreator(); renderHistoryFilters();
 }
 function editIdol(id){ openIdolModal(id); }
 function deleteIdol(id){
@@ -778,13 +1117,19 @@ function renderTimers(){
     const circleBg = `conic-gradient(${t.idolColor} ${pct}%, var(--pink-light) 0)`;
     const isFinished = t.remaining<=0;
     const status = isFinished ? 'หมดเวลาแล้ว! ♪' : t.isRunning ? 'กำลังจับเวลา... ⏳' : 'หยุดชั่วคราว ⏸';
+    const sid=getAlarmSoundForIdol(t.idolId);
+    const sicon=SOUND_ICONS[sid]||'🔊';
+    const slabel=SOUND_LABELS[sid]||sid;
     return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
       <div class="queue-head">
         <div class="queue-idol">
           <div class="queue-avatar" style="background:${t.idolColor}">${t.idolEmoji}</div>
           <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
-        <div class="queue-tickets">${t.tickets} ใบ</div>
+        <div style="display:flex; align-items:center; gap:6px">
+          <span title="เสียง: ${slabel}" style="font-size:0.72rem; background:var(--pink-light); padding:4px 7px; border-radius:999px; border:1px solid var(--border)">${sicon}</span>
+          <div class="queue-tickets">${t.tickets} ใบ</div>
+        </div>
       </div>
 
       <div class="queue-time-row">
@@ -933,75 +1278,356 @@ function clearFinished(){
   renderTimers();
 }
 
-// ===== ALARM SYSTEM - ดังแบบนาฬิกาปลุก =====
+// ===== ALARM SYSTEM - ดังแบบนาฬิกาปลุก (เลือกเสียงได้) =====
 let activeAlarmId=null;
 let alarmAudioCtx=null;
 let alarmInterval=null;
 let alarmVibeInterval=null;
 let wakeLock=null;
 let alarmQueue=[];
+let alarmVolume=parseFloat(localStorage.getItem('cheki_volume')||'0.6');
+let selectedSound=localStorage.getItem('cheki_sound')||'classic';
+let customSoundData=localStorage.getItem('cheki_custom_data')||null;
+let customSoundNameStored=localStorage.getItem('cheki_custom_name')||'';
 
+function ensureAudioCtx(){
+  try{
+    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(alarmAudioCtx.state==='suspended') alarmAudioCtx.resume();
+  }catch(e){}
+}
 function unlockAudio(){
   try{
-    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    if(alarmAudioCtx.state==='suspended') alarmAudioCtx.resume();
-    // play silent to unlock
+    ensureAudioCtx();
     const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
     g.gain.value=0; o.connect(g).connect(alarmAudioCtx.destination); o.start(); o.stop(alarmAudioCtx.currentTime+0.01);
+    const ca=document.getElementById('customAudio');
+    if(ca && selectedSound==='custom' && customSoundData){
+      ca.volume=alarmVolume;
+      ca.play().then(()=>{ca.pause(); ca.currentTime=0;}).catch(()=>{});
+    }
   }catch(e){}
 }
-function playBeepOnce(){
+function playTone(freq,type,vol,delay,dur){
   try{
-    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    if(alarmAudioCtx.state==='suspended') alarmAudioCtx.resume();
-    [880,1100,1320,880].forEach((freq,i)=>{
-      const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
-      o.type='sine'; o.frequency.value=freq;
-      g.gain.setValueAtTime(0, alarmAudioCtx.currentTime+i*0.14);
-      g.gain.linearRampToValueAtTime(0.6, alarmAudioCtx.currentTime+i*0.14+0.02);
-      g.gain.exponentialRampToValueAtTime(0.01, alarmAudioCtx.currentTime+i*0.14+0.25);
-      o.connect(g).connect(alarmAudioCtx.destination);
-      o.start(alarmAudioCtx.currentTime+i*0.14);
-      o.stop(alarmAudioCtx.currentTime+i*0.14+0.27);
-    });
+    ensureAudioCtx();
+    const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
+    o.type=type; o.frequency.value=freq;
+    const t=alarmAudioCtx.currentTime+delay;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(vol, t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.01, t+dur);
+    o.connect(g).connect(alarmAudioCtx.destination);
+    o.start(t); o.stop(t+dur+0.02);
   }catch(e){}
 }
+function playClassic(){
+  const v=Math.max(0.01, alarmVolume*0.6);
+  [880,1100,1320,880].forEach((f,i)=> playTone(f,'sine',v,i*0.14,0.27));
+}
+function playChime(){
+  const v=Math.max(0.01, alarmVolume*0.55);
+  [1046,1318,1568].forEach((f,i)=>{
+    playTone(f,'sine',v*0.9,i*0.22,0.9);
+    playTone(f*2,'sine',v*0.25,i*0.22,0.45);
+  });
+}
+function playKawaii(){
+  const v=Math.max(0.01, alarmVolume*0.6);
+  [1400,1700,2100,1600,1900].forEach((f,i)=>{
+    const type=i%2===0?'sine':'triangle';
+    playTone(f,type,v*0.85,i*0.11,0.18);
+  });
+  // extra sparkle
+  setTimeout(()=>{ try{ playTone(2600,'sine',v*0.4,0,0.22);}catch(e){} }, 620);
+}
+function playSiren(){
+  try{
+    ensureAudioCtx();
+    const v=Math.max(0.01, alarmVolume*0.5);
+    const o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
+    o.type='sawtooth';
+    const t=alarmAudioCtx.currentTime;
+    o.frequency.setValueAtTime(720, t);
+    o.frequency.linearRampToValueAtTime(980, t+0.38);
+    o.frequency.linearRampToValueAtTime(720, t+0.76);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(v, t+0.04);
+    g.gain.setValueAtTime(v, t+0.72);
+    g.gain.exponentialRampToValueAtTime(0.01, t+0.88);
+    o.connect(g).connect(alarmAudioCtx.destination);
+    o.start(t); o.stop(t+0.9);
+    // second hit
+    setTimeout(()=> playTone(880,'square',v*0.35,0,0.22), 920);
+  }catch(e){}
+}
+function playSoft(){
+  const v=Math.max(0.01, alarmVolume*0.45);
+  [440,554,659].forEach((f,i)=> playTone(f,'sine',v,i*0.26,0.75));
+}
+function playCustomOnce(){
+  const ca=document.getElementById('customAudio');
+  if(!ca || !customSoundData) { playClassic(); return; }
+  try{
+    ca.volume=Math.max(0, Math.min(1, alarmVolume));
+    ca.currentTime=0;
+    ca.play().catch(()=> playClassic());
+  }catch(e){ playClassic(); }
+}
+function playBeepOnce(){ playSelectedSound(); }
+function playSelectedSound(){
+  if(selectedSound==='chime') return playChime();
+  if(selectedSound==='kawaii') return playKawaii();
+  if(selectedSound==='siren') return playSiren();
+  if(selectedSound==='soft') return playSoft();
+  if(selectedSound==='custom') return playCustomOnce();
+  return playClassic();
+}
+// ===== Per-idol sound helpers =====
+function getAlarmSoundForIdol(idolId){
+  const idol=idols.find(x=>x.id===idolId);
+  if(!idol) return selectedSound;
+  const s=idol.alarmSound;
+  if(!s || s==='default') return selectedSound;
+  return s;
+}
+function getCustomDataForIdol(idolId){
+  const idol=idols.find(x=>x.id===idolId);
+  if(idol && idol.alarmSound==='custom' && idol.customSoundData) return idol.customSoundData;
+  return customSoundData;
+}
+function playSoundForIdol(idolId){
+  const soundId=getAlarmSoundForIdol(idolId);
+  if(soundId==='custom'){
+    const data=getCustomDataForIdol(idolId);
+    if(data){
+      const ca=document.getElementById('customAudio');
+      if(ca){
+        try{
+          if(ca.src!==data) ca.src=data;
+          ca.volume=Math.max(0, Math.min(1, alarmVolume));
+          ca.currentTime=0;
+          ca.play().catch(()=>playClassic());
+          return;
+        }catch(e){}
+      }
+    }
+    return playClassic();
+  }
+  if(soundId==='chime') return playChime();
+  if(soundId==='kawaii') return playKawaii();
+  if(soundId==='siren') return playSiren();
+  if(soundId==='soft') return playSoft();
+  return playClassic();
+}
+function playSoundForTimer(timerId){
+  const t=activeTimers.find(x=>x.id===timerId);
+  if(!t) return playSelectedSound();
+  return playSoundForIdol(t.idolId);
+}
+function setAlarmSound(val){
+  selectedSound=val;
+  localStorage.setItem('cheki_sound', val);
+  updateSoundUI();
+  if(val==='custom' && !customSoundData){
+    showToast('เลือกไฟล์เสียงด้านล่าง ♪');
+  } else if(val!=='custom'){
+    unlockAudio();
+    setTimeout(playSelectedSound, 80);
+  }
+}
+function setAlarmVolume(val){
+  alarmVolume=parseFloat(val);
+  localStorage.setItem('cheki_volume', String(alarmVolume));
+  const pct=Math.round(alarmVolume*100);
+  const el=document.getElementById('alarmVolumeVal');
+  if(el) el.textContent=pct+'%';
+  const ca=document.getElementById('customAudio');
+  if(ca) ca.volume=alarmVolume;
+}
+function previewAlarmSound(){
+  unlockAudio();
+  // stop custom if playing to replay
+  const ca=document.getElementById('customAudio');
+  if(ca){ try{ ca.pause(); ca.currentTime=0; }catch(e){} }
+  playSelectedSound();
+  const names={classic:'Beep คลาสสิค',chime:'Chime กระดิ่งใส',kawaii:'Kawaii ป๊อปน่ารัก',siren:'Siren เตือนดัง',soft:'Soft นุ่มนวล',custom:'ไฟล์ของฉัน'};
+  showToast('▶ '+ (names[selectedSound]||selectedSound) +' • ' + Math.round(alarmVolume*100)+'%');
+}
+function handleCustomSoundFile(event){
+  const input=event.target;
+  const file=input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 1*1024*1024){ showToast('ไฟล์ใหญ่เกิน 1MB เลือกไฟล์สั้นๆ นะ ♡'); alert('ไฟล์ใหญ่เกิน 1MB เลือกไฟล์สั้นๆ นะ ♡ (แนะนำ <800KB)'); input.value=''; return; }
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      customSoundData=reader.result;
+      customSoundNameStored=file.name;
+      localStorage.setItem('cheki_custom_data', customSoundData);
+      localStorage.setItem('cheki_custom_name', customSoundNameStored);
+      const ca=document.getElementById('customAudio');
+      if(ca){ ca.src=customSoundData; ca.load(); ca.volume=alarmVolume; }
+      updateSoundUI();
+      selectedSound='custom';
+      localStorage.setItem('cheki_sound', 'custom');
+      const sel=document.getElementById('alarmSoundSelect');
+      if(sel) sel.value='custom';
+      showToast('โหลดไฟล์ "'+file.name+'" แล้ว ♡ กดทดลองฟังได้เลย');
+      try{ input.value=''; }catch(e){}
+      setTimeout(()=>{ unlockAudio(); playCustomOnce(); }, 200);
+    }catch(e){ alert('โหลดไฟล์ไม่สำเร็จ ลองไฟล์อื่นนะ'); }
+  };
+  reader.onerror=()=> alert('อ่านไฟล์ไม่สำเร็จ');
+  reader.readAsDataURL(file);
+}
+function clearCustomSound(){
+  customSoundData=null;
+  customSoundNameStored='';
+  localStorage.removeItem('cheki_custom_data');
+  localStorage.removeItem('cheki_custom_name');
+  const ca=document.getElementById('customAudio');
+  if(ca){ ca.pause(); ca.removeAttribute('src'); ca.load(); }
+  const inp=document.getElementById('customSoundFile');
+  if(inp) inp.value='';
+  updateSoundUI();
+  showToast('ล้างไฟล์แล้ว ♡');
+}
+function updateSoundUI(){
+  const wrap=document.getElementById('customSoundWrap');
+  const nameEl=document.getElementById('customSoundName');
+  const sel=document.getElementById('alarmSoundSelect');
+  const vol=document.getElementById('alarmVolume');
+  const volVal=document.getElementById('alarmVolumeVal');
+  if(sel) sel.value=selectedSound;
+  if(vol) vol.value=String(alarmVolume);
+  if(volVal) volVal.textContent=Math.round(alarmVolume*100)+'%';
+  if(wrap) wrap.style.display = selectedSound==='custom' ? 'flex' : 'none';
+  if(nameEl) nameEl.textContent = customSoundData ? ('✓ ' + (customSoundNameStored||'ไฟล์กำหนดเอง') + ' ('+ Math.round(customSoundData.length/1024) +'KB)') : 'ยังไม่ได้เลือกไฟล์';
+  const ca=document.getElementById('customAudio');
+  if(ca && customSoundData && !ca.src) { ca.src=customSoundData; ca.volume=alarmVolume; }
+  if(ca && customSoundData) ca.volume=alarmVolume;
+}
+function initSoundSettings(){
+  updateSoundUI();
+  const ca=document.getElementById('customAudio');
+  if(ca && customSoundData){ ca.src=customSoundData; ca.volume=alarmVolume; }
+}
+let alarmDebounce=null;
+let pendingBatch=[];
+let batchSoundIndex=0;
 function triggerAlarm(timerId){
   const t=activeTimers.find(x=>x.id===timerId);
   if(!t) return;
-  alarmQueue.push(timerId);
-  if(activeAlarmId) return; // already alarming, queue it
-  showAlarm(timerId);
+  if(!pendingBatch.includes(timerId) && !alarmQueue.includes(timerId) && activeAlarmId!==timerId) pendingBatch.push(timerId);
+  if(alarmDebounce) clearTimeout(alarmDebounce);
+  alarmDebounce=setTimeout(()=>{
+    const batch=[...pendingBatch];
+    pendingBatch=[];
+    alarmDebounce=null;
+    if(batch.length===0) return;
+    batch.forEach(id=>{
+      if(!alarmQueue.includes(id) && id!==activeAlarmId) alarmQueue.push(id);
+    });
+    if(!activeAlarmId){
+      const first=batch[0];
+      showAlarm(first);
+    } else {
+      updateAlarmBatchDisplay();
+    }
+  }, 250);
 }
 function showAlarm(timerId){
   const t=activeTimers.find(x=>x.id===timerId);
   if(!t) { nextAlarm(); return; }
+  alarmQueue=alarmQueue.filter(id=>id!==timerId);
   activeAlarmId=timerId;
-  $('#alarmTitle').textContent=`หมดเวลา! ${t.idolEmoji} ${t.idolName}`;
-  $('#alarmDesc').textContent=`เชกิ ${t.tickets} ใบ • ${formatTime(t.totalSeconds)} ครบแล้ว!`;
-  $('#alarmInfo').textContent=`${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ • ${t.perSeconds}s/ใบ`;
-  $('#alarmInfo').style.background=t.idolColor;
-  $('#alarmInfo').style.color='white';
+  updateAlarmBatchDisplay();
   $('#alarmOverlay').classList.add('show');
-  // Notification
+  // Notification - batch aware
   try{
+    const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(x=>x.id===id));
     if(Notification && Notification.permission==='granted'){
-      new Notification(`⏰ หมดเวลา! ${t.idolName}`,{body:`เชกิ ${t.tickets} ใบครบแล้ว กดเพื่อบันทึก`, icon:'', requireInteraction:true, vibrate:[300,100,300,100,600]});
+      if(allIds.length>1){
+        new Notification(`⏰ หมดเวลา ${allIds.length} คน!`,{body: allIds.map(id=>{const tt=activeTimers.find(x=>x.id===id); return tt? `${tt.idolEmoji} ${tt.idolName} • ${tt.tickets}ใบ` : ''}).join(' • '), requireInteraction:true});
+      } else {
+        new Notification(`⏰ หมดเวลา! ${t.idolName}`,{body:`เชกิ ${t.tickets} ใบครบแล้ว กดเพื่อบันทึก`, requireInteraction:true});
+      }
     }
   }catch(e){}
-  // loop sound + vibe
-  playBeepOnce();
+  // loop sound + vibe - batch cycles through each idol's sound
+  batchSoundIndex=0;
+  const playBatchSound=()=>{
+    const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(x=>x.id===id));
+    if(allIds.length===0) return;
+    if(allIds.length===1){
+      playSoundForTimer(activeAlarmId);
+    } else {
+      const id=allIds[batchSoundIndex % allIds.length];
+      playSoundForTimer(id);
+      batchSoundIndex++;
+    }
+  };
+  playBatchSound();
   clearInterval(alarmInterval);
   clearInterval(alarmVibeInterval);
-  alarmInterval=setInterval(()=>{ playBeepOnce(); }, 1200);
-  // vibrate loop for Android
+  alarmInterval=setInterval(playBatchSound, 1100);
   if(navigator.vibrate){
     const vibe=()=>navigator.vibrate([400,150,400,150,800]);
     vibe();
     alarmVibeInterval=setInterval(vibe, 1800);
   }
-  // flash title
-  document.title=`⏰ หมดเวลา! ${t.idolName} ⏰`;
+  const allForTitle=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(x=>x.id===id));
+  document.title = allForTitle.length>1 ? `⏰ หมดเวลา ${allForTitle.length} คน! ⏰` : `⏰ หมดเวลา! ${t.idolName} ⏰`;
+}
+function updateAlarmBatchDisplay(){
+  const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
+  const count=allIds.length;
+  const batchEl=document.getElementById('alarmBatchList');
+  const infoEl=document.getElementById('alarmInfo');
+  const titleEl=document.getElementById('alarmTitle');
+  const descEl=document.getElementById('alarmDesc');
+  const actionsEl=document.getElementById('alarmActions');
+  if(count>1){
+    titleEl.textContent=`หมดเวลา ${count} คนพร้อมกัน! ⏰`;
+    descEl.textContent=`มี ${count} คิวครบพร้อมกัน จัดการทีเดียวหรือทีละคนได้เลย`;
+    if(batchEl){
+      batchEl.style.display='block';
+      batchEl.innerHTML=allIds.map(id=>{
+        const t=activeTimers.find(x=>x.id===id);
+        if(!t) return '';
+        const sid=getAlarmSoundForIdol(t.idolId);
+        const sicon=SOUND_ICONS[sid]||'🔊';
+        return `<div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--pink-light); padding:8px 10px; border-radius:10px; margin-bottom:6px; border:1px solid var(--border)">
+          <div style="display:flex; gap:8px; align-items:center; min-width:0"><div style="background:${t.idolColor}; color:white; width:32px; height:32px; border-radius:9px; display:grid; place-items:center; font-size:16px; flex-shrink:0">${t.idolEmoji}</div><div style="min-width:0"><div style="font-weight:700; font-size:0.88rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${t.idolName}</div><div style="font-size:0.72rem; color:var(--muted)">${t.tickets}ใบ • ${formatTime(t.totalSeconds)} • ${sicon} ${SOUND_LABELS[sid]||sid}</div></div></div>
+          <div style="display:flex; gap:4px; flex-shrink:0"><button class="btn btn-ghost btn-small" style="padding:6px 8px; font-size:0.72rem; border-radius:999px" onclick="alarmSaveOne('${id}')">✓</button><button class="btn btn-ghost btn-small" style="padding:6px 8px; font-size:0.72rem; border-radius:999px" onclick="alarmSnoozeOne('${id}')">＋30วิ</button></div>
+        </div>`;
+      }).join('');
+    }
+    if(infoEl) infoEl.style.display='none';
+    if(actionsEl) actionsEl.innerHTML=`
+      <button class="btn btn-alarm-save" onclick="alarmSaveAll()">✓ บันทึกทั้งหมด (${count})</button>
+      <button class="btn btn-ghost" onclick="alarmSnoozeAll()">＋30วิ ทั้งหมด</button>
+      <button class="btn btn-alarm-stop" onclick="stopAlarmAll()">🔇 หยุดทั้งหมด</button>
+    `;
+  } else if(count===1){
+    const t=activeTimers.find(x=>x.id===activeAlarmId);
+    if(!t) return;
+    titleEl.textContent=`หมดเวลา! ${t.idolEmoji} ${t.idolName}`;
+    descEl.textContent=`เชกิ ${t.tickets} ใบ • ${formatTime(t.totalSeconds)} ครบแล้ว!`;
+    if(batchEl) batchEl.style.display='none';
+    if(infoEl){
+      infoEl.style.display='block';
+      infoEl.textContent=`${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ • ${t.perSeconds}s/ใบ`;
+      infoEl.style.background=t.idolColor;
+      infoEl.style.color='white';
+    }
+    if(actionsEl) actionsEl.innerHTML=`
+      <button class="btn btn-alarm-save" onclick="alarmSave()">✓ บันทึก & หยุด</button>
+      <button class="btn btn-ghost" onclick="alarmSnooze()">＋30วิ</button>
+      <button class="btn btn-alarm-stop" onclick="stopAlarm()">🔇 หยุดปลุก</button>
+    `;
+  }
 }
 function stopAlarm(){
   clearInterval(alarmInterval); alarmInterval=null;
@@ -1009,15 +1635,42 @@ function stopAlarm(){
   if(navigator.vibrate) navigator.vibrate(0);
   $('#alarmOverlay').classList.remove('show');
   document.title='Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์ - Multi Queue';
+  const wasBatch = alarmQueue.length>0;
   activeAlarmId=null;
   releaseWakeLock();
-  nextAlarm();
+  if(wasBatch){
+    const remaining=alarmQueue.filter(id=> activeTimers.some(t=>t.id===id));
+    if(remaining.length>0){
+      setTimeout(()=>{
+        if(remaining.length===1) showAlarm(remaining[0]);
+        else {
+          const first=remaining[0];
+          showAlarm(first);
+        }
+      }, 300);
+    } else {
+      alarmQueue=[];
+    }
+  } else {
+    nextAlarm();
+  }
+}
+function stopAlarmAll(){
+  clearInterval(alarmInterval); alarmInterval=null;
+  clearInterval(alarmVibeInterval); alarmVibeInterval=null;
+  if(navigator.vibrate) navigator.vibrate(0);
+  $('#alarmOverlay').classList.remove('show');
+  document.title='Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์ - Multi Queue';
+  activeAlarmId=null;
+  alarmQueue=[];
+  pendingBatch=[];
+  if(alarmDebounce){ clearTimeout(alarmDebounce); alarmDebounce=null; }
+  batchSoundIndex=0;
+  releaseWakeLock();
 }
 function nextAlarm(){
   if(alarmQueue.length===0) return;
-  // remove current from queue if still there
   alarmQueue=alarmQueue.filter(id=>id!==activeAlarmId);
-  // find next not yet shown
   const next=alarmQueue.find(id=> activeTimers.some(t=>t.id===id));
   if(next){
     alarmQueue=alarmQueue.filter(id=>id!==next);
@@ -1027,11 +1680,15 @@ function nextAlarm(){
   }
 }
 function alarmSave(){
+  const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
+  if(allIds.length>1) return alarmSaveAll();
   const id=activeAlarmId;
   stopAlarm();
   if(id) finishQueue(id);
 }
 function alarmSnooze(){
+  const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
+  if(allIds.length>1) return alarmSnoozeAll();
   const t=activeTimers.find(x=>x.id===activeAlarmId);
   if(t){
     const id=activeAlarmId;
@@ -1040,6 +1697,64 @@ function alarmSnooze(){
     startQueue(id);
     showToast(`ต่อเวลา +30วิ ให้ ${t.idolName} ♡`);
   } else stopAlarm();
+}
+function alarmSaveOne(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  if(id===activeAlarmId){
+    finishQueue(id);
+    alarmQueue=alarmQueue.filter(x=>x!==id);
+    if(alarmQueue.length>0){
+      const next=alarmQueue[0];
+      activeAlarmId=null;
+      showAlarm(next);
+    } else {
+      stopAlarmAll();
+    }
+  } else {
+    alarmQueue=alarmQueue.filter(x=>x!==id);
+    finishQueue(id);
+    updateAlarmBatchDisplay();
+    if(alarmQueue.length===0 && !activeAlarmId){
+      stopAlarmAll();
+    } else if(alarmQueue.length===0){
+      updateAlarmBatchDisplay();
+    }
+  }
+  renderTimers(); renderHistory(); renderIdols();
+}
+function alarmSnoozeOne(id){
+  const t=activeTimers.find(x=>x.id===id);
+  if(!t) return;
+  if(id===activeAlarmId){
+    stopAlarm();
+    addTime(id,30);
+    startQueue(id);
+  } else {
+    alarmQueue=alarmQueue.filter(x=>x!==id);
+    addTime(id,30);
+    startQueue(id);
+    updateAlarmBatchDisplay();
+    if(alarmQueue.length===0 && !activeAlarmId){
+      document.getElementById('alarmOverlay').classList.remove('show');
+    }
+  }
+  showToast(`ต่อเวลา +30วิ ให้ ${t.idolName} ♡`);
+  renderTimers();
+}
+function alarmSaveAll(){
+  const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
+  stopAlarmAll();
+  allIds.forEach(id=> finishQueue(id));
+  showToast(`บันทึก ${allIds.length} คิวพร้อมกัน ♡`);
+  renderTimers(); renderHistory(); renderIdols();
+}
+function alarmSnoozeAll(){
+  const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
+  stopAlarmAll();
+  allIds.forEach(id=>{ addTime(id,30); startQueue(id); });
+  showToast(`ต่อเวลา +30วิ ให้ ${allIds.length} คน ♡`);
+  renderTimers();
 }
 // Wake Lock
 async function requestWakeLock(){
@@ -1076,7 +1791,7 @@ setTimeout(()=>{
 },400);
 // re-acquire wakeLock on visibility
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && activeAlarmId) playBeepOnce();
+  if(document.visibilityState==='visible' && activeAlarmId) playSoundForTimer(activeAlarmId);
   if(wakeLock!==null && document.visibilityState==='visible') requestWakeLock();
 });
 
@@ -1175,6 +1890,32 @@ function exportCSV(){
   URL.revokeObjectURL(url);
 }
 
+// Theme (dark/light) - persist + toggle
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('cheki_theme', theme);
+  const btn=document.getElementById('themeToggle');
+  const label=document.getElementById('themeToggleLabel');
+  if(label) label.textContent = theme==='dark' ? '☀️ โหมดสว่าง' : '🌙 โหมดมืด';
+  else if(btn) btn.textContent = theme==='dark' ? '☀️' : '🌙';
+  if(btn) btn.setAttribute('aria-label', theme==='dark' ? 'สลับเป็นโหมดสว่าง' : 'สลับเป็นโหมดมืด');
+  // update theme-color meta
+  const meta=document.querySelector('meta[name=\"theme-color\"]');
+  if(meta) meta.setAttribute('content', theme==='dark' ? '#0f172a' : '#ff6b9d');
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')||'light';
+  const next=cur==='dark'?'light':'dark';
+  applyTheme(next);
+  showToast(next==='dark' ? '🌙 โหมดมืดเปิดแล้ว' : '☀️ โหมดสว่างเปิดแล้ว');
+}
+(function initTheme(){
+  const saved=localStorage.getItem('cheki_theme');
+  const prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const init=saved || (prefersDark ? 'dark' : 'light');
+  applyTheme(init);
+})();
+
 // PWA register
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=> navigator.serviceWorker.register('./sw.js').then(()=>console.log('SW registered')).catch(()=>{}));
@@ -1184,6 +1925,7 @@ renderIdols();
 renderCreator();
 renderTimers();
 renderHistory();
+initSoundSettings();
 </script>
 </body>
 </html>
