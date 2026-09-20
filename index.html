@@ -235,12 +235,13 @@ header{
   background:var(--pink); color:white; padding:4px 12px; border-radius:999px; font-size:0.85rem; font-weight:700;
 }
 .timers-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px;
+  display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;
 }
+#view-timer{ padding-bottom:72px; }
 .timer-queue-card{
-  background:var(--card); border:2px solid var(--border); border-radius:16px; padding:12px;
-  box-shadow:var(--shadow); position:relative; overflow:hidden;
-  transition:.2s; display:flex; flex-direction:column; gap:8px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.07); position:relative; overflow:hidden;
+  transition:.2s; display:flex; flex-direction:column; gap:4px;
 }
 .timer-queue-card.running{ border-color:var(--pink); box-shadow:0 8px 28px rgba(255,107,157,0.18)}
 .timer-queue-card.finished{ border-color:#22c55e; background:#f0fdf4}
@@ -249,38 +250,38 @@ header{
 }
 .queue-head{ display:flex; align-items:center; justify-content:space-between; gap:8px}
 .queue-idol{ display:flex; gap:10px; align-items:center}
-.queue-avatar{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; color:white; font-size:16px}
-.queue-info b{ display:block; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.queue-info span{ font-size:0.72rem; color:var(--muted)}
-.queue-tickets{ background:var(--pink-light); padding:5px 9px; border-radius:999px; font-weight:700; font-size:0.82rem; color:var(--pink-dark)}
-.queue-time-row{ display:flex; gap:6px; text-align:center}
+.queue-avatar{ width:22px; height:22px; border-radius:7px; display:grid; place-items:center; color:white; font-size:12px}
+.queue-info b{ display:block; font-size:0.74rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.1}
+.queue-info span{ font-size:0.58rem; color:var(--muted); line-height:1}
+.queue-tickets{ background:var(--pink-light); padding:2px 6px; border-radius:999px; font-weight:700; font-size:0.62rem; color:var(--pink-dark)}
+.queue-time-row{ display:flex; gap:3px; text-align:center}
 .queue-time-box{
-  flex:1; background:var(--pink-light); border-radius:10px; padding:7px 4px;
+  flex:1; background:var(--pink-light); border-radius:7px; padding:3px 1px;
 }
-.queue-time-box b{ display:block; font-size:0.92rem}
-.queue-time-box span{ font-size:0.68rem; color:var(--muted)}
+.queue-time-box b{ display:block; font-size:0.72rem}
+.queue-time-box span{ font-size:0.55rem; color:var(--muted)}
 .queue-time-box.remaining{ background:var(--text); color:white}
 .queue-time-box.remaining span{ color:#fbcfe8}
 .queue-circle-wrap{ display:grid; place-items:center; padding:2px 0}
 .queue-circle{
-  width:110px; height:110px; border-radius:50%;
-  display:grid; place-items:center; padding:6px;
-  box-shadow:inset 0 0 0 5px var(--card), 0 6px 18px rgba(255,107,157,0.12);
+  width:48px; height:48px; border-radius:50%;
+  display:grid; place-items:center; padding:3px;
+  box-shadow:inset 0 0 0 3px var(--card), 0 3px 8px rgba(255,107,157,0.12);
 }
 .queue-inner{
   width:100%; height:100%; background:var(--card); border-radius:50%;
   display:grid; place-items:center; text-align:center;
 }
-.queue-time{ font-size:1.35rem; font-weight:700; line-height:1}
-.queue-status{ font-size:0.7rem; color:var(--muted); font-weight:600; margin-top:2px}
-.queue-controls{ display:grid; grid-template-columns:1fr 1fr; gap:8px}
-.queue-controls button{ padding:10px 8px; border-radius:12px; font-size:0.88rem}
+.queue-time{ font-size:0.85rem; font-weight:700; line-height:1}
+.queue-status{ font-size:0.56rem; color:var(--muted); font-weight:600; margin-top:1px; line-height:1}
+.queue-controls{ display:grid; grid-template-columns:1fr 1fr; gap:4px}
+.queue-controls button{ padding:4px 4px; border-radius:7px; font-size:0.68rem; min-height:28px}
 .btn-run{ background:linear-gradient(135deg,#22c55e,#16a34a); color:white}
 .btn-pauseQ{ background:#f59e0b; color:white}
-.btn-resetQ{ background:white; border:2px solid var(--border); color:var(--muted)}
+.btn-resetQ{ background:var(--card); border:2px solid var(--border); color:var(--muted)}
 .btn-saveQ{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; grid-column:1/-1}
-.btn-delQ{ background:white; border:2px solid #fecaca; color:#ef4444}
-.btn-addtime{ background:white; border:2px dashed var(--border); color:var(--pink-dark); font-size:0.8rem; padding:8px}
+.btn-delQ{ background:var(--card); border:2px solid #fecaca; color:#ef4444}
+.btn-addtime{ background:var(--card); border:2px dashed var(--border); color:var(--pink-dark); font-size:0.7rem; padding:5px}
 
 /* History */
 .history-filters{
@@ -376,7 +377,7 @@ header{
 @media(max-width: 768px){
   .container{ padding:0 12px 28px; margin:14px auto }
   .creator-card{ padding:10px; border-radius:14px }
-  .timers-grid{ grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px }
+  .timers-grid{ grid-template-columns:repeat(2, 1fr); gap:8px }
   .history-filters{ padding:12px; gap:8px }
   .summary-row{ gap:8px }
 }
@@ -422,16 +423,16 @@ header{
   .active-header h3{ justify-content:space-between; font-size:0.95rem }
   .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:6px }
   .active-header > div .btn{ justify-content:center; padding:7px 8px; font-size:0.8rem}
-  .timer-queue-card{ padding:8px; border-radius:12px; gap:6px }
-  .queue-circle{ width:80px; height:80px }
-  .queue-time{ font-size:1.05rem }
-  .queue-time-row{ gap:4px }
-  .queue-time-box{ padding:5px 3px; border-radius:9px }
-  .queue-time-box b{ font-size:0.82rem }
-  .queue-time-box span{ font-size:0.64rem }
-  .queue-controls{ gap:5px }
-  .queue-controls button{ min-height:36px; font-size:0.8rem; padding:7px 6px}
-  .btn-addtime{ min-height:32px; font-size:0.72rem; padding:6px 3px }
+  .timer-queue-card{ padding:4px; border-radius:9px; gap:3px }
+  .queue-circle{ width:44px; height:44px }
+  .queue-time{ font-size:0.8rem }
+  .queue-time-row{ gap:2px }
+  .queue-time-box{ padding:2px 1px; border-radius:6px }
+  .queue-time-box b{ font-size:0.68rem }
+  .queue-time-box span{ font-size:0.52rem }
+  .queue-controls{ gap:3px }
+  .queue-controls button{ min-height:24px; font-size:0.64rem; padding:4px 3px}
+  .btn-addtime{ min-height:22px; font-size:0.6rem; padding:3px 2px }
   /* creator ultra-compact on mobile */
   #selectedPreview{ padding:5px 7px !important; border-radius:8px !important; margin-bottom:4px !important}
   #selectedPreview #selectedAvatar{ width:26px !important; height:26px !important; font-size:13px !important; border-radius:7px !important}
@@ -461,13 +462,13 @@ header{
   .ticket-number{ font-size:1.65rem }
   .ticket-buttons{ gap:4px }
   .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
-  .queue-circle{ width:72px; height:72px }
-  .queue-time{ font-size:0.95rem}
+  .queue-circle{ width:40px; height:40px }
+  .queue-time{ font-size:0.75rem}
   .queue-head{ align-items:flex-start }
-  .queue-idol{ gap:6px }
-  .queue-avatar{ width:28px; height:28px; font-size:14px; border-radius:8px }
+  .queue-idol{ gap:3px }
+  .queue-avatar{ width:20px; height:20px; font-size:11px; border-radius:6px }
   .idol-grid{ grid-template-columns:1fr 1fr; gap:6px }
-  .idol-card{ padding:7px}
+  .idol-card{ padding:6px}
 }
 /* Landscape small height */
 @media(max-height: 500px) and (max-width: 900px){
@@ -516,7 +517,6 @@ html,body{ overflow-x:hidden; max-width:100vw }
     </div>
     <nav class="nav-tabs">
       <button class="nav-tab active" data-view="timer">⏱ จับเวลา</button>
-      <button class="nav-tab" data-view="idols">👧 ไอดอล</button>
       <button class="nav-tab" data-view="history">📊 ประวัติ</button>
       <button class="nav-tab" data-view="settings">⚙️ ตั้งค่า</button>
     </nav>
@@ -524,77 +524,14 @@ html,body{ overflow-x:hidden; max-width:100vw }
 </header>
 
 <div class="container">
-  <!-- TIMER VIEW - MULTI -->
+  <!-- TIMER VIEW - ULTRA COMPACT 2 per row, no top bar -->
   <div id="view-timer" class="view active">
-    <div class="creator-card" id="creatorCard">
-      <div class="creator-top">
-        <div>
-          <h3 style="display:flex; align-items:center; gap:6px; font-size:1.0rem; margin:0">🎀 สร้างคิวเชกิใหม่</h3>
-          <p style="font-size:0.78rem; color:var(--muted); margin-top:2px">เลือกไอดอล → กดจำนวนใบ → กดเพิ่มคิว พร้อมกันได้หลายคน!</p>
-          <div id="timerIdolChips" class="timer-idol-select"></div>
-          <div id="noIdolWarn" class="empty" style="padding:12px; display:none">ยังไม่มีไอดอลเลย ไปเพิ่มที่แท็บ <b>ไอดอล</b> ก่อนนะ ♡</div>
-          <div id="creatorMain">
-            <div id="selectedPreview" style="background:var(--pink-light); padding:7px 10px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
-              <div style="display:flex; gap:8px; align-items:center">
-                <div id="selectedAvatar" class="idol-avatar" style="width:32px; height:32px; border-radius:9px; font-size:16px"></div>
-                <div>
-                  <div id="selectedName" style="font-weight:700; font-size:0.92rem"></div>
-                  <div id="selectedPer" style="font-size:0.74rem; color:var(--muted)"></div>
-                </div>
-              </div>
-              <div id="selectedColorDot" style="width:10px; height:10px; border-radius:50%"></div>
-            </div>
-            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px">
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(1)" style="padding:6px 10px; font-size:0.8rem">＋1</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(2)" style="padding:6px 10px; font-size:0.8rem">＋2</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(5)" style="padding:6px 10px; font-size:0.8rem">＋5</button>
-              <button class="btn btn-ghost btn-small" onclick="quickCreate(10)" style="padding:6px 10px; font-size:0.8rem">＋10</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- จำนวน - แบบมือเดียว: กดง่าย นิ้วโป้งถึง -->
-        <div style="background:var(--pink-light); border-radius:12px; padding:8px; border:2px dashed var(--border); display:flex; flex-direction:column; gap:6px">
-          <div style="display:flex; align-items:center; gap:6px">
-            <button class="t-btn minus" onclick="changePrep(-1)" aria-label="ลด 1" style="width:48px; height:48px; flex-shrink:0; border-radius:12px; font-size:1.25rem; padding:0; display:grid; place-items:center">−</button>
-            <div style="flex:1; text-align:center; background:var(--card); border-radius:10px; padding:6px 4px; border:1px solid var(--border)">
-              <div id="prepCount" class="ticket-number" style="font-size:1.9rem; line-height:1">0</div>
-              <div style="font-size:0.68rem; color:var(--muted); font-weight:600; margin-top:1px">ใบ ♡ <span id="prepTotal" class="time-total" style="background:transparent; padding:0; margin:0; font-size:0.78rem; display:inline; border:none">00:00</span></div>
-            </div>
-            <button class="t-btn add" onclick="changePrep(1)" aria-label="เพิ่ม 1" style="width:48px; height:48px; flex-shrink:0; border-radius:12px; font-size:1.25rem; padding:0; display:grid; place-items:center">＋</button>
-          </div>
-          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:4px">
-            <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:7px 2px; font-size:0.8rem; border-radius:8px; min-height:36px" onclick="changePrep(5)">+5</button>
-            <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:7px 2px; font-size:0.8rem; border-radius:8px; min-height:36px" onclick="changePrep(10)">+10</button>
-            <button class="btn btn-ghost btn-small" style="padding:7px 2px; font-size:0.78rem; border-radius:8px; min-height:36px" onclick="changePrep(-5)">−5</button>
-            <button class="btn btn-ghost btn-small" style="padding:7px 2px; font-size:0.78rem; border-radius:8px; min-height:36px" onclick="resetPrep()">รีเซ็ต</button>
-          </div>
-          <button id="btnAddQueue" class="queue-btn" onclick="addQueue()" disabled style="padding:11px; font-size:0.92rem; border-radius:12px; min-height:46px">＋ เพิ่มคิว ▶ เริ่มเลย</button>
-          <button id="btnAddQueuePause" class="btn btn-ghost" style="width:100%; justify-content:center; padding:6px; font-size:0.78rem; border-radius:999px" onclick="addQueue(false)" disabled>＋ แบบยังไม่เริ่ม</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="active-header">
-      <h3>⏳ คิวที่กำลังจับเวลา <span id="activeCount" class="badge-count">0 คิว</span></h3>
-      <div style="display:flex; gap:8px">
-        <button class="btn btn-ghost btn-small" onclick="pauseAll()">⏸ หยุดทั้งหมด</button>
-        <button class="btn btn-ghost btn-small" onclick="clearFinished()">🗑 ลบคิวที่เสร็จแล้ว</button>
-      </div>
-    </div>
-    <div id="timersGrid" class="timers-grid"></div>
-    <div id="emptyTimers" class="empty">ยังไม่มีคิวเลย ♡<p>เลือกไอดอลและเพิ่มจำนวนใบด้านบน แล้วกด <b>เพิ่มคิว</b> ได้เลย<br>สร้างหลายคิวพร้อมกันได้ เช่น น้องมิโกะ 3 ใบ, น้องยูริ 5 ใบ วิ่งพร้อมกัน!</p></div>
+    <div id="memberTimerGrid" class="timers-grid" style="margin-top:4px"></div>
+    <div id="emptyMemberTimers" class="empty" style="display:none; margin-top:12px">ยังไม่มีเมมเบอร์ กด ＋ เพื่อเริ่มเลย ♡</div>
+    <button onclick="openIdolModal()" aria-label="เพิ่มเมมเบอร์" style="position:fixed; bottom:24px; right:16px; width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,var(--pink),var(--pink-dark)); color:white; border:none; font-size:28px; line-height:1; box-shadow:0 8px 24px rgba(255,64,129,0.4); z-index:20; display:grid; place-items:center; cursor:pointer">＋</button>
   </div>
 
-  <!-- IDOLS VIEW -->
-  <div id="view-idols" class="view">
-    <div class="section-title">
-      <h2>👧 รายชื่อไอดอล</h2>
-      <button class="btn btn-primary" onclick="openIdolModal()">＋ เพิ่มไอดอล</button>
-    </div>
-    <div id="idolGrid" class="idol-grid"></div>
-  </div>
-
+  <!-- IDOLS VIEW (hidden, merged into timer) -->
   <!-- HISTORY VIEW -->
   <div id="view-history" class="view">
     <div class="section-title">
@@ -769,10 +706,11 @@ let idolCustomLoading = false;
 // migrate old idols to have alarmSound field
 idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; });
 
-// Multi-queue state
+// Multi-queue state (legacy prep + new per-member)
 let prepTickets = 0;
 let activeTimers = []; // {id, idolId, idolName, idolColor, idolEmoji, perSeconds, tickets, totalSeconds, remaining, isRunning, finished}
 let timerIntervals = {}; // id -> interval
+let memberPending = JSON.parse(localStorage.getItem('cheki_member_pending')||'{}');
 
 const $ = s=>document.querySelector(s);
 
@@ -780,6 +718,7 @@ function save(){
   try{
     localStorage.setItem('cheki_idols', JSON.stringify(idols));
     localStorage.setItem('cheki_logs', JSON.stringify(logs));
+    localStorage.setItem('cheki_member_pending', JSON.stringify(memberPending));
     if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
   }catch(e){
     console.error('save failed', e);
@@ -817,7 +756,7 @@ document.querySelectorAll('.nav-tab').forEach(btn=>{
     document.getElementById('view-'+v).classList.add('active');
     if(v==='history') renderHistory();
     if(v==='idols') renderIdols();
-    if(v==='timer') { renderCreator(); renderTimers(); }
+    if(v==='timer') { renderMemberTimers(); }
     if(v==='settings') { updateSoundUI(); }
   });
 });
@@ -826,7 +765,8 @@ document.querySelectorAll('.nav-tab').forEach(btn=>{
 const SOUND_LABELS={default:'ตามตั้งค่า',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
 const SOUND_ICONS={default:'⚙️',classic:'♪',chime:'🔔',kawaii:'♡',siren:'🚨',soft:'☁️',custom:'🎵'};
 function renderIdols(){
-  const grid=$('#idolGrid');
+  const grid=document.getElementById('idolGrid');
+  if(!grid) return;
   if(idols.length===0){
     grid.innerHTML=`<div class="empty" style="grid-column:1/-1">ยังไม่มีไอดอลเลย กด <b>＋ เพิ่มไอดอล</b> เพื่อเริ่มต้น ♡</div>`;
     return;
@@ -1020,98 +960,217 @@ function saveIdol(){
   }
   // clear pending only after successful save
   pendingIdolCustomData=null; pendingIdolCustomName='';
-  closeIdolModal(); renderIdols(); renderCreator(); renderHistoryFilters();
+  closeIdolModal(); renderIdols(); renderMemberTimers(); renderHistoryFilters();
 }
 function editIdol(id){ openIdolModal(id); }
 function deleteIdol(id){
   if(!confirm('ลบไอดอลคนนี้? ประวัติจะยังคงอยู่')) return;
   idols=idols.filter(x=>x.id!==id);
   if(selectedIdolId===id) selectedIdolId=idols[0]?.id||null;
-  save(); renderIdols(); renderCreator(); renderHistoryFilters();
+  save(); renderIdols(); renderMemberTimers(); renderHistoryFilters();
 }
 
-// Creator (prep) logic
-function renderCreator(){
-  const wrap=$('#timerIdolChips');
-  const warn=$('#noIdolWarn');
-  const main=$('#creatorMain');
-  const totalBox=$('#prepTotal');
-  if(idols.length===0){
-    wrap.innerHTML='';
-    warn.style.display='block';
-    main.style.display='none';
-    $('#prepCount').textContent='0';
-    totalBox.innerHTML='00:00 <small>/ เวลารวม</small>';
-    $('#btnAddQueue').disabled=true;
-    $('#btnAddQueuePause').disabled=true;
+// Member Timer logic - per member integrated (นับในกรอบของแต่ละคน)
+function getMemberPending(idolId){ return memberPending[idolId]||0; }
+function setMemberPending(idolId, val){
+  memberPending[idolId]=Math.max(0, val);
+  save();
+}
+function memberChangePending(idolId, delta){
+  const cur=getMemberPending(idolId);
+  setMemberPending(idolId, cur+delta);
+  renderMemberTimers();
+}
+function memberQuickSet(idolId, n){
+  setMemberPending(idolId, n);
+  renderMemberTimers();
+}
+function memberStart(idolId){
+  const idol=idols.find(x=>x.id===idolId);
+  if(!idol) return;
+  const pending=getMemberPending(idolId);
+  if(pending<=0 && !activeTimers.find(t=>t.idolId===idolId)) { showToast('เลือกจำนวนใบก่อน ♡'); return; }
+  // if already has active timer for this idol, just add pending to it (extend)
+  let existing=activeTimers.find(t=>t.idolId===idolId);
+  if(existing){
+    if(pending>0){
+      const addSec=pending*idol.secondsPerCheki;
+      existing.tickets+=pending;
+      existing.totalSeconds+=addSec;
+      existing.remaining+=addSec;
+      setMemberPending(idolId, 0);
+      if(!existing.isRunning) startQueue(existing.id);
+      renderMemberTimers();
+      showToast(`เพิ่ม ${pending}ใบ ให้ ${idol.name} ♡`);
+      save();
+    } else if(!existing.isRunning && existing.remaining>0){
+      startQueue(existing.id);
+    }
     return;
   }
-  warn.style.display='none';
-  main.style.display='block';
-  if(!selectedIdolId) selectedIdolId=idols[0].id;
-  wrap.innerHTML=idols.map(idol=>`<button class="idol-chip ${idol.id===selectedIdolId?'active':''}" onclick="selectCreatorIdol('${idol.id}')" style="${idol.id===selectedIdolId?`background:${idol.color};border-color:${idol.color}`:''}"><span>${idol.emoji}</span> ${idol.name} <small style="opacity:.85">(${idol.secondsPerCheki}s)</small></button>`).join('');
-  const sel=idols.find(x=>x.id===selectedIdolId);
-  if(sel){
-    $('#selectedAvatar').style.background=sel.color;
-    $('#selectedAvatar').textContent=sel.emoji;
-    $('#selectedName').textContent=sel.name;
-    $('#selectedPer').textContent=`${sel.secondsPerCheki} วินาที / ใบ • แตะ +1 เพื่อเพิ่มใบ`;
-    $('#selectedColorDot').style.background=sel.color;
-  }
-  updatePrepUI();
-}
-function selectCreatorIdol(id){
-  selectedIdolId=id;
+  if(pending<=0) return;
+  const total=pending*idol.secondsPerCheki;
+  const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  const timer={id, idolId:idol.id, idolName:idol.name, idolColor:idol.color, idolEmoji:idol.emoji, perSeconds:idol.secondsPerCheki, tickets:pending, totalSeconds:total, remaining:total, isRunning:false, finished:false};
+  activeTimers.unshift(timer);
+  setMemberPending(idolId, 0);
+  renderMemberTimers();
+  startQueue(id);
   save();
-  updatePrepUI();
-  renderCreator();
+  showToast(`เริ่ม ${idol.emoji} ${idol.name} • ${timer.tickets} ใบ ♡`);
 }
-function changePrep(delta){
-  prepTickets=Math.max(0, prepTickets+delta);
-  updatePrepUI();
+function memberPause(idolId){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  if(!t) return;
+  if(t.isRunning) pauseQueue(t.id);
+  else startQueue(t.id);
 }
-function resetPrep(){ prepTickets=0; updatePrepUI(); }
-function quickCreate(n){ prepTickets=n; updatePrepUI(); }
-function updatePrepUI(){
-  const sel=idols.find(x=>x.id===selectedIdolId);
-  const total = sel ? prepTickets * sel.secondsPerCheki : 0;
-  $('#prepCount').textContent=prepTickets;
-  $('#prepTotal').innerHTML=`${formatTime(total)} <small>/ เวลารวม • ${prepTickets} ใบ</small>`;
-  const disabled = prepTickets===0 || !sel;
-  $('#btnAddQueue').disabled=disabled;
-  $('#btnAddQueuePause').disabled=disabled;
+function memberReset(idolId){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  if(!t) { setMemberPending(idolId,0); renderMemberTimers(); return; }
+  if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; }
+  t.remaining=t.totalSeconds;
+  t.finished=false;
+  renderMemberTimers();
+  save();
+}
+function memberSave(idolId){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  if(!t) return;
+  finishQueue(t.id);
+}
+function memberAddTime(idolId, sec){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  if(!t) return;
+  t.totalSeconds+=sec;
+  t.remaining+=sec;
+  renderMemberTimers();
+  save();
+  showToast(`+${sec}วิ ให้ ${t.idolName} ♡`);
+}
+function memberAddTickets(idolId, n){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  const idol=idols.find(x=>x.id===idolId);
+  if(!t || !idol) return;
+  t.tickets+=n;
+  const addSec=n*idol.secondsPerCheki;
+  t.totalSeconds+=addSec;
+  t.remaining+=addSec;
+  renderMemberTimers();
+  save();
+  showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
+}
+function renderMemberTimers(){
+  const grid=document.getElementById('memberTimerGrid');
+  const empty=document.getElementById('emptyMemberTimers');
+  if(!grid) return;
+  if(idols.length===0){
+    grid.innerHTML='';
+    if(empty) empty.style.display='block';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  grid.innerHTML=idols.map(idol=>{
+    const pending=getMemberPending(idol.id);
+    const t=activeTimers.find(x=>x.idolId===idol.id);
+    const hasTimer=!!t;
+    const sid=getAlarmSoundForIdol(idol.id);
+    const sicon=SOUND_ICONS[sid]||'🔊';
+    const total=t ? t.totalSeconds : pending*idol.secondsPerCheki;
+    const remaining=t ? t.remaining : pending*idol.secondsPerCheki;
+    const pct = total>0 ? ((total - remaining)/total)*100 : 0;
+    const circleBg = `conic-gradient(${idol.color} ${pct}%, var(--pink-light) 0)`;
+    const isFinished = t && t.remaining<=0;
+    const status = !hasTimer ? (pending>0 ? `รอเริ่ม • ${pending}ใบ` : 'เลือกจำนวนแล้วกดเริ่ม') : (isFinished ? 'หมดเวลาแล้ว! ♪' : t.isRunning ? 'กำลังจับเวลา... ⏳' : 'หยุดชั่วคราว ⏸');
+    const timeDisplay = hasTimer ? formatTime(t.remaining) : formatTime(pending*idol.secondsPerCheki);
+    const ticketsDisplay = hasTimer ? t.tickets : pending;
+    return `<div class="timer-queue-card ${t&&t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${idol.color}" data-member="${idol.id}">
+      <div class="queue-head">
+        <div class="queue-idol">
+          <div class="queue-avatar" style="background:${idol.color}">${idol.emoji}</div>
+          <div class="queue-info"><b>${idol.name}</b><span>${idol.secondsPerCheki}s/ใบ • ${sicon} ${SOUND_LABELS[sid]||sid}</span></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px"><span title="เสียง ${SOUND_LABELS[sid]||sid}" style="font-size:0.7rem; background:var(--pink-light); padding:3px 6px; border-radius:999px; border:1px solid var(--border)">${sicon}</span><div class="queue-tickets">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:5px 7px; border-radius:999px; font-size:0.7rem; line-height:1">✏️</button></div>
+      </div>
+      <div class="queue-circle-wrap">
+        <div class="queue-circle" style="background:${circleBg}">
+          <div class="queue-inner">
+            <div>
+              <div class="queue-time">${timeDisplay}</div>
+              <div class="queue-status">${status}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      ${hasTimer ? `
+      <div class="queue-time-row">
+        <div class="queue-time-box"><span>ทั้งหมด</span><b>${formatTime(t.totalSeconds)}</b></div>
+        <div class="queue-time-box remaining"><span>เหลือ</span><b>${formatTime(t.remaining)}</b></div>
+        <div class="queue-time-box"><span>ต่อใบ</span><b>${formatTime(idol.secondsPerCheki)}</b></div>
+      </div>
+      <div style="display:flex; gap:4px; margin:4px 0">
+        <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',30)">+30วิ</button>
+        <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',60)">+1นาที</button>
+        <button class="btn btn-addtime" style="flex:1" onclick="memberAddTickets('${idol.id}',1)">+1ใบ</button>
+      </div>
+      <div class="queue-controls">
+        ${!t.isRunning && !isFinished ? `<button class="btn btn-run" onclick="memberPause('${idol.id}')">▶ เริ่มต่อ</button>` : ''}
+        ${t.isRunning ? `<button class="btn btn-pauseQ" onclick="memberPause('${idol.id}')">⏸ หยุด</button>` : ''}
+        ${isFinished ? `<button class="btn btn-run" style="background:#22c55e" onclick="memberReset('${idol.id}')">↺ เริ่มใหม่</button>` : `<button class="btn btn-resetQ" onclick="memberReset('${idol.id}')">↺ รีเซ็ต</button>`}
+        <button class="btn btn-saveQ" onclick="memberSave('${idol.id}')">✓ บันทึก</button>
+        <button class="btn btn-delQ" style="grid-column:${t.isRunning||isFinished?'auto':'1/-1'}" onclick="deleteMemberTimer('${idol.id}')">✕ ลบ</button>
+      </div>
+      ` : `
+      <div style="background:var(--pink-light); border-radius:8px; padding:5px; border:1px dashed var(--border); margin:4px 0">
+        <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px">
+          <button class="t-btn minus" onclick="memberChangePending('${idol.id}', -1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">−</button>
+          <div style="flex:1; text-align:center; background:var(--card); border-radius:8px; padding:4px 2px; border:1px solid var(--border)">
+            <div style="font-size:1.2rem; font-weight:700; line-height:1; color:var(--pink-dark)">${pending}</div>
+            <div style="font-size:0.6rem; color:var(--muted)">ใบ ♡ ${formatTime(pending*idol.secondsPerCheki)}</div>
+          </div>
+          <button class="t-btn add" onclick="memberChangePending('${idol.id}', 1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">＋</button>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3px">
+          <button class="t-btn" style="padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
+          <button class="t-btn" style="padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
+          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
+          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
+        </div>
+      </div>
+      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:6px; font-size:0.75rem; border-radius:8px; min-height:32px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
+      `}
+    </div>`;
+  }).join('');
+}
+function deleteMemberTimer(idolId){
+  const t=activeTimers.find(x=>x.idolId===idolId);
+  if(t){
+    if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+    activeTimers=activeTimers.filter(x=>x.id!==t.id);
+  }
+  setMemberPending(idolId, 0);
+  renderMemberTimers(); save();
 }
 
-function addQueue(autoStart=true){
-  const sel=idols.find(x=>x.id===selectedIdolId);
-  if(!sel || prepTickets===0) return;
-  const total = prepTickets * sel.secondsPerCheki;
-  const id = Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-  const timer = {
-    id, idolId:sel.id, idolName:sel.name, idolColor:sel.color, idolEmoji:sel.emoji,
-    perSeconds:sel.secondsPerCheki, tickets:prepTickets, totalSeconds:total, remaining:total,
-    isRunning:false, finished:false
-  };
-  activeTimers.unshift(timer);
-  prepTickets=0;
-  updatePrepUI();
-  renderTimers();
-  if(autoStart) startQueue(id);
-  showToast(`เพิ่มคิว ${sel.emoji} ${sel.name} • ${timer.tickets} ใบ ♡`);
-}
 
 // Queue timers logic
 function renderTimers(){
-  const grid=$('#timersGrid');
-  const empty=$('#emptyTimers');
-  const count=$('#activeCount');
-  count.textContent=activeTimers.length+' คิว';
-  if(activeTimers.length===0){
-    grid.innerHTML='';
-    empty.style.display='block';
+  // keep new member view in sync
+  try{ if(typeof renderMemberTimers==='function') renderMemberTimers(); }catch(e){}
+  const grid=document.getElementById('timersGrid');
+  const empty=document.getElementById('emptyTimers');
+  const count=document.getElementById('activeCount');
+  if(!grid){
+    // old queue view removed - just sync member view
     return;
   }
-  empty.style.display='none';
+  if(count) count.textContent=activeTimers.length+' คิว';
+  if(activeTimers.length===0){
+    grid.innerHTML='';
+    if(empty) empty.style.display='block';
+    return;
+  }
+  if(empty) empty.style.display='none';
   grid.innerHTML=activeTimers.map(t=>{
     const pct = t.totalSeconds>0 ? ((t.totalSeconds - t.remaining)/t.totalSeconds)*100 : 0;
     const circleBg = `conic-gradient(${t.idolColor} ${pct}%, var(--pink-light) 0)`;
@@ -1922,8 +1981,7 @@ if('serviceWorker' in navigator){
 }
 // init
 renderIdols();
-renderCreator();
-renderTimers();
+renderMemberTimers();
 renderHistory();
 initSoundSettings();
 </script>
