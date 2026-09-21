@@ -874,13 +874,10 @@ function openIdolModal(id=null){
 function onIdolSoundChange(val){
   const wrap=$('#idolCustomWrap');
   if(wrap) wrap.style.display = val==='custom' ? 'flex' : 'none';
-  const saveBtn=document.getElementById('saveIdolBtn');
-  if(val==='custom'){
-    const hasData = pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
-    if(!hasData && saveBtn){ saveBtn.disabled=true; saveBtn.style.opacity='0.5'; $('#idolCustomName').textContent='กรุณาเลือกไฟล์ก่อน ♡'; }
-    else if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; if(!pendingIdolCustomData) $('#idolCustomName').textContent='✓ '+(idols.find(x=>x.id===editingIdolId)?.customSoundName||'ไฟล์เดิม'); }
-  } else {
-    if(saveBtn){ saveBtn.disabled=false; saveBtn.style.opacity='1'; }
+  updateSaveButtonState();
+  if(val==='custom' && !pendingIdolCustomData && !(editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData)){
+    const n=document.getElementById('idolCustomName');
+    if(n) n.textContent='กรุณาเลือกไฟล์ก่อน ♡';
   }
 }
 function handleIdolCustomFile(event){
@@ -903,10 +900,7 @@ function handleIdolCustomFile(event){
       pendingIdolCustomData=reader.result;
       pendingIdolCustomName=file.name;
       idolCustomLoading=false;
-      // check if image still loading
-      if(pendingIdolImageLoading){
-        if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ กำลังโหลดรูป...'; saveBtn.style.opacity='0.5'; }
-      } else if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; saveBtn.style.opacity='1'; }
+      updateSaveButtonState();
       const nameEl=document.getElementById('idolCustomName');
       if(nameEl) nameEl.textContent='✓ '+file.name+' ('+Math.round(reader.result.length/1024)+'KB)';
       showToast('โหลดไฟล์ "'+file.name+'" แล้ว ♡ กดบันทึกได้เลย');
@@ -957,13 +951,7 @@ function handleIdolImageFile(event){
         // Only enable if not waiting for sound file
         const soundSel=document.getElementById('inputAlarmSound');
         const soundVal=soundSel ? soundSel.value : 'default';
-        const hasSoundData = soundVal!=='custom' || pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
-        const stillLoadingSound = idolCustomLoading;
-        if(saveBtn2 && (!hasSoundData && soundVal==='custom' || stillLoadingSound)){
-          // keep disabled if sound still loading or missing
-          if(!hasSoundData && soundVal==='custom'){ saveBtn2.disabled=true; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='0.5'; }
-          else { saveBtn2.disabled=true; saveBtn2.textContent='⏳ กำลังโหลด...'; saveBtn2.style.opacity='0.5'; }
-        } else if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
+        updateSaveButtonState();
         const wrap=document.getElementById('imagePreview');
         const prev=document.getElementById('previewImg');
         const nameEl=document.getElementById('previewName');
@@ -1068,11 +1056,23 @@ function previewIdolSound(){
   showToast('▶ '+(labels[sel]||sel)+' ♡');
 }
 function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; pendingIdolImageData=null; pendingIdolImageName=''; pendingIdolImageLoading=false; const inp=document.getElementById('inputImage'); if(inp) inp.value=''; const wrap=document.getElementById('imagePreview'); if(wrap) wrap.style.display='none'; const btn=document.getElementById('saveIdolBtn'); if(btn){ btn.disabled=false; btn.textContent='บันทึก'; btn.style.opacity='1'; } }
+function updateSaveButtonState(){
+  const btn=document.getElementById('saveIdolBtn');
+  if(!btn) return;
+  if(pendingIdolImageLoading){ btn.disabled=true; btn.textContent='⏳ กำลังโหลดรูป...'; btn.style.opacity='0.5'; return; }
+  if(idolCustomLoading){ btn.disabled=true; btn.textContent='⏳ กำลังโหลดเสียง...'; btn.style.opacity='0.5'; return; }
+  const soundSel=document.getElementById('inputAlarmSound');
+  const soundVal=soundSel ? soundSel.value : 'default';
+  const hasSoundData = soundVal!=='custom' || pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
+  if(!hasSoundData && soundVal==='custom'){ btn.disabled=true; btn.textContent='บันทึก'; btn.style.opacity='0.5'; const n=document.getElementById('idolCustomName'); if(n) n.textContent='กรุณาเลือกไฟล์ก่อน ♡'; return; }
+  btn.disabled=false; btn.textContent='บันทึก'; btn.style.opacity='1';
+}
 function renderColorPick(){
   $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
 }
 function pickColor(c){ selectedColor=c; renderColorPick(); }
 function saveIdol(){
+  try{ console.log('saveIdol called', {name: document.getElementById('inputName')?.value, sec: document.getElementById('inputSeconds')?.value, alarmSound: document.getElementById('inputAlarmSound')?.value, hasImage: !!pendingIdolImageData, hasSound: !!pendingIdolCustomData, imgLoading: pendingIdolImageLoading, soundLoading: idolCustomLoading, editing: editingIdolId}); }catch(e){}
   const name=$('#inputName').value.trim();
   const sec=parseInt($('#inputSeconds').value);
   const emoji=$('#inputEmoji').value.trim()||'🌸';
