@@ -752,12 +752,14 @@ function save(){
     if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
   }catch(e){
     console.error('save failed', e);
-    // QuotaExceededError - try without custom sounds then alert
+    let msg='';
     if(e && (e.name==='QuotaExceededError' || e.code===22)){
-      alert('พื้นที่เก็บข้อมูลเต็ม ♡ ลองลบไฟล์เสียงแบบกำหนดเองที่ใหญ่เกิน หรือล้างประวัติเก่า แล้วลองใหม่');
+      msg='พื้นที่เก็บข้อมูลเต็ม ♡ ลองลบรูป/ไฟล์เสียงที่ใหญ่เกิน หรือล้างประวัติเก่า แล้วลองใหม่ (รูปจะถูกบีบเหลือ 200×200 อัตโนมัติ)';
     } else {
-      alert('บันทึกไม่สำเร็จ: '+(e.message||e));
+      msg='บันทึกไม่สำเร็จ: '+(e.message||e);
     }
+    try{ showToast(msg); }catch(_e){}
+    alert(msg);
     throw e;
   }
 }
@@ -1096,6 +1098,13 @@ function saveIdol(){
     const ex2=idols.find(x=>x.id===editingIdolId);
     if(ex2 && ex2.image){ imageToSave=ex2.image; imageNameToSave=ex2.imageName||''; }
   }
+  // estimate size before save
+  try{
+    const est = JSON.stringify(idols).length + (pendingIdolImageData? pendingIdolImageData.length : 0) + (pendingIdolCustomData? pendingIdolCustomData.length : 0);
+    if(est > 4.5*1024*1024){
+      showToast('ข้อมูลใกล้เต็ม (4.5MB) ลองลบรูปเก่าหรือใช้ไฟล์เล็กกว่านี้');
+    }
+  }catch(e){}
   // prepare new idol object / update
   let prevIdolsBackup=null;
   try{ prevIdolsBackup=JSON.stringify(idols); }catch(e){}
