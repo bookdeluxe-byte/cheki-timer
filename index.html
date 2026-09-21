@@ -257,7 +257,7 @@ header{
 .queue-tickets{ background:var(--pink-light); padding:2px 6px; border-radius:999px; font-weight:700; font-size:0.62rem; color:var(--pink-dark)}
 .queue-time-row{ display:flex; gap:3px; text-align:center}
 .queue-time-box{
-  flex:1; background:var(--pink-light); border-radius:7px; padding:3px 1px;
+  flex:1; background:var(--pink-light); border-radius:7px; padding:2px 1px;
 }
 .queue-time-box b{ display:block; font-size:0.72rem}
 .queue-time-box span{ font-size:0.55rem; color:var(--muted)}
@@ -1113,17 +1113,17 @@ function renderMemberTimers(){
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:2px 0">
-        <div style="flex:0 0 100px; width:100px; height:100px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
+        <div style="flex:0 0 80px; width:80px; height:80px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
           <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0">${idol.emoji}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
         <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto">
-          <div class="queue-circle" style="background:${circleBg}; width:100px; height:100px; border-radius:12px">
+          <div class="queue-circle" style="background:${circleBg}; width:80px; height:80px; border-radius:10px">
             <div class="queue-inner">
               <div>
-                <div class="queue-time" style="font-size:1.15rem">${timeDisplay}</div>
-                <div class="queue-status" style="font-size:0.62rem">${status}</div>
+                <div class="queue-time" style="font-size:0.95rem">${timeDisplay}</div>
+                <div class="queue-status" style="font-size:0.52rem">${status}</div>
               </div>
             </div>
           </div>
@@ -1158,13 +1158,13 @@ function renderMemberTimers(){
           <button class="t-btn add" onclick="memberChangePending('${idol.id}', 1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">＋</button>
         </div>
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3px">
-          <button class="t-btn" style="padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
-          <button class="t-btn" style="padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
-          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
-          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:4px 1px; font-size:0.68rem; border-radius:6px; min-height:26px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
+          <button class="t-btn" style="padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
+          <button class="t-btn" style="padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
+          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
+          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
         </div>
       </div>
-      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:6px; font-size:0.75rem; border-radius:8px; min-height:32px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
+      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:5px; font-size:0.68rem; border-radius:7px; min-height:28px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
       `}
     </div>`;
   }).join('');
