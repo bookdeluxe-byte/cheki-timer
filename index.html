@@ -212,7 +212,7 @@ header{
 .t-btn.add{ background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; border-color:transparent; font-size:1.0rem}
 .t-btn.minus{ color:var(--pink-dark)}
 .queue-btn{
-  width:100%; padding:10px 12px; border-radius:12px; border:none; cursor:pointer;
+  width:100%; padding:14px 12px; border-radius:12px; border:none; cursor:pointer;
   font-family:inherit; font-weight:700; font-size:0.9rem;
   background:linear-gradient(135deg,var(--pink),var(--purple)); color:white;
   box-shadow:0 6px 16px rgba(255,107,157,0.3); transition:.2s;
@@ -1159,13 +1159,13 @@ function renderMemberTimers(){
           <button class="t-btn add" onclick="memberChangePending('${idol.id}', 1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">＋</button>
         </div>
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3px">
-          <button class="t-btn" style="padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
-          <button class="t-btn" style="padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
+          <button class="t-btn" style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
+          <button class="t-btn" style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
           <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
           <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
         </div>
       </div>
-      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
+      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
       `}
     </div>`;
   }).join('');
