@@ -171,7 +171,7 @@ header{
   font-size:26px; color:white; flex-shrink:0;
   overflow:hidden; position:relative;
 }
-.idol-avatar img, .queue-avatar img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit; }
+.idol-avatar img, .queue-avatar img{ width:60%; height:60%; object-fit:cover; display:block; border-radius:inherit; margin:auto; }
 .idol-name{ font-weight:700; font-size:1.05rem}
 .idol-meta{ font-size:0.82rem; color:var(--muted)}
 .idol-stats{ display:flex; gap:8px; margin:12px 0 14px}
@@ -1360,7 +1360,7 @@ function renderTimers(){
     return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
       <div class="queue-head">
         <div class="queue-idol">
-          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:100%;height:100%;object-fit:cover">` : (t.idolEmoji||"🌸"); })()}</div>
+          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:60%;height:60%;object-fit:cover; display:block; margin:auto; border-radius:inherit">` : (t.idolEmoji||"🌸"); })()}</div>
           <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
         <div style="display:flex; align-items:center; gap:6px">
