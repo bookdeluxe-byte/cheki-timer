@@ -731,6 +731,7 @@ let pendingIdolCustomName = '';
 let idolCustomLoading = false;
 let pendingIdolImageData = null;
 let pendingIdolImageName = '';
+let pendingIdolImageLoading = false;
 
 // migrate old idols to have alarmSound field
 idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; });
@@ -927,6 +928,9 @@ function handleIdolImageFile(event){
   if(!file) return;
   if(!file.type.startsWith('image/')){ showToast('เลือกไฟล์รูปภาพเท่านั้น ♡'); input.value=''; return; }
   if(file.size > 2*1024*1024){ showToast('รูปใหญ่เกิน 2MB เลือกไฟล์เล็กกว่านี้ ♡'); input.value=''; return; }
+  const saveBtn=document.getElementById('saveIdolBtn');
+  pendingIdolImageLoading=true;
+  if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ กำลังโหลดรูป...'; saveBtn.style.opacity='0.5'; }
   const reader=new FileReader();
   reader.onload=()=>{
     const img=new Image();
@@ -941,15 +945,21 @@ function handleIdolImageFile(event){
         ctx.drawImage(img, sx, sy, size, size, 0, 0, out, out);
         pendingIdolImageData=canvas.toDataURL('image/jpeg', 0.85);
         pendingIdolImageName=file.name;
+        pendingIdolImageLoading=false;
+        const saveBtn2=document.getElementById('saveIdolBtn');
+        if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
         const wrap=document.getElementById('imagePreview');
         const prev=document.getElementById('previewImg');
         const nameEl=document.getElementById('previewName');
         if(wrap) wrap.style.display='flex';
         if(prev) prev.src=pendingIdolImageData;
         if(nameEl) nameEl.textContent='✓ '+file.name+' ('+Math.round(pendingIdolImageData.length/1024)+'KB)';
-        showToast('โหลดรูป "'+file.name+'" แล้ว ♡');
+        showToast('โหลดรูป "'+file.name+'" แล้ว ♡ กดบันทึกได้เลย');
         try{ input.value=''; }catch(e){}
       }catch(e){
+        pendingIdolImageLoading=false;
+        const saveBtn2=document.getElementById('saveIdolBtn');
+        if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
         // fallback to original dataURL if canvas fails
         pendingIdolImageData=reader.result;
         pendingIdolImageName=file.name;
@@ -961,11 +971,19 @@ function handleIdolImageFile(event){
       }
     };
     img.onerror=()=>{
+      pendingIdolImageLoading=false;
+      const saveBtn2=document.getElementById('saveIdolBtn');
+      if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
       showToast('โหลดรูปไม่สำเร็จ');
     };
     img.src=reader.result;
   };
-  reader.onerror=()=>{ showToast('อ่านไฟล์ไม่สำเร็จ'); };
+  reader.onerror=()=>{
+    pendingIdolImageLoading=false;
+    const saveBtn2=document.getElementById('saveIdolBtn');
+    if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
+    showToast('อ่านไฟล์ไม่สำเร็จ');
+  };
   reader.readAsDataURL(file);
 }
 function clearIdolImage(){
@@ -1033,7 +1051,7 @@ function previewIdolSound(){
   const labels={default:'ค่าเริ่มต้น',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
   showToast('▶ '+(labels[sel]||sel)+' ♡');
 }
-function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; pendingIdolImageData=null; pendingIdolImageName=''; const inp=document.getElementById('inputImage'); if(inp) inp.value=''; const wrap=document.getElementById('imagePreview'); if(wrap) wrap.style.display='none'; }
+function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; pendingIdolImageData=null; pendingIdolImageName=''; pendingIdolImageLoading=false; const inp=document.getElementById('inputImage'); if(inp) inp.value=''; const wrap=document.getElementById('imagePreview'); if(wrap) wrap.style.display='none'; const btn=document.getElementById('saveIdolBtn'); if(btn){ btn.disabled=false; btn.textContent='บันทึก'; btn.style.opacity='1'; } }
 function renderColorPick(){
   $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
 }
@@ -1043,6 +1061,7 @@ function saveIdol(){
   const sec=parseInt($('#inputSeconds').value);
   const emoji=$('#inputEmoji').value.trim()||'🌸';
   const alarmSound=$('#inputAlarmSound').value||'default';
+  if(pendingIdolImageLoading){ showToast('⏳ กำลังโหลดรูป รอสักครู่แล้วกดบันทึกอีกครั้ง'); return; }
   if(idolCustomLoading){ showToast('⏳ กำลังโหลดไฟล์เสียง รอสักครู่แล้วกดบันทึกอีกครั้ง'); return; }
   if(!name){ showToast('กรุณาใส่ชื่อไอดอล'); alert('กรุณาใส่ชื่อไอดอล'); return; }
   if(!sec || sec<5){ showToast('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); alert('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); return; }
