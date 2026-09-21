@@ -944,7 +944,6 @@ function handleIdolImageFile(event){
         const ctx=canvas.getContext('2d');
         ctx.drawImage(img, sx, sy, size, size, 0, 0, out, out);
         pendingIdolImageData=canvas.toDataURL('image/jpeg', 0.85);
-        try{ if(typeof print!=='undefined') print('DEBUG img onload set pending len '+pendingIdolImageData.length); }catch(e){}
         pendingIdolImageName=file.name;
         pendingIdolImageLoading=false;
         const saveBtn2=document.getElementById('saveIdolBtn');
