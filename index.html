@@ -171,7 +171,7 @@ header{
   font-size:26px; color:white; flex-shrink:0;
   overflow:hidden; position:relative;
 }
-.idol-avatar img, .queue-avatar img{ width:60%; height:60%; object-fit:cover; display:block; border-radius:inherit; margin:auto; }
+.idol-avatar img, .queue-avatar img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit; }
 .idol-name{ font-weight:700; font-size:1.05rem}
 .idol-meta{ font-size:0.82rem; color:var(--muted)}
 .idol-stats{ display:flex; gap:8px; margin:12px 0 14px}
@@ -1265,7 +1265,7 @@ function renderMemberTimers(){
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; margin:1px 0">
         <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; margin-left:5px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
-          <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0; overflow:hidden; padding:0">${avatarInner(idol)}</div>
+          <div class="queue-avatar" style="background:${idol.color}; width:60%; aspect-ratio:1; font-size:18px; border-radius:9px; flex-shrink:0; overflow:hidden; padding:0; max-width:60px; max-height:60px">${avatarInner(idol)}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
@@ -1360,7 +1360,7 @@ function renderTimers(){
     return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
       <div class="queue-head">
         <div class="queue-idol">
-          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:60%;height:60%;object-fit:cover; display:block; margin:auto; border-radius:inherit">` : (t.idolEmoji||"🌸"); })()}</div>
+          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:100%;height:100%;object-fit:cover">` : (t.idolEmoji||"🌸"); })()}</div>
           <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
         <div style="display:flex; align-items:center; gap:6px">
