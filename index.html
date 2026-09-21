@@ -169,7 +169,9 @@ header{
 .idol-avatar{
   width:54px; height:54px; border-radius:16px; display:grid; place-items:center;
   font-size:26px; color:white; flex-shrink:0;
+  overflow:hidden; position:relative;
 }
+.idol-avatar img, .queue-avatar img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit; }
 .idol-name{ font-weight:700; font-size:1.05rem}
 .idol-meta{ font-size:0.82rem; color:var(--muted)}
 .idol-stats{ display:flex; gap:8px; margin:12px 0 14px}
@@ -250,7 +252,7 @@ header{
 }
 .queue-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; padding-top:2px}
 .queue-idol{ display:flex; gap:10px; align-items:center}
-.queue-avatar{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; color:white; font-size:13px; font-weight:700; box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.queue-avatar{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; color:white; font-size:13px; font-weight:700; box-shadow:0 2px 6px rgba(0,0,0,0.15); overflow:hidden; position:relative; }
 .queue-info b{ display:block; font-size:1.0rem; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.15; letter-spacing:0.01em; color:var(--text)}
 .queue-info span{ font-size:0.6rem; color:var(--muted); line-height:1.25; display:block; margin-top:3px}
 @media(max-width:640px){ .queue-info b{ font-size:1.05rem !important; font-weight:800 !important; } .queue-avatar{ width:32px !important; height:32px !important; font-size:14px !important; } .queue-time{ font-size:1.1rem !important; } }
@@ -676,6 +678,21 @@ html,body{ overflow-x:hidden; max-width:100vw }
     <div class="form-group">
       <label>อีโมจิประจำตัว</label>
       <input id="inputEmoji" maxlength="2" placeholder="เช่น 🌸 🎀 🐰">
+      <div style="font-size:0.72rem; color:var(--muted); margin-top:4px">ถ้ามีรูปจะโชว์รูปแทนอีโมจิ</div>
+    </div>
+    <div class="form-group">
+      <label>รูปไอดอล (สี่เหลี่ยมจตุรัส) — ถ้าไม่ใส่จะใช้อีโมจิ</label>
+      <input id="inputImage" type="file" accept="image/*,.jpg,.jpeg,.png,.webp" onchange="handleIdolImageFile(event)">
+      <div id="imagePreview" style="display:none; margin-top:8px; gap:8px; align-items:center">
+        <div style="width:72px; height:72px; border-radius:12px; overflow:hidden; border:2px solid var(--border); background:var(--pink-light); flex-shrink:0">
+          <img id="previewImg" style="width:100%; height:100%; object-fit:cover; display:block">
+        </div>
+        <div style="flex:1; min-width:0">
+          <div id="previewName" style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis"></div>
+          <button type="button" class="btn btn-ghost btn-small" onclick="clearIdolImage()" style="margin-top:6px; color:#ef4444; border-color:#fecaca; padding:6px 10px">ลบรูป</button>
+        </div>
+      </div>
+      <div style="font-size:0.72rem; color:var(--muted); margin-top:4px">อัปรูปสี่เหลี่ยมจตุรัส • ถ้าไม่ตรงจะครอบให้เอง (≤800KB แนะนำ)</div>
     </div>
     <div class="form-group">
       <label>เสียงปลุกประจำตัว</label>
@@ -712,6 +729,8 @@ let selectedColor = COLORS[0];
 let pendingIdolCustomData = null;
 let pendingIdolCustomName = '';
 let idolCustomLoading = false;
+let pendingIdolImageData = null;
+let pendingIdolImageName = '';
 
 // migrate old idols to have alarmSound field
 idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; });
@@ -773,6 +792,8 @@ document.querySelectorAll('.nav-tab').forEach(btn=>{
 
 // Idol CRUD
 const SOUND_LABELS={default:'ตามตั้งค่า',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
+function avatarInner(idol){ if(idol && idol.image) return `<img src="${idol.image}" alt="">`; return (idol && idol.emoji) || '🌸'; }
+function avatarStyle(idol){ return `background:${idol.color};`; }
 const SOUND_ICONS={default:'⚙️',classic:'♪',chime:'🔔',kawaii:'♡',siren:'🚨',soft:'☁️',custom:'🎵'};
 function renderIdols(){
   const grid=document.getElementById('idolGrid');
@@ -790,7 +811,7 @@ function renderIdols(){
     const soundIcon=SOUND_ICONS[soundKey]||'🔊';
     return `<div class="idol-card" style="--card-color:${idol.color}">
       <div class="idol-head">
-        <div class="idol-avatar" style="background:${idol.color}">${idol.emoji||'🌸'}</div>
+        <div class="idol-avatar" style="background:${idol.color}; overflow:hidden; padding:0">${avatarInner(idol)}</div>
         <div style="min-width:0; flex:1">
           <div class="idol-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${idol.name} ${activeCount?`<span style="background:${idol.color}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
           <div class="idol-meta">⏱ ${idol.secondsPerCheki} วินาที / ใบ • <span style="color:${idol.color}">● ${idol.color}</span></div>
@@ -823,6 +844,8 @@ function openIdolModal(id=null){
     $('#inputAlarmSound').value=idol.alarmSound||'default';
     pendingIdolCustomData=idol.customSoundData||null;
     pendingIdolCustomName=idol.customSoundName||'';
+    pendingIdolImageData=idol.image||null;
+    pendingIdolImageName=idol.imageName||'';
   } else {
     $('#modalTitle').textContent='♡ เพิ่มไอดอล';
     $('#inputName').value='';
@@ -832,6 +855,8 @@ function openIdolModal(id=null){
     $('#inputAlarmSound').value='default';
     pendingIdolCustomData=null;
     pendingIdolCustomName='';
+    pendingIdolImageData=null;
+    pendingIdolImageName='';
   }
   renderColorPick();
   onIdolSoundChange($('#inputAlarmSound').value);
@@ -841,6 +866,7 @@ function openIdolModal(id=null){
     $('#idolCustomName').textContent='';
   }
   $('#inputIdolCustomFile').value='';
+  updateIdolImagePreview();
 }
 function onIdolSoundChange(val){
   const wrap=$('#idolCustomWrap');
@@ -895,6 +921,80 @@ function handleIdolCustomFile(event){
   };
   reader.readAsDataURL(file);
 }
+function handleIdolImageFile(event){
+  const input=event.target;
+  const file=input.files && input.files[0];
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ showToast('เลือกไฟล์รูปภาพเท่านั้น ♡'); input.value=''; return; }
+  if(file.size > 2*1024*1024){ showToast('รูปใหญ่เกิน 2MB เลือกไฟล์เล็กกว่านี้ ♡'); input.value=''; return; }
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      try{
+        const size=Math.min(img.width, img.height);
+        const sx=(img.width-size)/2, sy=(img.height-size)/2;
+        const canvas=document.createElement('canvas');
+        const out=200;
+        canvas.width=out; canvas.height=out;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img, sx, sy, size, size, 0, 0, out, out);
+        pendingIdolImageData=canvas.toDataURL('image/jpeg', 0.85);
+        pendingIdolImageName=file.name;
+        const wrap=document.getElementById('imagePreview');
+        const prev=document.getElementById('previewImg');
+        const nameEl=document.getElementById('previewName');
+        if(wrap) wrap.style.display='flex';
+        if(prev) prev.src=pendingIdolImageData;
+        if(nameEl) nameEl.textContent='✓ '+file.name+' ('+Math.round(pendingIdolImageData.length/1024)+'KB)';
+        showToast('โหลดรูป "'+file.name+'" แล้ว ♡');
+        try{ input.value=''; }catch(e){}
+      }catch(e){
+        // fallback to original dataURL if canvas fails
+        pendingIdolImageData=reader.result;
+        pendingIdolImageName=file.name;
+        const wrap=document.getElementById('imagePreview');
+        const prev=document.getElementById('previewImg');
+        if(wrap) wrap.style.display='flex';
+        if(prev) prev.src=pendingIdolImageData;
+        showToast('โหลดรูปแล้ว ♡');
+      }
+    };
+    img.onerror=()=>{
+      showToast('โหลดรูปไม่สำเร็จ');
+    };
+    img.src=reader.result;
+  };
+  reader.onerror=()=>{ showToast('อ่านไฟล์ไม่สำเร็จ'); };
+  reader.readAsDataURL(file);
+}
+function clearIdolImage(){
+  pendingIdolImageData=null;
+  pendingIdolImageName='';
+  const wrap=document.getElementById('imagePreview');
+  const prev=document.getElementById('previewImg');
+  const nameEl=document.getElementById('previewName');
+  const inp=document.getElementById('inputImage');
+  if(wrap) wrap.style.display='none';
+  if(prev) prev.removeAttribute('src');
+  if(nameEl) nameEl.textContent='';
+  if(inp) inp.value='';
+  showToast('ลบรูปแล้ว จะใช้อีโมจิแทน ♡');
+}
+function updateIdolImagePreview(){
+  const wrap=document.getElementById('imagePreview');
+  const prev=document.getElementById('previewImg');
+  const nameEl=document.getElementById('previewName');
+  if(pendingIdolImageData){
+    if(wrap) wrap.style.display='flex';
+    if(prev) prev.src=pendingIdolImageData;
+    if(nameEl) nameEl.textContent='✓ '+(pendingIdolImageName||'รูปเดิม')+' ('+Math.round(pendingIdolImageData.length/1024)+'KB)';
+  } else {
+    if(wrap) wrap.style.display='none';
+    if(prev) prev.removeAttribute('src');
+    if(nameEl) nameEl.textContent='';
+  }
+}
 function previewIdolSound(){
   const sel=$('#inputAlarmSound').value;
   let soundId=sel;
@@ -933,7 +1033,7 @@ function previewIdolSound(){
   const labels={default:'ค่าเริ่มต้น',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
   showToast('▶ '+(labels[sel]||sel)+' ♡');
 }
-function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; }
+function closeIdolModal(){ $('#idolModal').classList.remove('open'); editingIdolId=null; pendingIdolImageData=null; pendingIdolImageName=''; const inp=document.getElementById('inputImage'); if(inp) inp.value=''; const wrap=document.getElementById('imagePreview'); if(wrap) wrap.style.display='none'; }
 function renderColorPick(){
   $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
 }
@@ -957,18 +1057,26 @@ function saveIdol(){
       else { showToast('กรุณาเลือกไฟล์เสียงก่อน ♡'); alert('กรุณาเลือกไฟล์เสียงสำหรับโหมดไฟล์ของฉัน'); const inp=document.getElementById('inputIdolCustomFile'); if(inp) inp.focus(); return; }
     } else { showToast('กรุณาเลือกไฟล์เสียงก่อน ♡'); alert('กรุณาเลือกไฟล์เสียงสำหรับโหมดไฟล์ของฉัน'); const inp=document.getElementById('inputIdolCustomFile'); if(inp) inp.focus(); return; }
   }
+  let imageToSave = pendingIdolImageData;
+  let imageNameToSave = pendingIdolImageName;
+  if(!imageToSave && editingIdolId){
+    const ex2=idols.find(x=>x.id===editingIdolId);
+    if(ex2 && ex2.image){ imageToSave=ex2.image; imageNameToSave=ex2.imageName||''; }
+  }
   // prepare new idol object / update
   let prevIdolsBackup=null;
   try{ prevIdolsBackup=JSON.stringify(idols); }catch(e){}
   if(editingIdolId){
     const idx=idols.findIndex(x=>x.id===editingIdolId);
     if(idx===-1){ alert('ไม่พบไอดอล'); return; }
-    idols[idx]={...idols[idx], name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound, customSoundData: customDataToSave, customSoundName: customNameToSave};
+    idols[idx]={...idols[idx], name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound, customSoundData: customDataToSave, customSoundName: customNameToSave, image: imageToSave, imageName: imageNameToSave};
     if(alarmSound!=='custom'){ delete idols[idx].customSoundData; delete idols[idx].customSoundName; }
+    if(!imageToSave){ delete idols[idx].image; delete idols[idx].imageName; }
   } else {
     const id=Date.now().toString(36);
-    const newIdol={id, name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound};
+    const newIdol={id, name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound, image: imageToSave, imageName: imageNameToSave};
     if(alarmSound==='custom'){ newIdol.customSoundData=customDataToSave; newIdol.customSoundName=customNameToSave; }
+    if(!imageToSave){ delete newIdol.image; delete newIdol.imageName; }
     idols.push(newIdol);
     if(!selectedIdolId) selectedIdolId=id;
   }
@@ -981,7 +1089,7 @@ function saveIdol(){
     return;
   }
   // clear pending only after successful save
-  pendingIdolCustomData=null; pendingIdolCustomName='';
+  pendingIdolCustomData=null; pendingIdolCustomName=''; pendingIdolImageData=null; pendingIdolImageName='';
   closeIdolModal(); renderIdols(); renderMemberTimers(); renderHistoryFilters();
   showToast('บันทึก '+name+' สำเร็จ ♡');
 }
@@ -1115,7 +1223,7 @@ function renderMemberTimers(){
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; margin:1px 0">
         <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; margin-left:5px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
-          <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0">${idol.emoji}</div>
+          <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0; overflow:hidden; padding:0">${avatarInner(idol)}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
@@ -1210,7 +1318,7 @@ function renderTimers(){
     return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
       <div class="queue-head">
         <div class="queue-idol">
-          <div class="queue-avatar" style="background:${t.idolColor}">${t.idolEmoji}</div>
+          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:100%;height:100%;object-fit:cover">` : (t.idolEmoji||"🌸"); })()}</div>
           <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
         <div style="display:flex; align-items:center; gap:6px">
