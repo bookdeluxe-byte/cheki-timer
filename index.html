@@ -944,10 +944,17 @@ function handleIdolImageFile(event){
         const ctx=canvas.getContext('2d');
         ctx.drawImage(img, sx, sy, size, size, 0, 0, out, out);
         pendingIdolImageData=canvas.toDataURL('image/jpeg', 0.85);
+        try{ if(typeof print!=='undefined') print('DEBUG img onload set pending len '+pendingIdolImageData.length); }catch(e){}
         pendingIdolImageName=file.name;
         pendingIdolImageLoading=false;
         const saveBtn2=document.getElementById('saveIdolBtn');
-        if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
+        // Only enable if not waiting for sound file
+        const soundSel=document.getElementById('inputAlarmSound');
+        const soundVal=soundSel ? soundSel.value : 'default';
+        const hasSoundData = soundVal!=='custom' || pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
+        if(saveBtn2 && !hasSoundData && soundVal==='custom'){
+          saveBtn2.disabled=true; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='0.5';
+        } else if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
         const wrap=document.getElementById('imagePreview');
         const prev=document.getElementById('previewImg');
         const nameEl=document.getElementById('previewName');
