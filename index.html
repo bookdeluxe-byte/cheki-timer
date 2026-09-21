@@ -239,7 +239,7 @@ header{
 }
 #view-timer{ padding-bottom:72px; }
 .timer-queue-card{
-  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:4px 6px 4px 6px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:2px 6px 2px 6px;
   box-shadow:0 4px 14px rgba(0,0,0,0.07); position:relative; overflow:hidden;
   transition:.2s; display:flex; flex-direction:column; gap:5px;
 }
@@ -427,7 +427,7 @@ header{
   .timer-queue-card{ padding:8px 4px 4px 4px; border-radius:9px; gap:4px }
   .queue-circle{ width:80px !important; height:80px !important; }
   /* square left frame on mobile */
-  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 64px !important; width:64px !important; height:64px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 64px !important; width:64px !important; height:76px !important; }
   .queue-time{ font-size:0.8rem }
   .queue-time-row{ gap:2px }
   .queue-time-box{ padding:2px 1px; border-radius:6px }
@@ -467,7 +467,7 @@ header{
   .ticket-buttons{ gap:4px }
   .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
   .queue-circle{ width:64px !important; height:64px !important; }
-  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 56px !important; width:56px !important; height:56px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 56px !important; width:56px !important; height:67px !important; }
   .queue-time{ font-size:0.75rem}
   .queue-head{ align-items:flex-start }
   .queue-idol{ gap:3px }
@@ -1113,7 +1113,7 @@ function renderMemberTimers(){
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:6px; align-items:center; justify-content:space-between; margin:1px 0">
-        <div style="flex:0 0 100px; width:100px; height:100px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
+        <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
           <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0">${idol.emoji}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
@@ -1158,13 +1158,13 @@ function renderMemberTimers(){
           <button class="t-btn add" onclick="memberChangePending('${idol.id}', 1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">＋</button>
         </div>
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3px">
-          <button class="t-btn" style="padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
-          <button class="t-btn" style="padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
-          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
-          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:3px 1px; font-size:0.62rem; border-radius:6px; min-height:22px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
+          <button class="t-btn" style="padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
+          <button class="t-btn" style="padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
+          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
+          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
         </div>
       </div>
-      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:4px; font-size:0.64rem; border-radius:6px; min-height:24px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
+      <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:3px; font-size:0.62rem; border-radius:6px; min-height:22px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
       `}
     </div>`;
   }).join('');
