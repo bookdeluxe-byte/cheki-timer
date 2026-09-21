@@ -192,7 +192,7 @@ header{
 .idol-chip{
   padding:5px 10px; border-radius:999px; border:2px solid var(--border); background:var(--card);
   cursor:pointer; font-family:inherit; font-weight:600; font-size:0.82rem; transition:.2s;
-  display:flex; align-items:center; gap:5px;
+  display:flex; align-items:center; gap:4px;
 }
 .idol-chip.active{ color:white; border-color:transparent; }
 .ticket-display-big{ text-align:center; padding:2px 0}
@@ -239,7 +239,7 @@ header{
 }
 #view-timer{ padding-bottom:72px; }
 .timer-queue-card{
-  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 6px 6px 6px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px 6px 6px 6px;
   box-shadow:0 4px 14px rgba(0,0,0,0.07); position:relative; overflow:hidden;
   transition:.2s; display:flex; flex-direction:column; gap:5px;
 }
@@ -425,9 +425,9 @@ header{
   .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:6px }
   .active-header > div .btn{ justify-content:center; padding:7px 8px; font-size:0.8rem}
   .timer-queue-card{ padding:8px 4px 4px 4px; border-radius:9px; gap:4px }
-  .queue-circle{ width:80px !important; height:96px !important; }
+  .queue-circle{ width:80px !important; height:80px !important; }
   /* square left frame on mobile */
-  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 64px !important; width:64px !important; height:76px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 64px !important; width:64px !important; height:64px !important; }
   .queue-time{ font-size:0.8rem }
   .queue-time-row{ gap:2px }
   .queue-time-box{ padding:2px 1px; border-radius:6px }
@@ -466,8 +466,8 @@ header{
   .ticket-number{ font-size:1.65rem }
   .ticket-buttons{ gap:4px }
   .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
-  .queue-circle{ width:64px !important; height:76px !important; }
-  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 56px !important; width:56px !important; height:67px !important; }
+  .queue-circle{ width:64px !important; height:64px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 56px !important; width:56px !important; height:56px !important; }
   .queue-time{ font-size:0.75rem}
   .queue-head{ align-items:flex-start }
   .queue-idol{ gap:3px }
@@ -1112,14 +1112,14 @@ function renderMemberTimers(){
         <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
-      <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:4px 0">
-        <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
+      <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:2px 0">
+        <div style="flex:0 0 100px; width:100px; height:100px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
           <div class="queue-avatar" style="background:${idol.color}; width:36px; height:36px; font-size:18px; border-radius:9px; flex-shrink:0">${idol.emoji}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
         <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto">
-          <div class="queue-circle" style="background:${circleBg}; width:100px; height:120px; border-radius:12px">
+          <div class="queue-circle" style="background:${circleBg}; width:100px; height:100px; border-radius:12px">
             <div class="queue-inner">
               <div>
                 <div class="queue-time" style="font-size:1.15rem">${timeDisplay}</div>
@@ -1135,7 +1135,7 @@ function renderMemberTimers(){
         <div class="queue-time-box remaining"><span>เหลือ</span><b>${formatTime(t.remaining)}</b></div>
         <div class="queue-time-box"><span>ต่อใบ</span><b>${formatTime(idol.secondsPerCheki)}</b></div>
       </div>
-      <div style="display:flex; gap:4px; margin:4px 0">
+      <div style="display:flex; gap:4px; margin:2px 0">
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',30)">+30วิ</button>
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',60)">+1นาที</button>
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTickets('${idol.id}',1)">+1ใบ</button>
@@ -1148,7 +1148,7 @@ function renderMemberTimers(){
         <button class="btn btn-delQ" style="grid-column:${t.isRunning||isFinished?'auto':'1/-1'}" onclick="deleteMemberTimer('${idol.id}')">✕ ลบ</button>
       </div>
       ` : `
-      <div style="background:var(--pink-light); border-radius:8px; padding:5px; border:1px dashed var(--border); margin:4px 0">
+      <div style="background:var(--pink-light); border-radius:8px; padding:5px; border:1px dashed var(--border); margin:2px 0">
         <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px">
           <button class="t-btn minus" onclick="memberChangePending('${idol.id}', -1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">−</button>
           <div style="flex:1; text-align:center; background:var(--card); border-radius:8px; padding:4px 2px; border:1px solid var(--border)">
