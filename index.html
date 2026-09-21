@@ -901,14 +901,19 @@ function handleIdolCustomFile(event){
       pendingIdolCustomData=reader.result;
       pendingIdolCustomName=file.name;
       idolCustomLoading=false;
-      if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; saveBtn.style.opacity='1'; }
+      // check if image still loading
+      if(pendingIdolImageLoading){
+        if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ กำลังโหลดรูป...'; saveBtn.style.opacity='0.5'; }
+      } else if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; saveBtn.style.opacity='1'; }
       const nameEl=document.getElementById('idolCustomName');
       if(nameEl) nameEl.textContent='✓ '+file.name+' ('+Math.round(reader.result.length/1024)+'KB)';
       showToast('โหลดไฟล์ "'+file.name+'" แล้ว ♡ กดบันทึกได้เลย');
       try{ input.value=''; }catch(e){}
     }catch(e){
       idolCustomLoading=false;
-      if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; saveBtn.style.opacity='1'; }
+      if(pendingIdolImageLoading){
+        if(saveBtn){ saveBtn.disabled=true; saveBtn.textContent='⏳ กำลังโหลดรูป...'; saveBtn.style.opacity='0.5'; }
+      } else if(saveBtn){ saveBtn.disabled=false; saveBtn.textContent='บันทึก'; saveBtn.style.opacity='1'; }
       showToast('โหลดไฟล์ผิดพลาด ♡ ลองใหม่');
       try{ console.error(e); }catch(_e){}
     }
@@ -951,8 +956,11 @@ function handleIdolImageFile(event){
         const soundSel=document.getElementById('inputAlarmSound');
         const soundVal=soundSel ? soundSel.value : 'default';
         const hasSoundData = soundVal!=='custom' || pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
-        if(saveBtn2 && !hasSoundData && soundVal==='custom'){
-          saveBtn2.disabled=true; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='0.5';
+        const stillLoadingSound = idolCustomLoading;
+        if(saveBtn2 && (!hasSoundData && soundVal==='custom' || stillLoadingSound)){
+          // keep disabled if sound still loading or missing
+          if(!hasSoundData && soundVal==='custom'){ saveBtn2.disabled=true; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='0.5'; }
+          else { saveBtn2.disabled=true; saveBtn2.textContent='⏳ กำลังโหลด...'; saveBtn2.style.opacity='0.5'; }
         } else if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
         const wrap=document.getElementById('imagePreview');
         const prev=document.getElementById('previewImg');
