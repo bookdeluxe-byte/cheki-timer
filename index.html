@@ -427,7 +427,7 @@ header{
   .timer-queue-card{ padding:8px 4px 4px 4px; border-radius:9px; gap:4px }
   .queue-circle{ width:60px !important; height:60px !important; }
   /* square left frame on mobile */
-  #memberTimerGrid > div > div[style*="flex:0 0 64px"]{ flex:0 0 48px !important; width:48px !important; height:48px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 48px !important; width:48px !important; height:48px !important; }
   .queue-time{ font-size:0.8rem }
   .queue-time-row{ gap:2px }
   .queue-time-box{ padding:2px 1px; border-radius:6px }
@@ -467,7 +467,7 @@ header{
   .ticket-buttons{ gap:4px }
   .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
   .queue-circle{ width:50px !important; height:50px !important; }
-  #memberTimerGrid > div > div[style*="flex:0 0 64px"]{ flex:0 0 40px !important; width:40px !important; height:40px !important; }
+  #memberTimerGrid > div > div[style*="flex:0 0 72px"]{ flex:0 0 40px !important; width:40px !important; height:40px !important; }
   .queue-time{ font-size:0.75rem}
   .queue-head{ align-items:flex-start }
   .queue-idol{ gap:3px }
@@ -1112,14 +1112,14 @@ function renderMemberTimers(){
         <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
-      <div style="display:flex; gap:8px; align-items:center; margin:4px 0">
-        <div style="flex:0 0 64px; width:64px; height:64px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:var(--pink-light); padding:4px; border-radius:10px; border:1px solid var(--border); text-align:center; overflow:hidden">
-          <div class="queue-avatar" style="background:${idol.color}; width:26px; height:26px; font-size:13px; border-radius:7px; flex-shrink:0">${idol.emoji}</div>
-          <div style="font-size:0.7rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
-          <div style="font-size:0.55rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
+      <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:4px 0">
+        <div style="flex:0 0 72px; width:72px; height:72px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
+          <div class="queue-avatar" style="background:${idol.color}; width:32px; height:32px; font-size:16px; border-radius:8px; flex-shrink:0">${idol.emoji}</div>
+          <div style="font-size:0.78rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
+          <div style="font-size:0.58rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
-        <div class="queue-circle-wrap" style="flex-shrink:0; margin:0">
-          <div class="queue-circle" style="background:${circleBg}; width:56px; height:56px">
+        <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto">
+          <div class="queue-circle" style="background:${circleBg}; width:64px; height:64px">
             <div class="queue-inner">
               <div>
                 <div class="queue-time" style="font-size:0.85rem">${timeDisplay}</div>
