@@ -20,7 +20,7 @@ jobs:
       - name: Install deps
         run: |
           npm ci || npm install
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios @capacitor/app @capacitor/local-notifications --save
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios @capacitor/app @capacitor/local-notifications @capawesome/capacitor-background-mode --save
       - name: Prepare web assets
         run: |
           mkdir -p www

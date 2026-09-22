@@ -1171,6 +1171,7 @@ function memberStart(idolId){
       existing.tickets+=pending;
       existing.totalSeconds+=addSec;
       existing.remaining+=addSec;
+      if(existing.isRunning && existing.endAt) existing.endAt += addSec*1000;
       setMemberPending(idolId, 0);
       if(!existing.isRunning) startQueue(existing.id);
       else { try{ nativeScheduleAlarm(existing); }catch(e){} }
@@ -1202,10 +1203,11 @@ function memberPause(idolId){
 function memberReset(idolId){
   const t=activeTimers.find(x=>x.idolId===idolId);
   if(!t) { setMemberPending(idolId,0); renderMemberTimers(); return; }
-  if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; }
+  if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; delete t.endAt; }
   t.remaining=t.totalSeconds;
   t.finished=false;
   try{ nativeCancelAlarm(t.id); }catch(e){}
+  try{ disableBackgroundModeIfIdle(); }catch(e){}
   renderMemberTimers();
   save();
 }
@@ -1219,6 +1221,7 @@ function memberAddTime(idolId, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  if(t.isRunning && t.endAt) t.endAt += sec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
@@ -1232,6 +1235,7 @@ function memberAddTickets(idolId, n){
   const addSec=n*idol.secondsPerCheki;
   t.totalSeconds+=addSec;
   t.remaining+=addSec;
+  if(t.isRunning && t.endAt) t.endAt += addSec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
@@ -1416,47 +1420,60 @@ function startQueue(id){
   if(t.isRunning) return;
   t.isRunning=true;
   t.finished=false;
+  // background-resilient: use absolute end timestamp instead of tick decrement
+  t.endAt = Date.now() + Math.max(0, t.remaining*1000);
   // ensure audio unlocked on user gesture
   unlockAudio();
   requestWakeLock();
+  // keep running in background on Android (ForegroundService) if available
+  try{ enableBackgroundMode(); }catch(e){}
   // native notification (Android/iOS) - schedule system alarm that fires even in background/killed
   try{ nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
-  // interval 100ms for smooth
+  // interval 250ms - recompute remaining from wall clock (survives background throttle/p folded screen)
   timerIntervals[id]=setInterval(()=>{
-    t.remaining-=0.1;
+    if(!t.isRunning || !t.endAt) return;
+    const now=Date.now();
+    const newRem=Math.max(0, (t.endAt - now)/1000);
+    t.remaining=newRem;
     if(t.remaining<=0){
       t.remaining=0;
       t.isRunning=false;
       t.finished=true;
+      delete t.endAt;
       clearInterval(timerIntervals[id]);
       delete timerIntervals[id];
+      try{ disableBackgroundModeIfIdle(); }catch(e){}
       renderTimers();
       triggerAlarm(id);
-    }
-    // throttle render every 200ms
-    if(Math.floor(t.remaining*10)%2===0){
+    } else {
+      // throttle render every ~250ms
       renderTimers();
     }
-  },100);
+  },250);
   renderTimers();
 }
 function pauseQueue(id){
   const t=activeTimers.find(x=>x.id===id);
   if(!t || !t.isRunning) return;
+  // recompute exact remaining from endAt before pausing (accuracy after background)
+  if(t.endAt) t.remaining=Math.max(0, (t.endAt - Date.now())/1000);
   clearInterval(timerIntervals[id]);
   delete timerIntervals[id];
   t.isRunning=false;
+  delete t.endAt;
   try{ nativeCancelAlarm(id); }catch(e){}
+  try{ disableBackgroundModeIfIdle(); }catch(e){}
   renderTimers();
 }
 function resetQueue(id){
   const t=activeTimers.find(x=>x.id===id);
   if(!t) return;
-  if(t.isRunning){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; t.isRunning=false; }
+  if(t.isRunning){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; t.isRunning=false; delete t.endAt; }
   t.remaining=t.totalSeconds;
   t.finished=false;
   try{ nativeCancelAlarm(id); }catch(e){}
+  try{ disableBackgroundModeIfIdle(); }catch(e){}
   renderTimers();
 }
 function deleteQueue(id){
@@ -1471,6 +1488,7 @@ function addTime(id, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  if(t.isRunning && t.endAt) t.endAt += sec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
   showToast(`+${sec}วินาที ให้ ${t.idolName} ♡`);
@@ -1482,6 +1500,7 @@ function addTickets(id, n){
   const addSec=n*t.perSeconds;
   t.totalSeconds+=addSec;
   t.remaining+=addSec;
+  if(t.isRunning && t.endAt) t.endAt += addSec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
   showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
@@ -1513,8 +1532,12 @@ function finishQueue(id){
 }
 function pauseAll(){
   activeTimers.forEach(t=>{
-    if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; try{ nativeCancelAlarm(t.id);}catch(e){} }
+    if(t.isRunning){
+      if(t.endAt) t.remaining=Math.max(0,(t.endAt-Date.now())/1000);
+      clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; delete t.endAt; try{ nativeCancelAlarm(t.id);}catch(e){}
+    }
   });
+  try{ disableBackgroundModeIfIdle(); }catch(e){}
   renderTimers();
 }
 function clearFinished(){
@@ -1648,19 +1671,68 @@ function initNativeListeners(){
       }catch(e){}
     });
   }catch(e){}
-  // App resume: re-sync JS timers with pending native (if app was killed, we lost JS state -> try restore from localStorage? For now just ensure overlay)
+  // App resume: re-sync JS timers - recompute from endAt (survives folded screen / background throttle)
   try{
     if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App){
       Capacitor.Plugins.App.addListener('appStateChange', async ({isActive})=>{
         if(isActive){
-          // when app comes foreground, check if any timer finished while backgrounded but JS was throttled
-          // JS setInterval may have lagged, so re-check remaining vs scheduled time if we stored scheduleAt
-          // For now just ensure sound can play
+          try{ recalcTimersFromEndAt(); }catch(e){}
           if(activeAlarmId) unlockAudio();
+          else if(activeTimers.some(t=>t.isRunning && t.remaining<=0.5)){
+            // any timer expired while backgrounded but JS was frozen -> trigger
+            activeTimers.filter(t=>t.isRunning && t.remaining<=0).forEach(t=>{ try{ triggerAlarm(t.id); }catch(e){} });
+          }
+          if(wakeLock!==null) try{ await requestWakeLock(); }catch(e){}
         }
       });
     }
   }catch(e){}
+}
+// ===== BACKGROUND MODE - keep JS running when folded/minimized (Android ForegroundService) =====
+let bgModeEnabled=false;
+async function enableBackgroundMode(){
+  if(!isNativePlatform()) return;
+  // try Capacitor BackgroundMode plugin if installed (optional)
+  try{
+    const BM = window.Capacitor && Capacitor.Plugins && (Capacitor.Plugins.BackgroundMode || Capacitor.Plugins.CapgoBackgroundMode || Capacitor.Plugins.BackgroundTask);
+    if(BM && BM.enable){ await BM.enable(); bgModeEnabled=true; return; }
+  }catch(e){}
+  try{ if(window.BackgroundMode && window.BackgroundMode.enable){ window.BackgroundMode.enable(); bgModeEnabled=true; } }catch(e){}
+  // fallback: use native background task to keep JS alive briefly
+  try{
+    const BT = window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.BackgroundTask;
+    if(BT && BT.beforeExit){ /* will be used on app background */ }
+  }catch(e){}
+}
+async function disableBackgroundModeIfIdle(){
+  if(!bgModeEnabled) return;
+  if(activeTimers.some(t=>t.isRunning)) return;
+  try{
+    const BM = window.Capacitor && Capacitor.Plugins && (Capacitor.Plugins.BackgroundMode || Capacitor.Plugins.CapgoBackgroundMode);
+    if(BM && BM.disable){ await BM.disable(); }
+  }catch(e){}
+  try{ if(window.BackgroundMode && window.BackgroundMode.disable) window.BackgroundMode.disable(); }catch(e){}
+  bgModeEnabled=false;
+}
+function recalcTimersFromEndAt(){
+  const now=Date.now();
+  let needRender=false;
+  activeTimers.forEach(t=>{
+    if(t.isRunning && t.endAt){
+      const newRem=Math.max(0, (t.endAt - now)/1000);
+      if(Math.abs(newRem - t.remaining) > 0.2) needRender=true;
+      t.remaining=newRem;
+      if(t.remaining<=0 && !t.finished){
+        t.remaining=0; t.isRunning=false; t.finished=true; delete t.endAt;
+        if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+        // defer trigger to avoid re-entrancy during loop
+        setTimeout(()=>{ try{ triggerAlarm(t.id); }catch(e){} }, 30);
+        needRender=true;
+      }
+    }
+  });
+  if(needRender) renderTimers();
+  if(!activeTimers.some(t=>t.isRunning)) try{ disableBackgroundModeIfIdle(); }catch(e){}
 }
 
 function ensureAudioCtx(){
@@ -2181,11 +2253,17 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   }
 });
 window.addEventListener('capacitorDidLoad', async ()=>{ if(isNativePlatform()){ try{ await nativeCreateChannelIfNeeded(); initNativeListeners(); }catch(e){} } });
-// re-acquire wakeLock on visibility
+// re-acquire wakeLock on visibility + recalc background-paused timers (folded screen)
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible' && activeAlarmId) playSoundForTimer(activeAlarmId);
-  if(wakeLock!==null && document.visibilityState==='visible') requestWakeLock();
+  if(document.visibilityState==='visible'){
+    try{ recalcTimersFromEndAt(); }catch(e){}
+    if(activeAlarmId) playSoundForTimer(activeAlarmId);
+    if(wakeLock!==null) requestWakeLock();
+  }
 });
+// also handle page show (iOS bfcache)
+window.addEventListener('pageshow',()=>{ try{ recalcTimersFromEndAt(); }catch(e){} });
+window.addEventListener('focus',()=>{ try{ recalcTimersFromEndAt(); }catch(e){} });
 
 function showToast(msg){
   let t=document.getElementById('toast');

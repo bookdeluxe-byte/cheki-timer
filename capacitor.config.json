@@ -11,6 +11,15 @@
       "smallIcon": "ic_stat_icon_config_sample",
       "iconColor": "#ff6b9d",
       "sound": "default"
+    },
+    "BackgroundMode": {
+      "title": "Cheki Timer กำลังจับเวลา ♡",
+      "text": "แตะเพื่อกลับไปที่แอพ",
+      "icon": "ic_stat_icon_config_sample",
+      "color": "ff6b9d",
+      "resume": true,
+      "hidden": false,
+      "silent": false
     }
   }
 }
