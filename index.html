@@ -255,7 +255,7 @@ header{
 .queue-avatar{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; color:white; font-size:13px; font-weight:700; box-shadow:0 2px 6px rgba(0,0,0,0.15); overflow:hidden; position:relative; }
 .queue-info b{ display:block; font-size:1.0rem; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.15; letter-spacing:0.01em; color:var(--text)}
 .queue-info span{ font-size:0.6rem; color:var(--muted); line-height:1.25; display:block; margin-top:3px}
-@media(max-width:640px){ .queue-info b{ font-size:1.05rem !important; font-weight:800 !important; } .queue-avatar{ width:32px !important; height:32px !important; font-size:14px !important; } .queue-time{ font-size:1.1rem !important; } }
+@media(max-width:640px){ .queue-info b{ font-size:1.05rem !important; font-weight:800 !important; } .queue-avatar{ width:40px !important; height:40px !important; font-size:16px !important; } .queue-time{ font-size:1.1rem !important; } }
 .queue-tickets{ background:var(--pink-light); padding:2px 6px; border-radius:999px; font-weight:700; font-size:0.62rem; color:var(--pink-dark)}
 .queue-time-row{ display:flex; gap:3px; text-align:center}
 .queue-time-box{
@@ -1265,7 +1265,7 @@ function renderMemberTimers(){
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:12px; align-items:center; justify-content:space-between; margin:1px 0">
         <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; margin-left:5px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:6px 4px; border-radius:12px; border:1px solid var(--border); text-align:center; overflow:hidden">
-          <div class="queue-avatar" style="background:${idol.color}; width:60%; aspect-ratio:1; font-size:18px; border-radius:9px; flex-shrink:0; overflow:hidden; padding:0; max-width:60px; max-height:60px">${avatarInner(idol)}</div>
+          <div class="queue-avatar" style="background:${idol.color}; width:80%; aspect-ratio:1; font-size:18px; border-radius:10px; flex-shrink:0; overflow:hidden; padding:0; max-width:80px; max-height:80px">${avatarInner(idol)}</div>
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
