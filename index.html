@@ -241,7 +241,7 @@ header{
 }
 #view-timer{ padding-bottom:56px; }
 .timer-queue-card{
-  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1px 6px 2px 6px; margin-top:5px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:0px 6px 1px 6px; margin-top:5px;
   box-shadow:0 4px 14px rgba(0,0,0,0.07); position:relative; overflow:hidden;
   transition:.2s; display:flex; flex-direction:column; gap:2px;
 }
@@ -1286,7 +1286,7 @@ function renderMemberTimers(){
         <div class="queue-time-box remaining"><span>เหลือ</span><b>${formatTime(t.remaining)}</b></div>
         <div class="queue-time-box"><span>ต่อใบ</span><b>${formatTime(idol.secondsPerCheki)}</b></div>
       </div>
-      <div style="display:flex; gap:4px; margin:1px 0">
+      <div style="display:flex; gap:4px; margin:-24px 0 1px 0">
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',30)">+30วิ</button>
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTime('${idol.id}',60)">+1นาที</button>
         <button class="btn btn-addtime" style="flex:1" onclick="memberAddTickets('${idol.id}',1)">+1ใบ</button>
@@ -1299,7 +1299,7 @@ function renderMemberTimers(){
         <button class="btn btn-delQ" style="grid-column:${t.isRunning||isFinished?'auto':'1/-1'}" onclick="deleteMemberTimer('${idol.id}')">✕ ลบ</button>
       </div>
       ` : `
-      <div style="background:var(--pink-light); border-radius:8px; padding:5px; border:1px dashed var(--border); margin:1px 0">
+      <div style="background:var(--pink-light); border-radius:8px; padding:5px; border:1px dashed var(--border); margin:-24px 0 1px 0">
         <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px">
           <button class="t-btn minus" onclick="memberChangePending('${idol.id}', -1)" style="width:30px; height:30px; flex-shrink:0; border-radius:8px; font-size:1rem; padding:0">−</button>
           <div style="flex:1; text-align:center; background:var(--card); border-radius:8px; padding:4px 2px; border:1px solid var(--border)">
