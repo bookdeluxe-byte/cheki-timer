@@ -1259,7 +1259,7 @@ function renderMemberTimers(){
     const ticketsDisplay = hasTimer ? t.tickets : pending;
     return `<div class="timer-queue-card ${t&&t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${idol.color}" data-member="${idol.id}">
       <!-- Top: tickets & edit (only count) - on same side as right frame -->
-      <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:2px; margin-top:32px; margin-left:auto; width:fit-content; margin-right:12px">
+      <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:2px; margin-top:32px; margin-left:auto; width:fit-content; margin-right:7px">
         <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
@@ -1269,7 +1269,7 @@ function renderMemberTimers(){
           <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
-        <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto; margin-right:12px">
+        <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto; margin-right:7px">
           <div class="queue-circle" style="background:${circleBg}; width:144px; height:144px; border-radius:16px">
             <div class="queue-inner">
               <div>
