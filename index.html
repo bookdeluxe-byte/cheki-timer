@@ -427,7 +427,7 @@ header{
   .active-header > div{ display:grid; grid-template-columns:1fr 1fr; gap:6px }
   .active-header > div .btn{ justify-content:center; padding:7px 8px; font-size:0.8rem}
   .timer-queue-card{ padding:2px; border-radius:9px; gap:2px }
-  .queue-circle{ width:72px !important; height:72px !important; }
+  .queue-circle{ width:80px !important; height:80px !important; }
   /* square left frame on mobile */
   #memberTimerGrid > div > div[style*="flex:0 0 100px"]{ flex:0 0 56px !important; width:56px !important; height:67px !important; }
   #memberTimerGrid .queue-circle-wrap{ margin-right:5px !important; }
@@ -1270,7 +1270,7 @@ function renderMemberTimers(){
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
         <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto; margin-right:10px">
-          <div class="queue-circle" style="background:${circleBg}; width:96px; height:96px; border-radius:12px">
+          <div class="queue-circle" style="background:${circleBg}; width:110px; height:110px; border-radius:14px">
             <div class="queue-inner">
               <div>
                 <div class="queue-time" style="font-size:0.95rem">${timeDisplay}</div>
