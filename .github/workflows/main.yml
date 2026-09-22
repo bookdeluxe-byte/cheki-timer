@@ -19,7 +19,8 @@ jobs:
           java-version: 21
       - name: Install deps
         run: |
-          npm install @capacitor/core@6.1.0 @capacitor/cli@6.1.0 @capacitor/android@6.1.0 --save
+          npm ci || npm install
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/ios @capacitor/app @capacitor/local-notifications --save
       - name: Prepare web assets
         run: |
           mkdir -p www
@@ -31,6 +32,12 @@ jobs:
           npx cap sync
       - name: Sync web assets
         run: npx cap copy
+      - name: Create Android notification channel (for LocalNotifications)
+        run: |
+          echo "Checking LocalNotifications plugin..."
+          npx cap ls || true
+          cat capacitor.config.json
+          ls -la android/app/src/main/AndroidManifest.xml 2>/dev/null | head || true
       - name: Build APK (debug)
         run: |
           cd android
