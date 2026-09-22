@@ -1319,8 +1319,8 @@ function renderMemberTimers(){
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:3px">
           <button class="t-btn" style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px" onclick="memberQuickSet('${idol.id}', 1)">1</button>
           <button class="t-btn" style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px" onclick="memberQuickSet('${idol.id}', 2)">2</button>
-          <button class="t-btn" style="background:var(--yellow); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
-          <button class="t-btn" style="background:var(--mint); border-color:transparent; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
+          <button class="t-btn" style="background:var(--yellow); border-color:transparent; color:#4a3340; font-weight:700; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 5)">+5</button>
+          <button class="t-btn" style="background:var(--mint); border-color:transparent; color:#0f172a; font-weight:700; padding:2px 1px; font-size:0.6rem; border-radius:5px; min-height:20px" onclick="memberChangePending('${idol.id}', 10)">+10</button>
         </div>
       </div>
       <button class="queue-btn" onclick="memberStart('${idol.id}')" ${pending===0?'disabled':''} style="padding:8px; font-size:0.85rem; border-radius:8px; min-height:36px">▶ เริ่ม ${pending>0?`• ${pending}ใบ` : ''}</button>
