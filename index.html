@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
 <meta name="theme-color" content="#ff6b9d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cheki Timer">
@@ -437,8 +437,8 @@ header{
   .queue-time-box b{ font-size:0.68rem }
   .queue-time-box span{ font-size:0.52rem }
   .queue-controls{ gap:3px }
-  .queue-controls button{ min-height:24px; font-size:0.64rem; padding:4px 3px}
-  .btn-addtime{ min-height:22px; font-size:0.6rem; padding:3px 2px }
+  .queue-controls button{ min-height:34px; font-size:0.72rem; padding:6px 4px}
+  .btn-addtime{ min-height:32px; font-size:0.72rem; padding:6px 4px }
   /* creator ultra-compact on mobile */
   #selectedPreview{ padding:5px 7px !important; border-radius:8px !important; margin-bottom:4px !important}
   #selectedPreview #selectedAvatar{ width:26px !important; height:26px !important; font-size:13px !important; border-radius:7px !important}
@@ -466,6 +466,7 @@ header{
   .btn, .t-btn, .idol-chip{ -webkit-tap-highlight-color:transparent; touch-action:manipulation }
 }
 @media(max-width: 380px){
+  .timers-grid{ grid-template-columns:1fr !important; }
   .ticket-number{ font-size:1.65rem }
   .ticket-buttons{ gap:4px }
   .t-btn{ padding:7px 1px; font-size:0.78rem; min-height:34px}
@@ -523,10 +524,10 @@ html,body{ overflow-x:hidden; max-width:100vw }
         <small>เชกิไทม์เมอร์ • Multi Queue ♡</small>
       </div>
     </div>
-    <nav class="nav-tabs">
-      <button class="nav-tab active" data-view="timer">⏱ จับเวลา</button>
-      <button class="nav-tab" data-view="history">📊 ประวัติ</button>
-      <button class="nav-tab" data-view="settings">⚙️ ตั้งค่า</button>
+    <nav class="nav-tabs" role="tablist">
+      <button class="nav-tab active" data-view="timer" role="tab" aria-selected="true">⏱ จับเวลา</button>
+      <button class="nav-tab" data-view="history" role="tab" aria-selected="false">📊 ประวัติ</button>
+      <button class="nav-tab" data-view="settings" role="tab" aria-selected="false">⚙️ ตั้งค่า</button>
     </nav>
   </div>
 </header>
@@ -659,15 +660,15 @@ html,body{ overflow-x:hidden; max-width:100vw }
 </div>
 
 <!-- Idol Modal -->
-<div id="idolModal" class="modal-backdrop" onclick="if(event.target===this)closeIdolModal()">
-  <div class="modal">
+<div id="idolModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeIdolModal()">
+  <div class="modal" role="document">
     <h3 id="modalTitle">♡ เพิ่มไอดอล</h3>
     <div class="form-group">
-      <label>ชื่อไอดอล *</label>
-      <input id="inputName" placeholder="เช่น น้องมิโกะ / Miko-chan">
+      <label for="inputName">ชื่อไอดอล *</label>
+      <input id="inputName" maxlength="30" placeholder="เช่น น้องมิโกะ / Miko-chan">
     </div>
     <div class="form-group">
-      <label>เวลาต่อเชกิ 1 ใบ (วินาที) *</label>
+      <label for="inputSeconds">เวลาต่อเชกิ 1 ใบ (วินาที) *</label>
       <input id="inputSeconds" type="number" min="5" max="600" placeholder="เช่น 30">
       <div style="font-size:0.8rem; color:var(--muted); margin-top:6px">เช่น 30 วิ = 5 ใบ = 2:30 นาที</div>
     </div>
@@ -676,12 +677,12 @@ html,body{ overflow-x:hidden; max-width:100vw }
       <div id="colorPick" class="color-pick"></div>
     </div>
     <div class="form-group">
-      <label>อีโมจิประจำตัว</label>
-      <input id="inputEmoji" maxlength="2" placeholder="เช่น 🌸 🎀 🐰">
+      <label for="inputEmoji">อีโมจิประจำตัว</label>
+      <input id="inputEmoji" maxlength="10" placeholder="เช่น 🌸 🎀 🐰">
       <div style="font-size:0.72rem; color:var(--muted); margin-top:4px">ถ้ามีรูปจะโชว์รูปแทนอีโมจิ</div>
     </div>
     <div class="form-group">
-      <label>รูปไอดอล (สี่เหลี่ยมจตุรัส) — ถ้าไม่ใส่จะใช้อีโมจิ</label>
+      <label for="inputImage">รูปไอดอล (สี่เหลี่ยมจตุรัส) — ถ้าไม่ใส่จะใช้อีโมจิ</label>
       <input id="inputImage" type="file" accept="image/*,.jpg,.jpeg,.png,.webp" onchange="handleIdolImageFile(event)">
       <div id="imagePreview" style="display:none; margin-top:8px; gap:8px; align-items:center">
         <div style="width:72px; height:72px; border-radius:12px; overflow:hidden; border:2px solid var(--border); background:var(--pink-light); flex-shrink:0">
@@ -721,8 +722,19 @@ html,body{ overflow-x:hidden; max-width:100vw }
 
 <script>
 const COLORS = ['#ff6b9d','#a78bfa','#f59e0b','#22c55e','#06b6d4','#ec4899','#8b5cf6','#f97316'];
-let idols = JSON.parse(localStorage.getItem('cheki_idols')||'[]');
-let logs = JSON.parse(localStorage.getItem('cheki_logs')||'[]');
+function safeParse(key, fallback){
+  try{
+    const v=localStorage.getItem(key);
+    if(v===null || v==='') return fallback;
+    return JSON.parse(v);
+  }catch(e){
+    console.warn('corrupted',key,e);
+    try{ localStorage.removeItem(key); }catch(_e){}
+    return fallback;
+  }
+}
+let idols = safeParse('cheki_idols', []);
+let logs = safeParse('cheki_logs', []);
 let selectedIdolId = localStorage.getItem('cheki_selected') || null;
 let editingIdolId = null;
 let selectedColor = COLORS[0];
@@ -734,27 +746,64 @@ let pendingIdolImageName = '';
 let pendingIdolImageLoading = false;
 
 // migrate old idols to have alarmSound field
-idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; });
+try{ idols.forEach(idol=>{ if(!idol.alarmSound) idol.alarmSound='default'; if(!COLORS.includes(idol.color)) idol.color=sanitizeColor(idol.color); }); }catch(e){}
 
 // Multi-queue state (legacy prep + new per-member)
 let prepTickets = 0;
-let activeTimers = []; // {id, idolId, idolName, idolColor, idolEmoji, perSeconds, tickets, totalSeconds, remaining, isRunning, finished}
+let activeTimers = safeParse('cheki_active_timers', []); // {id, idolId, idolName, idolColor, idolEmoji, perSeconds, tickets, totalSeconds, remaining, isRunning, finished, endAt}
 let timerIntervals = {}; // id -> interval
-let memberPending = JSON.parse(localStorage.getItem('cheki_member_pending')||'{}');
+let memberPending = safeParse('cheki_member_pending', {});
+// validate activeTimers and recompute remaining from endAt if was running before reload
+try{
+  const now=Date.now();
+  activeTimers=activeTimers.filter(t=> t && t.id && t.idolId);
+  activeTimers.forEach(t=>{
+    if(t.isRunning && t.endAt){
+      const rem=Math.max(0,(t.endAt-now)/1000);
+      if(rem<=0){ t.remaining=0; t.isRunning=false; t.finished=true; delete t.endAt; }
+      else t.remaining=rem;
+    } else if(t.isRunning && !t.endAt){
+      // old format without endAt - estimate endAt
+      t.endAt=now + Math.max(0,t.remaining*1000);
+    }
+    if(!t.finished && t.remaining<=0) t.finished=true;
+  });
+  // cap logs to 500 to prevent quota bloat
+  if(logs.length>500) logs=logs.slice(0,500);
+}catch(e){ activeTimers=[]; }
 
 const $ = s=>document.querySelector(s);
 
 function save(){
   try{
+    // auto-prune logs to 500 before save to avoid quota
+    if(logs.length>500) logs=logs.slice(0,500);
+    // prune memberPending orphan keys (idols deleted)
+    try{
+      const validIds=new Set(idols.map(i=>i.id));
+      Object.keys(memberPending).forEach(k=>{ if(!validIds.has(k)) delete memberPending[k]; });
+    }catch(e){}
     localStorage.setItem('cheki_idols', JSON.stringify(idols));
     localStorage.setItem('cheki_logs', JSON.stringify(logs));
     localStorage.setItem('cheki_member_pending', JSON.stringify(memberPending));
+    // persist active timers (with endAt) so reload recovers background timers
+    try{ localStorage.setItem('cheki_active_timers', JSON.stringify(activeTimers)); }catch(e){ console.warn('activeTimers save failed',e); }
     if(selectedIdolId) localStorage.setItem('cheki_selected', selectedIdolId);
   }catch(e){
     console.error('save failed', e);
     let msg='';
     if(e && (e.name==='QuotaExceededError' || e.code===22)){
-      msg='พื้นที่เก็บข้อมูลเต็ม ♡ ลองลบรูป/ไฟล์เสียงที่ใหญ่เกิน หรือล้างประวัติเก่า แล้วลองใหม่ (รูปจะถูกบีบเหลือ 200×200 อัตโนมัติ)';
+      // try emergency prune: keep only last 100 logs and clear pending
+      try{
+        logs=logs.slice(0,100);
+        localStorage.setItem('cheki_logs', JSON.stringify(logs));
+        localStorage.setItem('cheki_idols', JSON.stringify(idols));
+        localStorage.setItem('cheki_member_pending', JSON.stringify(memberPending));
+        try{ localStorage.setItem('cheki_active_timers', JSON.stringify(activeTimers.slice(0,5))); }catch(_e){}
+        msg='พื้นที่เก็บข้อมูลเต็ม ♡ ลดประวัติเหลือ 100 รายการให้แล้ว ลองใหม่';
+      }catch(_e){
+        msg='พื้นที่เก็บข้อมูลเต็ม ♡ ลองลบรูป/ไฟล์เสียงที่ใหญ่เกิน หรือล้างประวัติเก่า แล้วลองใหม่ (รูปจะถูกบีบเหลือ 200×200 อัตโนมัติ)';
+      }
     } else {
       msg='บันทึกไม่สำเร็จ: '+(e.message||e);
     }
@@ -781,8 +830,8 @@ function formatDateThai(iso){
 // Navigation
 document.querySelectorAll('.nav-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.nav-tab').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-selected','false');});
+    btn.classList.add('active'); btn.setAttribute('aria-selected','true');
     const v=btn.dataset.view;
     document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
     document.getElementById('view-'+v).classList.add('active');
@@ -795,9 +844,12 @@ document.querySelectorAll('.nav-tab').forEach(btn=>{
 
 // Idol CRUD
 const SOUND_LABELS={default:'ตามตั้งค่า',classic:'Beep',chime:'Chime',kawaii:'Kawaii',siren:'Siren',soft:'Soft',custom:'ไฟล์ของฉัน'};
-function avatarInner(idol){ if(idol && idol.image) return `<img src="${idol.image}" alt="">`; return (idol && idol.emoji) || '🌸'; }
+function safeAvatarInner(idol){ if(idol && idol.image) return `<img src="${idol.image}" alt="">`; return (idol && idol.emoji) || '🌸'; }
 function avatarStyle(idol){ return `background:${idol.color};`; }
 const SOUND_ICONS={default:'⚙️',classic:'♪',chime:'🔔',kawaii:'♡',siren:'🚨',soft:'☁️',custom:'🎵'};
+function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function sanitizeColor(c){ if(/^#[0-9a-fA-F]{3,8}$/.test(c||'')) return c; if(COLORS.includes(c)) return c; return COLORS[0]; }
+function safeAvatarInner(idol){ if(idol && idol.image && typeof idol.image==='string' && /^data:image\/(jpeg|jpg|png|gif|webp|bmp);base64,/.test(idol.image)) return `<img src="${idol.image}" alt="${escapeHTML(idol.name||'ไอดอล')}">`; const e=escapeHTML((idol && idol.emoji)||'🌸'); return e; }
 function renderIdols(){
   const grid=document.getElementById('idolGrid');
   if(!grid) return;
@@ -812,13 +864,16 @@ function renderIdols(){
     const soundKey=idol.alarmSound||'default';
     const soundLabel=SOUND_LABELS[soundKey]||soundKey;
     const soundIcon=SOUND_ICONS[soundKey]||'🔊';
-    return `<div class="idol-card" style="--card-color:${idol.color}">
+    const safeColor=sanitizeColor(idol.color);
+    const safeName=escapeHTML(idol.name);
+    const safeCustom=escapeHTML(idol.customSoundName||'');
+    return `<div class="idol-card" style="--card-color:${safeColor}">
       <div class="idol-head">
-        <div class="idol-avatar" style="background:${idol.color}; overflow:hidden; padding:0">${avatarInner(idol)}</div>
+        <div class="idol-avatar" style="background:${safeColor}; overflow:hidden; padding:0">${safeAvatarInner(idol)}</div>
         <div style="min-width:0; flex:1">
-          <div class="idol-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${idol.name} ${activeCount?`<span style="background:${idol.color}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
-          <div class="idol-meta">⏱ ${idol.secondsPerCheki} วินาที / ใบ • <span style="color:${idol.color}">● ${idol.color}</span></div>
-          <div style="font-size:0.72rem; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${soundIcon} ${soundLabel}${soundKey==='custom' && idol.customSoundName ? ' • '+idol.customSoundName : ''}</div>
+          <div class="idol-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${safeName} ${activeCount?`<span style="background:${safeColor}; color:white; padding:2px 8px; border-radius:999px; font-size:0.7rem; margin-left:4px">${activeCount} คิว</span>`:''}</div>
+          <div class="idol-meta">⏱ ${idol.secondsPerCheki} วินาที / ใบ • <span style="color:${safeColor}">● ${escapeHTML(safeColor)}</span></div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${soundIcon} ${escapeHTML(soundLabel)}${soundKey==='custom' && safeCustom ? ' • '+safeCustom : ''}</div>
         </div>
       </div>
       <div class="idol-stats">
@@ -827,8 +882,8 @@ function renderIdols(){
         <div class="stat"><b>${formatTime(idol.secondsPerCheki)}</b><span>ต่อใบ</span></div>
       </div>
       <div class="idol-actions">
-        <button class="btn btn-ghost btn-small" onclick="editIdol('${idol.id}')">✏ แก้ไข</button>
-        <button class="btn btn-ghost btn-small" style="color:#ef4444; border-color:#fecaca" onclick="deleteIdol('${idol.id}')">🗑 ลบ</button>
+        <button class="btn btn-ghost btn-small" onclick="editIdol('${escapeHTML(idol.id)}')">✏ แก้ไข</button>
+        <button class="btn btn-ghost btn-small" style="color:#ef4444; border-color:#fecaca" onclick="deleteIdol('${escapeHTML(idol.id)}')">🗑 ลบ</button>
       </div>
     </div>`;
   }).join('');
@@ -884,7 +939,7 @@ function handleIdolCustomFile(event){
   const input=event.target;
   const file=input.files && input.files[0];
   if(!file) return;
-  if(file.size > 3*1024*1024){ showToast('ไฟล์ใหญ่เกิน 3MB เลือกไฟล์สั้นๆ นะ ♡'); input.value=''; 
+  if(file.size > 1*1024*1024){ showToast('ไฟล์ใหญ่เกิน 1MB เลือกไฟล์สั้นๆ นะ ♡'); alert('ไฟล์ใหญ่เกิน 1MB เลือกไฟล์สั้นๆ นะ ♡ (แนะนำ <800KB)'); input.value=''; 
     const saveBtn2=document.getElementById('saveIdolBtn');
     const hasData2 = pendingIdolCustomData || (editingIdolId && (idols.find(x=>x.id===editingIdolId)||{}).customSoundData);
     if(hasData2 && saveBtn2){ saveBtn2.disabled=false; saveBtn2.style.opacity='1'; saveBtn2.textContent='บันทึก'; }
@@ -964,8 +1019,8 @@ function handleIdolImageFile(event){
         pendingIdolImageLoading=false;
         const saveBtn2=document.getElementById('saveIdolBtn');
         if(saveBtn2){ saveBtn2.disabled=false; saveBtn2.textContent='บันทึก'; saveBtn2.style.opacity='1'; }
-        // fallback to original dataURL if canvas fails
-        pendingIdolImageData=reader.result;
+        // fallback: keep null to avoid quota bloat (don't save full-size)
+        pendingIdolImageData=null;
         pendingIdolImageName=file.name;
         const wrap=document.getElementById('imagePreview');
         const prev=document.getElementById('previewImg');
@@ -1068,7 +1123,7 @@ function updateSaveButtonState(){
   btn.disabled=false; btn.textContent='บันทึก'; btn.style.opacity='1';
 }
 function renderColorPick(){
-  $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`).join('');
+  $('#colorPick').innerHTML=COLORS.map(c=>`<div class="color-opt ${c===selectedColor?'selected':''}" style="background:${c}" onclick="pickColor('${c}')" role="button" tabindex="0" aria-label="สี ${c}" onkeydown="if(event.key==='Enter'||event.key===' ')pickColor('${c}')"></div>`).join('');
 }
 function pickColor(c){ selectedColor=c; renderColorPick(); }
 function saveIdol(){
@@ -1080,7 +1135,9 @@ function saveIdol(){
   if(pendingIdolImageLoading){ showToast('⏳ กำลังโหลดรูป รอสักครู่แล้วกดบันทึกอีกครั้ง'); return; }
   if(idolCustomLoading){ showToast('⏳ กำลังโหลดไฟล์เสียง รอสักครู่แล้วกดบันทึกอีกครั้ง'); return; }
   if(!name){ showToast('กรุณาใส่ชื่อไอดอล'); alert('กรุณาใส่ชื่อไอดอล'); return; }
-  if(!sec || sec<5){ showToast('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); alert('เวลาต่อใบต้อง 5 วินาทีขึ้นไป'); return; }
+  if(!sec || isNaN(sec) || sec<5 || sec>600){ showToast('เวลาต่อใบต้อง 5-600 วินาที'); alert('เวลาต่อใบต้อง 5-600 วินาที'); return; }
+  if(!Number.isInteger(sec)){ sec=Math.round(sec); }
+  if(name.length>30){ showToast('ชื่อยาวเกิน 30 ตัวอักษร'); alert('ชื่อยาวเกิน 30 ตัวอักษร'); return; }
   let customDataToSave=null, customNameToSave='';
   if(alarmSound==='custom'){
     if(pendingIdolCustomData){
@@ -1115,7 +1172,7 @@ function saveIdol(){
     if(alarmSound!=='custom'){ delete idols[idx].customSoundData; delete idols[idx].customSoundName; }
     if(!imageToSave){ delete idols[idx].image; delete idols[idx].imageName; }
   } else {
-    const id=Date.now().toString(36);
+    const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     const newIdol={id, name, secondsPerCheki:sec, color:selectedColor, emoji, alarmSound, image: imageToSave, imageName: imageNameToSave};
     if(alarmSound==='custom'){ newIdol.customSoundData=customDataToSave; newIdol.customSoundName=customNameToSave; }
     if(!imageToSave){ delete newIdol.image; delete newIdol.imageName; }
@@ -1138,9 +1195,19 @@ function saveIdol(){
 function editIdol(id){ openIdolModal(id); }
 function deleteIdol(id){
   if(!confirm('ลบไอดอลคนนี้? ประวัติจะยังคงอยู่')) return;
+  // clean orphan timers for this idol (Critical fix)
+  const orphanTimers=activeTimers.filter(t=>t.idolId===id);
+  orphanTimers.forEach(t=>{
+    if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+    try{ nativeCancelAlarm(t.id); }catch(e){}
+  });
+  activeTimers=activeTimers.filter(t=>t.idolId!==id);
+  if(memberPending[id]!==undefined) delete memberPending[id];
+  try{ disableBackgroundModeIfIdle(); }catch(e){}
   idols=idols.filter(x=>x.id!==id);
   if(selectedIdolId===id) selectedIdolId=idols[0]?.id||null;
   save(); renderIdols(); renderMemberTimers(); renderHistoryFilters();
+  if(orphanTimers.length) showToast(`ลบไอดอลและยกเลิก ${orphanTimers.length} คิวที่ค้าง ♡`);
 }
 
 // Member Timer logic - per member integrated (นับในกรอบของแต่ละคน)
@@ -1168,6 +1235,7 @@ function memberStart(idolId){
   if(existing){
     if(pending>0){
       const addSec=pending*idol.secondsPerCheki;
+      if(existing.isRunning && existing.endAt) existing.remaining=Math.max(0,(existing.endAt-Date.now())/1000);
       existing.tickets+=pending;
       existing.totalSeconds+=addSec;
       existing.remaining+=addSec;
@@ -1221,25 +1289,27 @@ function memberAddTime(idolId, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  t.finished=false;
   if(t.isRunning && t.endAt) t.endAt += sec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
-  showToast(`+${sec}วิ ให้ ${t.idolName} ♡`);
+  showToast(`+${sec}วิ ให้ ${escapeHTML(t.idolName)} ♡`);
 }
 function memberAddTickets(idolId, n){
   const t=activeTimers.find(x=>x.idolId===idolId);
   const idol=idols.find(x=>x.id===idolId);
   if(!t || !idol) return;
   t.tickets+=n;
-  const addSec=n*idol.secondsPerCheki;
+  const addSec=n*(t.perSeconds||idol.secondsPerCheki);
   t.totalSeconds+=addSec;
   t.remaining+=addSec;
+  t.finished=false;
   if(t.isRunning && t.endAt) t.endAt += addSec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
-  showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
+  showToast(`+${n}ใบ ให้ ${escapeHTML(t.idolName)} ♡`);
 }
 function renderMemberTimers(){
   const grid=document.getElementById('memberTimerGrid');
@@ -1268,13 +1338,13 @@ function renderMemberTimers(){
     return `<div class="timer-queue-card ${t&&t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${idol.color}" data-member="${idol.id}">
       <!-- Top: tickets & edit (only count) - on same side as right frame -->
       <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:2px; margin-top:8px; margin-left:auto; width:fit-content; margin-right:5px">
-        <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
+        <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${escapeHTML(idol.id)}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:-24px 0 1px 0; flex-wrap:wrap; transform: translateX(-5px)">
         <div style="flex:0 0 100px; width:100px; height:120px; aspect-ratio:100/120; margin-left:12px; margin-top:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:var(--pink-light); padding:2px; border-radius:10px; border:1px solid var(--border); text-align:center; overflow:hidden">
-          <div class="queue-avatar" style="background:${idol.color}; width:80%; aspect-ratio:1; font-size:18px; border-radius:10px; flex-shrink:0; overflow:hidden; padding:0; max-width:80px; max-height:80px">${avatarInner(idol)}</div>
-          <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${idol.name}</div>
+          <div class="queue-avatar" style="background:${sanitizeColor(idol.color)}; width:80%; aspect-ratio:1; font-size:18px; border-radius:10px; flex-shrink:0; overflow:hidden; padding:0; max-width:80px; max-height:80px">${safeAvatarInner(idol)}</div>
+          <div style="font-size:0.85rem; font-weight:800; line-height:1; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%">${escapeHTML(idol.name)}</div>
           <div style="font-size:0.62rem; color:var(--muted); line-height:1">${idol.secondsPerCheki}s/ใบ</div>
         </div>
         <div class="queue-circle-wrap" style="flex-shrink:0; margin:0; margin-left:auto; margin-right:5px">
@@ -1360,17 +1430,17 @@ function renderTimers(){
   if(empty) empty.style.display='none';
   grid.innerHTML=activeTimers.map(t=>{
     const pct = t.totalSeconds>0 ? ((t.totalSeconds - t.remaining)/t.totalSeconds)*100 : 0;
-    const circleBg = `conic-gradient(${t.idolColor} ${pct}%, var(--pink-light) 0)`;
+    const circleBg = `conic-gradient(${escapeHTML(t.idolColor)} ${pct}%, var(--pink-light) 0)`;
     const isFinished = t.remaining<=0;
     const status = isFinished ? 'หมดเวลาแล้ว! ♪' : t.isRunning ? 'กำลังจับเวลา... ⏳' : 'หยุดชั่วคราว ⏸';
     const sid=getAlarmSoundForIdol(t.idolId);
     const sicon=SOUND_ICONS[sid]||'🔊';
     const slabel=SOUND_LABELS[sid]||sid;
-    return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
+    return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${escapeHTML(t.idolColor)}">
       <div class="queue-head">
         <div class="queue-idol">
-          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:60%;height:60%;object-fit:cover; display:block; margin:auto; border-radius:inherit; position:relative; left:-8px">` : (t.idolEmoji||"🌸"); })()}</div>
-          <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
+          <div class="queue-avatar" style="background:${escapeHTML(t.idolColor)}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:60%;height:60%;object-fit:cover; display:block; margin:auto; border-radius:inherit; position:relative; left:-8px">` : (t.idolEmoji||"🌸"); })()}</div>
+          <div class="queue-info"><b>${escapeHTML(t.idolName)}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
         <div style="display:flex; align-items:center; gap:6px">
           <span title="เสียง: ${slabel}" style="font-size:0.72rem; background:var(--pink-light); padding:4px 7px; border-radius:999px; border:1px solid var(--border)">${sicon}</span>
@@ -1429,6 +1499,8 @@ function startQueue(id){
   try{ enableBackgroundMode(); }catch(e){}
   // native notification (Android/iOS) - schedule system alarm that fires even in background/killed
   try{ nativeScheduleAlarm(t); }catch(e){}
+  // guard double interval (H3)
+  if(timerIntervals[id]){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; }
   renderTimers();
   // interval 250ms - recompute remaining from wall clock (survives background throttle/p folded screen)
   timerIntervals[id]=setInterval(()=>{
@@ -1488,10 +1560,11 @@ function addTime(id, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  t.finished=false;
   if(t.isRunning && t.endAt) t.endAt += sec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
-  showToast(`+${sec}วินาที ให้ ${t.idolName} ♡`);
+  showToast(`+${sec}วินาที ให้ ${escapeHTML(t.idolName)} ♡`);
 }
 function addTickets(id, n){
   const t=activeTimers.find(x=>x.id===id);
@@ -1503,7 +1576,7 @@ function addTickets(id, n){
   if(t.isRunning && t.endAt) t.endAt += addSec*1000;
   try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
-  showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
+  showToast(`+${n}ใบ ให้ ${escapeHTML(t.idolName)} ♡`);
 }
 function finishQueue(id){
   const t=activeTimers.find(x=>x.id===id);
@@ -1525,10 +1598,12 @@ function finishQueue(id){
     time:now.toTimeString().slice(0,5)
   });
   save();
-  // remove from active
+  // remove from active + clean alarm queues (prevent ghost alarm)
+  alarmQueue=alarmQueue.filter(qid=>qid!==id);
+  pendingBatch=pendingBatch.filter(qid=>qid!==id);
   activeTimers=activeTimers.filter(x=>x.id!==id);
   renderTimers(); renderHistory(); renderIdols();
-  showToast(`บันทึก ${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ สำเร็จ ♡`);
+  showToast(`บันทึก ${escapeHTML(t.idolEmoji||"🌸")} ${escapeHTML(t.idolName)} • ${t.tickets} ใบ สำเร็จ ♡`);
 }
 function pauseAll(){
   activeTimers.forEach(t=>{
@@ -1566,6 +1641,7 @@ let customSoundNameStored=localStorage.getItem('cheki_custom_name')||'';
 
 // ===== NATIVE NOTIFICATIONS (Capacitor) - Android/iOS =====
 let nativeNotifyReady=false;
+let nativeQueue = Promise.resolve();
 function isNativePlatform(){ try{ return !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()); }catch(e){ return false; } }
 function getLN(){ try{ if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.LocalNotifications) return Capacitor.Plugins.LocalNotifications; }catch(e){} return null; }
 function notifIdForTimer(timerId){ try{ let h=0; for(let i=0;i<timerId.length;i++) h=(h*31 + timerId.charCodeAt(i))>>>0; return (h % 2147000000) + 1; }catch(e){ return Math.floor(Math.random()*1e9)%2147000000+1; } }
@@ -1600,6 +1676,8 @@ async function nativeIsPermissionGranted(){
   return ('Notification' in window && Notification.permission==='granted');
 }
 async function nativeScheduleAlarm(timer){
+  // H2: queue to avoid race
+  return nativeQueue = nativeQueue.then(async ()=>{
   const LN=getLN();
   if(!isNativePlatform() || !LN) return false;
   try{
@@ -1608,14 +1686,14 @@ async function nativeScheduleAlarm(timer){
     const at=new Date(Date.now() + Math.max(0, timer.remaining*1000));
     // cancel old first to reschedule
     try{ await LN.cancel({ notifications:[{ id: String(id) }] }); }catch(e){}
-    const title = timer.tickets>1 ? `⏰ หมดเวลา! ${timer.idolName} • ${timer.tickets}ใบ` : `⏰ หมดเวลา! ${timer.idolName}`;
+    const title = timer.tickets>1 ? `⏰ หมดเวลา! ${escapeHTML(timer.idolName)} • ${timer.tickets}ใบ` : `⏰ หมดเวลา! ${escapeHTML(timer.idolName)}`;
     const body = `เชกิ ${timer.tickets}ใบ • ${formatTime(timer.totalSeconds)} ครบแล้ว กดเพื่อบันทึก`;
     await LN.schedule({ notifications:[{
       title, body,
-      id,
+      id: String(id),
       schedule:{ at: at.toISOString(), allowWhileIdle:true, foreground:true },
       sound:'default',
-      smallIcon:'ic_stat_icon_config_sample',
+      smallIcon:'ic_launcher',
       iconColor:'#ff6b9d',
       channelId:'cheki-alarm',
       autoCancel:true,
@@ -1625,6 +1703,7 @@ async function nativeScheduleAlarm(timer){
     }]});
     return true;
   }catch(e){ console.warn('nativeSchedule failed',e); return false; }
+  }).catch(()=>false);
 }
 async function nativeCancelAlarm(timerId){
   const LN=getLN();
@@ -1996,7 +2075,7 @@ function showAlarm(timerId){
       if(allIds.length>1){
         new Notification(`⏰ หมดเวลา ${allIds.length} คน!`,{body: allIds.map(id=>{const tt=activeTimers.find(x=>x.id===id); return tt? `${tt.idolEmoji} ${tt.idolName} • ${tt.tickets}ใบ` : ''}).join(' • '), requireInteraction:true});
       } else {
-        new Notification(`⏰ หมดเวลา! ${t.idolName}`,{body:`เชกิ ${t.tickets} ใบครบแล้ว กดเพื่อบันทึก`, requireInteraction:true});
+        new Notification(`⏰ หมดเวลา! ${escapeHTML(t.idolName)}`,{body:`เชกิ ${t.tickets} ใบครบแล้ว กดเพื่อบันทึก`, requireInteraction:true});
       }
     }
   }catch(e){}
@@ -2023,7 +2102,7 @@ function showAlarm(timerId){
     alarmVibeInterval=setInterval(vibe, 1800);
   }
   const allForTitle=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(x=>x.id===id));
-  document.title = allForTitle.length>1 ? `⏰ หมดเวลา ${allForTitle.length} คน! ⏰` : `⏰ หมดเวลา! ${t.idolName} ⏰`;
+  document.title = allForTitle.length>1 ? `⏰ หมดเวลา ${allForTitle.length} คน! ⏰` : `⏰ หมดเวลา! ${escapeHTML(t.idolName)} ⏰`;
 }
 function updateAlarmBatchDisplay(){
   const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(t=>t.id===id));
@@ -2044,7 +2123,7 @@ function updateAlarmBatchDisplay(){
         const sid=getAlarmSoundForIdol(t.idolId);
         const sicon=SOUND_ICONS[sid]||'🔊';
         return `<div style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--pink-light); padding:8px 10px; border-radius:10px; margin-bottom:6px; border:1px solid var(--border)">
-          <div style="display:flex; gap:8px; align-items:center; min-width:0"><div style="background:${t.idolColor}; color:white; width:32px; height:32px; border-radius:9px; display:grid; place-items:center; font-size:16px; flex-shrink:0">${t.idolEmoji}</div><div style="min-width:0"><div style="font-weight:700; font-size:0.88rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${t.idolName}</div><div style="font-size:0.72rem; color:var(--muted)">${t.tickets}ใบ • ${formatTime(t.totalSeconds)} • ${sicon} ${SOUND_LABELS[sid]||sid}</div></div></div>
+          <div style="display:flex; gap:8px; align-items:center; min-width:0"><div style="background:${escapeHTML(t.idolColor)}; color:white; width:32px; height:32px; border-radius:9px; display:grid; place-items:center; font-size:16px; flex-shrink:0">${escapeHTML(t.idolEmoji||"🌸")}</div><div style="min-width:0"><div style="font-weight:700; font-size:0.88rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${escapeHTML(t.idolName)}</div><div style="font-size:0.72rem; color:var(--muted)">${t.tickets}ใบ • ${formatTime(t.totalSeconds)} • ${sicon} ${SOUND_LABELS[sid]||sid}</div></div></div>
           <div style="display:flex; gap:4px; flex-shrink:0"><button class="btn btn-ghost btn-small" style="padding:6px 8px; font-size:0.72rem; border-radius:999px" onclick="alarmSaveOne('${id}')">✓</button><button class="btn btn-ghost btn-small" style="padding:6px 8px; font-size:0.72rem; border-radius:999px" onclick="alarmSnoozeOne('${id}')">＋30วิ</button></div>
         </div>`;
       }).join('');
@@ -2058,12 +2137,12 @@ function updateAlarmBatchDisplay(){
   } else if(count===1){
     const t=activeTimers.find(x=>x.id===activeAlarmId);
     if(!t) return;
-    titleEl.textContent=`หมดเวลา! ${t.idolEmoji} ${t.idolName}`;
+    titleEl.textContent=`หมดเวลา! ${escapeHTML(t.idolEmoji||"🌸")} ${escapeHTML(t.idolName)}`;
     descEl.textContent=`เชกิ ${t.tickets} ใบ • ${formatTime(t.totalSeconds)} ครบแล้ว!`;
     if(batchEl) batchEl.style.display='none';
     if(infoEl){
       infoEl.style.display='block';
-      infoEl.textContent=`${t.idolEmoji} ${t.idolName} • ${t.tickets} ใบ • ${t.perSeconds}s/ใบ`;
+      infoEl.textContent=`${escapeHTML(t.idolEmoji||"🌸")} ${escapeHTML(t.idolName)} • ${t.tickets} ใบ • ${t.perSeconds}s/ใบ`;
       infoEl.style.background=t.idolColor;
       infoEl.style.color='white';
     }
@@ -2141,7 +2220,7 @@ function alarmSnooze(){
     stopAlarm();
     addTime(id,30);
     startQueue(id);
-    showToast(`ต่อเวลา +30วิ ให้ ${t.idolName} ♡`);
+    showToast(`ต่อเวลา +30วิ ให้ ${escapeHTML(t.idolName)} ♡`);
   } else stopAlarm();
 }
 function alarmSaveOne(id){
@@ -2185,7 +2264,7 @@ function alarmSnoozeOne(id){
       document.getElementById('alarmOverlay').classList.remove('show');
     }
   }
-  showToast(`ต่อเวลา +30วิ ให้ ${t.idolName} ♡`);
+  showToast(`ต่อเวลา +30วิ ให้ ${escapeHTML(t.idolName)} ♡`);
   renderTimers();
 }
 function alarmSaveAll(){
@@ -2227,7 +2306,7 @@ async function requestNotify(){
   // Native (Capacitor) first
   if(isNativePlatform()){
     const ok=await nativeRequestPermission();
-    if(ok){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; showToast('เปิดแจ้งเตือนแล้ว ♡ หมดเวลาจะดังแม้ล็อคจอ/สลับแอพ'); try{ const LN=getLN(); if(LN) await LN.schedule({ notifications:[{ title:'Cheki Timer ♡', body:'แจ้งเตือนปลุกพร้อมแล้ว! หมดเวลาจะเด้งและมีเสียงดังวน', id:999999, schedule:{ at: new Date(Date.now()+1500).toISOString() }, sound:'default', smallIcon:'ic_stat_icon_config_sample', channelId:'cheki-alarm' }] }); }catch(e){} }
+    if(ok){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; showToast('เปิดแจ้งเตือนแล้ว ♡ หมดเวลาจะดังแม้ล็อคจอ/สลับแอพ'); try{ const LN=getLN(); if(LN) await LN.schedule({ notifications:[{ title:'Cheki Timer ♡', body:'แจ้งเตือนปลุกพร้อมแล้ว! หมดเวลาจะเด้งและมีเสียงดังวน', id:999999, schedule:{ at: new Date(Date.now()+1500).toISOString() }, sound:'default', smallIcon:'ic_launcher', channelId:'cheki-alarm' }] }); }catch(e){} }
     else { alert('เปิดแจ้งเตือนไม่สำเร็จ ไปที่ ตั้งค่า > แอพ > Cheki Timer > อนุญาตการแจ้งเตือน'); }
     return;
   }
@@ -2278,11 +2357,12 @@ function showToast(msg){
   setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(10px)'; },2200);
 }
 
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && document.getElementById('idolModal').classList.contains('open')) closeIdolModal(); });
 // History
 function renderHistoryFilters(){
   const sel=$('#filterIdol');
   const cur=sel.value;
-  sel.innerHTML='<option value="">ทุกคน</option>'+idols.map(i=>`<option value="${i.id}">${i.emoji} ${i.name}</option>`).join('');
+  sel.innerHTML='<option value="">ทุกคน</option>'+idols.map(i=>`<option value="${i.id}">${escapeHTML(i.emoji)} ${escapeHTML(i.name)}</option>`).join('');
   sel.value=cur;
 }
 function renderHistory(){
@@ -2320,9 +2400,9 @@ function renderHistory(){
       ${items.map(l=>`
         <div class="log-item">
           <div class="log-left">
-            <div class="log-dot" style="background:${l.idolColor||'#ff6b9d'}"></div>
+            <div class="log-dot" style="background:${escapeHTML(l.idolColor||'#ff6b9d'}"></div>
             <div>
-              <div style="font-weight:700">${l.idolEmoji||'🌸'} ${l.idolName} <span class="log-count" style="margin-left:6px">${l.count} ใบ</span></div>
+              <div style="font-weight:700">${escapeHTML(l.idolEmoji||'🌸'} ${escapeHTML(l.idolName)} <span class="log-count" style="margin-left:6px">${l.count} ใบ</span></div>
               <div class="log-time">${l.time} น. • ${l.perSeconds}s/ใบ • รวม ${formatTime(l.totalSeconds)}</div>
             </div>
           </div>
@@ -2384,11 +2464,17 @@ function toggleTheme(){
   const prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const init=saved || (prefersDark ? 'dark' : 'light');
   applyTheme(init);
+  try{
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e=>{
+      if(!localStorage.getItem('cheki_theme')) applyTheme(e.matches?'dark':'light');
+    });
+  }catch(e){}
 })();
 
 // PWA register
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=> navigator.serviceWorker.register('./sw.js').then(()=>console.log('SW registered')).catch(()=>{}));
+  navigator.serviceWorker.addEventListener('controllerchange',()=> window.location.reload());
 }
 // init
 renderIdols();

@@ -2,11 +2,11 @@
   "name": "Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์",
   "short_name": "Cheki Timer",
   "description": "แอพจับเวลาเชกิไอดอล จับพร้อมกันหลายคนได้ แยกประวัติตามวัน",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#fff8fb",
   "theme_color": "#ff6b9d",
-  "orientation": "portrait",
+  "orientation": "any",
   "lang": "th",
   "categories": ["lifestyle", "productivity"],
   "icons": [
