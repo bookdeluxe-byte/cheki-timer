@@ -620,7 +620,7 @@ html,body{ overflow-x:hidden; max-width:100vw }
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--pink-light); padding:12px 14px; border-radius:12px">
           <div>
             <div style="font-weight:700; font-size:0.92rem">แจ้งเตือนปลุก</div>
-            <div style="font-size:0.76rem; color:var(--muted)">เด้ง + เสียงวน + สั่น แม้สลับแอพ</div>
+            <div style="font-size:0.76rem; color:var(--muted)">เด้ง + เสียงวน + สั่น แม้สลับแอพ/ล็อคจอ<br><span style="font-size:0.72rem; opacity:0.8">บนแอพ Android/iOS จะเด้งผ่านระบบแม้ปิดแอพ ♡</span></div>
           </div>
           <button id="btnNotify" class="btn btn-ghost btn-small" onclick="requestNotify()" style="white-space:nowrap">🔔 เปิดแจ้งเตือน</button>
         </div>
@@ -631,7 +631,7 @@ html,body{ overflow-x:hidden; max-width:100vw }
           </div>
           <button id="btnWake" class="btn btn-ghost btn-small" onclick="toggleWakeLock()" style="white-space:nowrap">💡 กันจอดับ: ปิด</button>
         </div>
-        <p style="font-size:0.72rem; color:var(--muted); text-align:center; margin:4px 0 0">💡 iPhone ต้องปิดปุ่ม Silent (สวิตช์ข้างเครื่อง) เสียงถึงจะดัง</p>
+        <p style="font-size:0.72rem; color:var(--muted); text-align:center; margin:4px 0 0">💡 iPhone ต้องปิดปุ่ม Silent (สวิตช์ข้างเครื่อง) เสียงถึงจะดัง<br>บนแอพ: อนุญาต “การแจ้งเตือน” ตอนขอสิทธิ์ครั้งแรก หมดเวลาจะเด้งเป็นระบบ</p>
       </div>
     </div>
 
@@ -1173,6 +1173,7 @@ function memberStart(idolId){
       existing.remaining+=addSec;
       setMemberPending(idolId, 0);
       if(!existing.isRunning) startQueue(existing.id);
+      else { try{ nativeScheduleAlarm(existing); }catch(e){} }
       renderMemberTimers();
       showToast(`เพิ่ม ${pending}ใบ ให้ ${idol.name} ♡`);
       save();
@@ -1204,6 +1205,7 @@ function memberReset(idolId){
   if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; }
   t.remaining=t.totalSeconds;
   t.finished=false;
+  try{ nativeCancelAlarm(t.id); }catch(e){}
   renderMemberTimers();
   save();
 }
@@ -1217,6 +1219,7 @@ function memberAddTime(idolId, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
   showToast(`+${sec}วิ ให้ ${t.idolName} ♡`);
@@ -1229,6 +1232,7 @@ function memberAddTickets(idolId, n){
   const addSec=n*idol.secondsPerCheki;
   t.totalSeconds+=addSec;
   t.remaining+=addSec;
+  try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderMemberTimers();
   save();
   showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
@@ -1324,6 +1328,7 @@ function deleteMemberTimer(idolId){
   const t=activeTimers.find(x=>x.idolId===idolId);
   if(t){
     if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+    try{ nativeCancelAlarm(t.id); }catch(e){}
     activeTimers=activeTimers.filter(x=>x.id!==t.id);
   }
   setMemberPending(idolId, 0);
@@ -1414,6 +1419,8 @@ function startQueue(id){
   // ensure audio unlocked on user gesture
   unlockAudio();
   requestWakeLock();
+  // native notification (Android/iOS) - schedule system alarm that fires even in background/killed
+  try{ nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
   // interval 100ms for smooth
   timerIntervals[id]=setInterval(()=>{
@@ -1440,6 +1447,7 @@ function pauseQueue(id){
   clearInterval(timerIntervals[id]);
   delete timerIntervals[id];
   t.isRunning=false;
+  try{ nativeCancelAlarm(id); }catch(e){}
   renderTimers();
 }
 function resetQueue(id){
@@ -1448,11 +1456,13 @@ function resetQueue(id){
   if(t.isRunning){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; t.isRunning=false; }
   t.remaining=t.totalSeconds;
   t.finished=false;
+  try{ nativeCancelAlarm(id); }catch(e){}
   renderTimers();
 }
 function deleteQueue(id){
   if(!confirm('ลบคิวนี้? (ไม่บันทึก)')) return;
   if(timerIntervals[id]){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; }
+  try{ nativeCancelAlarm(id); }catch(e){}
   activeTimers=activeTimers.filter(x=>x.id!==id);
   renderTimers(); renderIdols();
 }
@@ -1461,6 +1471,7 @@ function addTime(id, sec){
   if(!t) return;
   t.totalSeconds+=sec;
   t.remaining+=sec;
+  try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
   showToast(`+${sec}วินาที ให้ ${t.idolName} ♡`);
 }
@@ -1471,6 +1482,7 @@ function addTickets(id, n){
   const addSec=n*t.perSeconds;
   t.totalSeconds+=addSec;
   t.remaining+=addSec;
+  try{ if(t.isRunning) nativeScheduleAlarm(t); }catch(e){}
   renderTimers();
   showToast(`+${n}ใบ ให้ ${t.idolName} ♡`);
 }
@@ -1478,6 +1490,7 @@ function finishQueue(id){
   const t=activeTimers.find(x=>x.id===id);
   if(!t) return;
   if(timerIntervals[id]){ clearInterval(timerIntervals[id]); delete timerIntervals[id]; }
+  try{ nativeCancelAlarm(id); }catch(e){}
   const now=new Date();
   logs.unshift({
     id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),
@@ -1500,7 +1513,7 @@ function finishQueue(id){
 }
 function pauseAll(){
   activeTimers.forEach(t=>{
-    if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; }
+    if(t.isRunning){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; t.isRunning=false; try{ nativeCancelAlarm(t.id);}catch(e){} }
   });
   renderTimers();
 }
@@ -1510,6 +1523,7 @@ function clearFinished(){
   if(!confirm(`ลบคิวที่เสร็จแล้ว ${finished.length} คิว?`)) return;
   finished.forEach(t=>{
     if(timerIntervals[t.id]){ clearInterval(timerIntervals[t.id]); delete timerIntervals[t.id]; }
+    try{ nativeCancelAlarm(t.id); }catch(e){}
   });
   activeTimers=activeTimers.filter(t=>t.remaining>0);
   renderTimers();
@@ -1526,6 +1540,128 @@ let alarmVolume=parseFloat(localStorage.getItem('cheki_volume')||'0.6');
 let selectedSound=localStorage.getItem('cheki_sound')||'classic';
 let customSoundData=localStorage.getItem('cheki_custom_data')||null;
 let customSoundNameStored=localStorage.getItem('cheki_custom_name')||'';
+
+// ===== NATIVE NOTIFICATIONS (Capacitor) - Android/iOS =====
+let nativeNotifyReady=false;
+function isNativePlatform(){ try{ return !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()); }catch(e){ return false; } }
+function getLN(){ try{ if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.LocalNotifications) return Capacitor.Plugins.LocalNotifications; }catch(e){} return null; }
+function notifIdForTimer(timerId){ try{ let h=0; for(let i=0;i<timerId.length;i++) h=(h*31 + timerId.charCodeAt(i))>>>0; return (h % 2147000000) + 1; }catch(e){ return Math.floor(Math.random()*1e9)%2147000000+1; } }
+async function nativeCreateChannelIfNeeded(){
+  const LN=getLN(); if(!LN||!isNativePlatform()) return;
+  try{ await LN.createChannel({ id:'cheki-alarm', name:'Cheki Alarm', description:'แจ้งเตือนหมดเวลาเชกิ', importance:5, visibility:1, sound:'default', vibration:true, lights:true, lightColor:'#ff6b9d' }); }catch(e){}
+  try{ await LN.registerActionTypes({ types:[{ id:'CHEKI_ALARM', actions:[{ id:'save', title:'✓ บันทึก', foreground:true }, { id:'snooze', title:'＋30วิ', foreground:true }, { id:'stop', title:'🔇 หยุด', foreground:true, destructive:true }]}]}); }catch(e){}
+}
+async function nativeRequestPermission(){
+  const LN=getLN();
+  if(isNativePlatform() && LN){
+    try{
+      let perm=await LN.checkPermissions(); // {display:'granted'|'denied'|'prompt'}
+      if(perm.display!=='granted'){ perm=await LN.requestPermissions(); }
+      nativeNotifyReady = perm.display==='granted';
+      if(nativeNotifyReady) await nativeCreateChannelIfNeeded();
+      return nativeNotifyReady;
+    }catch(e){ return false; }
+  }
+  // web fallback
+  if('Notification' in window){
+    if(Notification.permission==='granted') return true;
+    if(Notification.permission!=='denied'){ const p=await Notification.requestPermission(); return p==='granted'; }
+  }
+  return false;
+}
+async function nativeIsPermissionGranted(){
+  const LN=getLN();
+  if(isNativePlatform() && LN){
+    try{ const p=await LN.checkPermissions(); return p.display==='granted'; }catch(e){ return false; }
+  }
+  return ('Notification' in window && Notification.permission==='granted');
+}
+async function nativeScheduleAlarm(timer){
+  const LN=getLN();
+  if(!isNativePlatform() || !LN) return false;
+  try{
+    if(!await nativeIsPermissionGranted()) return false;
+    const id=notifIdForTimer(timer.id);
+    const at=new Date(Date.now() + Math.max(0, timer.remaining*1000));
+    // cancel old first to reschedule
+    try{ await LN.cancel({ notifications:[{ id: String(id) }] }); }catch(e){}
+    const title = timer.tickets>1 ? `⏰ หมดเวลา! ${timer.idolName} • ${timer.tickets}ใบ` : `⏰ หมดเวลา! ${timer.idolName}`;
+    const body = `เชกิ ${timer.tickets}ใบ • ${formatTime(timer.totalSeconds)} ครบแล้ว กดเพื่อบันทึก`;
+    await LN.schedule({ notifications:[{
+      title, body,
+      id,
+      schedule:{ at: at.toISOString(), allowWhileIdle:true, foreground:true },
+      sound:'default',
+      smallIcon:'ic_stat_icon_config_sample',
+      iconColor:'#ff6b9d',
+      channelId:'cheki-alarm',
+      autoCancel:true,
+      ongoing:false,
+      extra:{ timerId: timer.id, idolId: timer.idolId },
+      actionTypeId:'CHEKI_ALARM'
+    }]});
+    return true;
+  }catch(e){ console.warn('nativeSchedule failed',e); return false; }
+}
+async function nativeCancelAlarm(timerId){
+  const LN=getLN();
+  if(!isNativePlatform() || !LN) return;
+  try{ const id=notifIdForTimer(timerId); await LN.cancel({ notifications:[{ id: String(id) }] }); }catch(e){}
+}
+async function nativeCancelAll(){
+  const LN=getLN();
+  if(!isNativePlatform() || !LN) return;
+  try{
+    const pending=await LN.getPending();
+    if(pending && pending.notifications && pending.notifications.length) await LN.cancel({ notifications: pending.notifications.map(n=>({id:String(n.id)})) });
+  }catch(e){}
+}
+function initNativeListeners(){
+  const LN=getLN();
+  if(!isNativePlatform() || !LN) return;
+  // when notification is received while app is in foreground, also trigger overlay + sound
+  try{
+    LN.addListener('localNotificationReceived', async (notif)=>{
+      try{
+        const tid=notif && notif.extra && notif.extra.timerId;
+        if(tid && activeTimers.some(t=>t.id===tid)){
+          // if JS timer already finished, triggerAlarm will be called anyway; else force alarm if remaining ~0
+          const t=activeTimers.find(x=>x.id===tid);
+          if(t && t.remaining<=1) triggerAlarm(tid);
+        }
+      }catch(e){}
+    });
+  }catch(e){}
+  try{
+    LN.addListener('localNotificationActionPerformed', async (event)=>{
+      const actionId=event && event.actionId;
+      const tid=event && event.notification && event.notification.extra && event.notification.extra.timerId;
+      if(!tid) return;
+      try{
+        if(actionId==='save'){ finishQueue(tid); stopAlarm(); }
+        else if(actionId==='snooze'){ const tt=activeTimers.find(x=>x.id===tid); if(tt){ stopAlarm(); addTime(tid,30); startQueue(tid); showToast(`ต่อเวลา +30วิ ให้ ${tt.idolName} ♡`); } }
+        else if(actionId==='stop'){ stopAlarm(); }
+        else {
+          // tap on notification body -> show alarm
+          if(activeTimers.some(x=>x.id===tid)) triggerAlarm(tid);
+        }
+      }catch(e){}
+    });
+  }catch(e){}
+  // App resume: re-sync JS timers with pending native (if app was killed, we lost JS state -> try restore from localStorage? For now just ensure overlay)
+  try{
+    if(window.Capacitor && Capacitor.Plugins && Capacitor.Plugins.App){
+      Capacitor.Plugins.App.addListener('appStateChange', async ({isActive})=>{
+        if(isActive){
+          // when app comes foreground, check if any timer finished while backgrounded but JS was throttled
+          // JS setInterval may have lagged, so re-check remaining vs scheduled time if we stored scheduleAt
+          // For now just ensure sound can play
+          if(activeAlarmId) unlockAudio();
+        }
+      });
+    }
+  }catch(e){}
+}
 
 function ensureAudioCtx(){
   try{
@@ -1781,10 +1917,10 @@ function showAlarm(timerId){
   activeAlarmId=timerId;
   updateAlarmBatchDisplay();
   $('#alarmOverlay').classList.add('show');
-  // Notification - batch aware
+  // Notification - native already scheduled via LocalNotifications (Android/iOS), web fallback for PWA
   try{
     const allIds=[activeAlarmId, ...alarmQueue].filter(Boolean).filter(id=> activeTimers.some(x=>x.id===id));
-    if(Notification && Notification.permission==='granted'){
+    if(!isNativePlatform() && 'Notification' in window && Notification.permission==='granted'){
       if(allIds.length>1){
         new Notification(`⏰ หมดเวลา ${allIds.length} คน!`,{body: allIds.map(id=>{const tt=activeTimers.find(x=>x.id===id); return tt? `${tt.idolEmoji} ${tt.idolName} • ${tt.tickets}ใบ` : ''}).join(' • '), requireInteraction:true});
       } else {
@@ -1898,6 +2034,7 @@ function stopAlarmAll(){
   if(navigator.vibrate) navigator.vibrate(0);
   $('#alarmOverlay').classList.remove('show');
   document.title='Cheki Timer ♡ ไอดอลเชกิไทม์เมอร์ - Multi Queue';
+  try{ nativeCancelAll(); }catch(e){}
   activeAlarmId=null;
   alarmQueue=[];
   pendingBatch=[];
@@ -2013,8 +2150,15 @@ async function toggleWakeLock(){
   if(wakeLock) await releaseWakeLock();
   else { unlockAudio(); await requestWakeLock(); showToast(wakeLock?'เปิดกันจอดับแล้ว ♡':'เบราว์เซอร์ไม่รองรับกันจอดับ'); }
 }
-function requestNotify(){
+async function requestNotify(){
   unlockAudio();
+  // Native (Capacitor) first
+  if(isNativePlatform()){
+    const ok=await nativeRequestPermission();
+    if(ok){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; showToast('เปิดแจ้งเตือนแล้ว ♡ หมดเวลาจะดังแม้ล็อคจอ/สลับแอพ'); try{ const LN=getLN(); if(LN) await LN.schedule({ notifications:[{ title:'Cheki Timer ♡', body:'แจ้งเตือนปลุกพร้อมแล้ว! หมดเวลาจะเด้งและมีเสียงดังวน', id:999999, schedule:{ at: new Date(Date.now()+1500).toISOString() }, sound:'default', smallIcon:'ic_stat_icon_config_sample', channelId:'cheki-alarm' }] }); }catch(e){} }
+    else { alert('เปิดแจ้งเตือนไม่สำเร็จ ไปที่ ตั้งค่า > แอพ > Cheki Timer > อนุญาตการแจ้งเตือน'); }
+    return;
+  }
   if(!('Notification' in window)){ alert('เบราว์เซอร์นี้ไม่รองรับแจ้งเตือน'); return; }
   Notification.requestPermission().then(p=>{
     if(p==='granted'){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; showToast('เปิดแจ้งเตือนแล้ว ♡ จะเด้งแม้สลับแอพ'); try{ new Notification('Cheki Timer ♡',{body:'แจ้งเตือนปลุกพร้อมแล้ว! หมดเวลาจะเด้งและมีเสียงดังวน', requireInteraction:false}); }catch(e){} }
@@ -2022,10 +2166,21 @@ function requestNotify(){
     else showToast('ยังไม่ได้เปิดแจ้งเตือน');
   });
 }
-// update notify button on load
-setTimeout(()=>{
-  if('Notification' in window && Notification.permission==='granted'){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; }
-},400);
+// update notify button on load (native + web)
+setTimeout(async ()=>{
+  if(isNativePlatform()){
+    if(await nativeIsPermissionGranted()){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; }
+    // init native listeners
+    try{ await nativeCreateChannelIfNeeded(); initNativeListeners(); }catch(e){}
+  } else if('Notification' in window && Notification.permission==='granted'){ $('#btnNotify').textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; $('#btnNotify').style.background='var(--mint)'; }
+},500);
+// also init immediately for native (in case Capacitor ready later)
+document.addEventListener('DOMContentLoaded', async ()=>{
+  if(isNativePlatform()){
+    try{ await nativeCreateChannelIfNeeded(); initNativeListeners(); if(await nativeIsPermissionGranted()){ const b=document.getElementById('btnNotify'); if(b){ b.textContent='🔔 แจ้งเตือน: เปิดแล้ว ✓'; b.style.background='var(--mint)'; } } }catch(e){}
+  }
+});
+window.addEventListener('capacitorDidLoad', async ()=>{ if(isNativePlatform()){ try{ await nativeCreateChannelIfNeeded(); initNativeListeners(); }catch(e){} } });
 // re-acquire wakeLock on visibility
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible' && activeAlarmId) playSoundForTimer(activeAlarmId);

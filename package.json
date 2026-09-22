@@ -1,7 +1,7 @@
 {
-  "name": "default-project",
-  "version": "1.0.0",
-  "description": "",
+  "name": "cheki-timer",
+  "version": "2.1.0",
+  "description": "Cheki Timer - Multi Queue with native notifications",
   "main": "generate-icons.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,5 +10,15 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/local-notifications": "^6.1.1",
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/ios": "^6.2.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.1"
+  }
 }
