@@ -1360,7 +1360,7 @@ function renderTimers(){
     return `<div class="timer-queue-card ${t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${t.idolColor}">
       <div class="queue-head">
         <div class="queue-idol">
-          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:100%;height:100%;object-fit:cover">` : (t.idolEmoji||"🌸"); })()}</div>
+          <div class="queue-avatar" style="background:${t.idolColor}; overflow:hidden; padding:0">${(function(){ const _idol=idols.find(x=>x.id===t.idolId); return _idol && _idol.image ? `<img src="${_idol.image}" style="width:60%;height:60%;object-fit:cover; display:block; margin:auto; border-radius:inherit; transform: translateX(-5px)">` : (t.idolEmoji||"🌸"); })()}</div>
           <div class="queue-info"><b>${t.idolName}</b><span>${t.perSeconds}s / ใบ • ${t.tickets} ใบ • รวม ${formatTime(t.totalSeconds)}</span></div>
         </div>
         <div style="display:flex; align-items:center; gap:6px">
