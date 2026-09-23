@@ -99,6 +99,7 @@ body{
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
+  min-height:100dvh;
   background-image:
     radial-gradient(circle at 10% 10%, #ffe4ee 0%, transparent 40%),
     radial-gradient(circle at 90% 20%, #e9d5ff 0%, transparent 40%),
@@ -113,7 +114,7 @@ header{
   padding:14px 16px;
 }
 .header-inner{
-  max-width:1080px; margin:0 auto;
+  max-width:900px; margin:0 auto;
   display:flex; align-items:center; justify-content:space-between; gap:12px;
 }
 .logo{
@@ -137,7 +138,7 @@ header{
   background:transparent; color:var(--muted); transition:.2s;
 }
 .nav-tab.active{ background:white; color:var(--pink-dark); box-shadow:0 4px 12px rgba(255,107,157,0.15)}
-.container{ max-width:1080px; margin:22px auto; padding:0 16px 40px}
+.container{ max-width:900px; margin:22px auto; padding:0 16px 40px}
 .view{ display:none } .view.active{ display:block; animation:fade .25s ease}
 @keyframes fade{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
 
