@@ -882,8 +882,8 @@ function renderIdols(){
         <div class="stat"><b>${formatTime(idol.secondsPerCheki)}</b><span>ต่อใบ</span></div>
       </div>
       <div class="idol-actions">
-        <button class="btn btn-ghost btn-small" onclick="editIdol('${escapeHTML(idol.id)}')">✏ แก้ไข</button>
-        <button class="btn btn-ghost btn-small" style="color:#ef4444; border-color:#fecaca" onclick="deleteIdol('${escapeHTML(idol.id)}')">🗑 ลบ</button>
+        <button class="btn btn-ghost btn-small" onclick="editIdol('${idol.id}')">✏ แก้ไข</button>
+        <button class="btn btn-ghost btn-small" style="color:#ef4444; border-color:#fecaca" onclick="deleteIdol('${idol.id}')">🗑 ลบ</button>
       </div>
     </div>`;
   }).join('');
@@ -1338,7 +1338,7 @@ function renderMemberTimers(){
     return `<div class="timer-queue-card ${t&&t.isRunning?'running':''} ${isFinished?'finished':''}" style="--queue-color:${idol.color}" data-member="${idol.id}">
       <!-- Top: tickets & edit (only count) - on same side as right frame -->
       <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:2px; margin-top:8px; margin-left:auto; width:fit-content; margin-right:5px">
-        <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${escapeHTML(idol.id)}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
+        <div style="display:flex; align-items:center; gap:4px"><div class="queue-tickets" style="font-size:0.62rem; padding:2px 6px">${ticketsDisplay} ใบ</div><button class="btn btn-ghost btn-small" onclick="openIdolModal('${idol.id}')" title="แก้ไขเมมเบอร์" style="padding:4px 6px; border-radius:999px; font-size:0.65rem; line-height:1">✏️</button></div>
       </div>
       <!-- Middle: green (idol info) at bottom left + red (timer) on right side-by-side -->
       <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; margin:-24px 0 1px 0; flex-wrap:wrap; transform: translateX(-5px)">
@@ -1686,7 +1686,7 @@ async function nativeScheduleAlarm(timer){
     const at=new Date(Date.now() + Math.max(0, timer.remaining*1000));
     // cancel old first to reschedule
     try{ await LN.cancel({ notifications:[{ id: String(id) }] }); }catch(e){}
-    const title = timer.tickets>1 ? `⏰ หมดเวลา! ${escapeHTML(timer.idolName)} • ${timer.tickets}ใบ` : `⏰ หมดเวลา! ${escapeHTML(timer.idolName)}`;
+    const title = timer.tickets>1 ? `⏰ หมดเวลา! ${timer.idolName} • ${timer.tickets}ใบ` : `⏰ หมดเวลา! ${timer.idolName}`;
     const body = `เชกิ ${timer.tickets}ใบ • ${formatTime(timer.totalSeconds)} ครบแล้ว กดเพื่อบันทึก`;
     await LN.schedule({ notifications:[{
       title, body,
@@ -2400,9 +2400,9 @@ function renderHistory(){
       ${items.map(l=>`
         <div class="log-item">
           <div class="log-left">
-            <div class="log-dot" style="background:${escapeHTML(l.idolColor||'#ff6b9d'}"></div>
+            <div class="log-dot" style="background:${escapeHTML(l.idolColor||'#ff6b9d')}"></div>
             <div>
-              <div style="font-weight:700">${escapeHTML(l.idolEmoji||'🌸'} ${escapeHTML(l.idolName)} <span class="log-count" style="margin-left:6px">${l.count} ใบ</span></div>
+              <div style="font-weight:700">${escapeHTML(l.idolEmoji||'🌸')} ${escapeHTML(l.idolName)} <span class="log-count" style="margin-left:6px">${l.count} ใบ</span></div>
               <div class="log-time">${l.time} น. • ${l.perSeconds}s/ใบ • รวม ${formatTime(l.totalSeconds)}</div>
             </div>
           </div>
